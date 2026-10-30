@@ -61,6 +61,19 @@ Added:
   Use: import = ["<path>/vapor.toml"] under [general] in alacritty.toml.
   Konsole's 0.9 opacity is not part of it ([window] opacity is a window setting).
 
+- color-schemes/VaporUnion.colors ("Vapor Union") and VGUIUnion.colors
+  ("VGUI2 Classic Union"): copies of Vapor and VGUI tuned for the Union app style
+  (picked by the user; the global themes keep Breeze and the plain schemes).
+  Union Breeze draws the focus ring as DecorationFocus at 30% alpha:
+  - Vapor Union: DecorationFocus 52,108,146 -> 120,200,255 in every group except
+    Complementary (ring 1.31:1 -> 1.98:1; Breeze Dark is 1.75:1).
+  - VGUI Union: DecorationFocus 149,136,49 -> 240,224,120 (ring 1.25:1 -> 1.84:1).
+    Selection text dark instead of white on the gold, which Union also uses for
+    indicators and borders: normal 24,24,16 (5.0:1), active/link/visited 32,30,12
+    (4.7:1), inactive 56,52,22 (3.5:1), negative/neutral/positive 100,14,6 /
+    72,42,0 / 14,60,10 (>= 3.5:1).
+  Both: own Name/ColorScheme ids, translated names dropped.
+
 Left out of the copy: SteamOS system files (/etc configs, scripts, systemd units,
 avatars, kickoff actions, service menus, Steam desktop entries).
 

@@ -14,7 +14,7 @@ shortcuts) are left out.
 | --- | --- |
 | Global themes: Vapor, Vapor (Steam Deck), VGUI2 Classic | `usr/share/plasma/look-and-feel/com.valve.*` |
 | Vapor Plasma style | `usr/share/plasma/desktoptheme/Vapor` |
-| Vapor and VGUI color schemes | `usr/share/color-schemes` |
+| Vapor and VGUI color schemes, plus Union versions | `usr/share/color-schemes` |
 | Vapor GTK 3 theme | `usr/share/themes/Vapor` |
 | Vapor Konsole profile and colors | `usr/share/konsole` |
 | Steam Deck wallpapers (`SteamDeckLogo` is the themes' default) | `usr/share/wallpapers` |
@@ -47,6 +47,23 @@ Manually, for your user only: copy the folders under `usr/share` into
 into `/usr/share`.
 
 Then pick a global theme in System Settings > Colors & Themes > Global Theme.
+
+### Using Union
+
+The global themes keep the classic Breeze app style, since Plasma's Union style
+engine is still in development and meant to be picked by the user. If you switch
+apps to Union (System Settings > Colors & Themes > Application Style), also pick
+**Vapor Union** or **VGUI2 Classic Union** under Colors. They are the same schemes
+tuned for how Union Breeze uses colors:
+
+- Union draws the keyboard focus ring at 30% strength, which was barely visible
+  with Vapor's and VGUI's focus colors. Brighter focus colors make it a bit more
+  visible than Breeze Dark's.
+- VGUI Union uses dark text on the gold selection (white was 3.5:1, now 5:1).
+  Union also uses the selection gold for checkbox fills and button borders, so
+  the gold stays and the text changes.
+
+Re-applying a global theme sets the plain Vapor/VGUI scheme again.
 
 VGUI also uses the Plastik window decoration (`aurorae` package) and the
 KDE_Classic cursor (`oxygen-cursors` package).
