@@ -926,3 +926,24 @@ Implementation references:
 [XDG autostart specification](https://specifications.freedesktop.org/autostart/latest/),
 [GTK settings](https://docs.gtk.org/gtk4/class.Settings.html), and
 [Arch package guidelines](https://wiki.archlinux.org/title/Arch_package_guidelines).
+
+### Release 1.0.4 / AUR 1.0.4-1
+
+- Committed the default integration as cce2438 and published a new annotated
+  v1.0.4 tag. Earlier tags remain unchanged. Created the public
+  [GitHub release](https://github.com/orlfman/steamos-vapor-plasma-6.8/releases/tag/v1.0.4)
+  with activation/disable instructions and the tested native scope.
+- Downloaded the real GitHub tag archive and recorded SHA-256
+  f918d4b9762d2bb580a63e6655cb84886b74ecf4386ba1c11eec0c50d1ca6b44.
+  Updated the tracked and AUR recipes together to 1.0.4-1, required Python,
+  GTK 4.24+ and libadwaita 1.10+, and used the shared staging tool in package().
+  Regenerated matching .SRCINFO using makepkg.
+- Built the final package from that archive with its checksum enforced. Exact
+  payload comparison against the tested preflight build passes, including the
+  helper/login entry; packaged documentation matches the tagged sources. No
+  user's live GTK files change during builds. Lint has zero errors and the same
+  seven dependency-inference warnings. Retained release-build.log,
+  release-extract/, release-source.json and package-lint.log in the scratch tree.
+- The fresh AUR checkout initially lacked a Git author identity. Configured only
+  that checkout with the existing project's identity, then committed/pushed
+  6e7eaf8 to the existing AUR package. No global Git settings were changed.

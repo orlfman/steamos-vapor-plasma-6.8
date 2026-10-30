@@ -31,6 +31,13 @@ Work/evidence: [gtk4port.md](gtk4port.md), section 20, and
 `/tmp/vapor-default-install-x_d6ke6a`. Standard installation does not expand the
 tested native scope to Flatpak or unmeasured accessibility/performance cases.
 
+Published [version 1.0.4 on GitHub](https://github.com/orlfman/steamos-vapor-plasma-6.8/releases/tag/v1.0.4)
+and updated the existing
+[AUR package](https://aur.archlinux.org/packages/plasma6-themes-steamos-vapor-fixed)
+to 1.0.4-1. The recipe uses the checked GitHub tag archive and the shared staging
+tool; matching generated .SRCINFO records the new required dependencies. The
+final archive build and payload comparison passed before the AUR push.
+
 ---
 
 # Live libadwaita activation and application checks — 2026-10-30
