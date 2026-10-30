@@ -831,7 +831,7 @@ Native libadwaita remains opt-in and unreleased. The established live-GPU,
 fractional scaling, accessibility, broader application/performance and Flatpak
 work remains open. Existing AUR version/tag/checksum are unchanged.
 
-## 18. Enable the live overlay and record Mission Center feedback — 2026-10-30
+## 18. Enable the live overlay and record application feedback — 2026-10-30
 
 The user explicitly requested activating the overlay to test it on their system.
 Read the activation guidance and helper, confirmed the repository was clean,
@@ -850,6 +850,11 @@ package is mission-center 1.2.0-1.1. Added this successful user-reported visual
 check to audit.md and updated the plan's live activation/application status.
 The report does not specify a display scale, individual pages or performance
 measurements. Those broader checks and Flatpak remain separate work.
+
+The user then reported FFmpeg Converter "looks good as well". Added this as a
+second successful user-reported visual check with the live overlay enabled.
+No version, toolkit or broader functional/benchmark claim is inferred from that
+feedback. Updated audit.md and the plan to include both application reports.
 
 This follow-up changes documentation only. The previous automated suite results
 remain applicable; no theme code, package release or AUR update was needed.

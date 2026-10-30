@@ -1,4 +1,4 @@
-# Live libadwaita activation and Mission Center check — 2026-10-30
+# Live libadwaita activation and application checks — 2026-10-30
 
 At the user's request, enabled the Vapor libadwaita overlay using the documented
 helper after a successful dry run. Verified enabled/current status, the copied
@@ -8,8 +8,11 @@ colors. This is a user configuration change, not a package release.
 The user then tested Mission Center and reported it was "looking great".
 Confirmed the running native executable is `/usr/bin/missioncenter`, supplied by
 `mission-center 1.2.0-1.1`. Record this as a successful user-reported visual check
-of a real native application with the overlay active. Broader interaction,
-accessibility, scaling/performance and Flatpak validation remain open.
+of a real native application with the overlay active. The user also reported
+FFmpeg Converter "looks good as well"; record this as a second successful visual
+check with the overlay enabled, without inferring its toolkit or app version.
+Broader interaction, accessibility, scaling/performance and Flatpak validation
+remain open.
 
 See [gtk4port.md](gtk4port.md), section 18, and the current status table in
 [libadwaita-plan.md](libadwaita-plan.md). Historical disabled-overlay statements
