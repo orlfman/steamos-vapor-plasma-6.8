@@ -730,3 +730,40 @@ isolated installed-helper enable/status/disable round trip pass. Python syntax,
 whitespace, local Markdown links and baseline scope checks pass. Private test
 processes are closed; a real-config dry-run leaves status disabled. Existing
 GTK/artwork/terminal assets and published AUR files match their starting hashes.
+
+
+## 16. Audit the libadwaita implementation — 2026-10-30
+
+User requested auditing the work. Reviewed clean commit 83b5736, including the
+profile, activation/state/transaction code, test coverage, app probe and package
+stager. Saved source hashes and scratch reproductions in
+/tmp/vapor-adw-review-9u20g82e. No production/test implementation was changed.
+
+- ADW-R1: reproduced successful removal of an original empty gtk.css after
+  changing only created_import_file from JSON false to the string "false".
+  State loader accepts it; disable trusts its truthiness. Original nonempty
+  CSS was not deleted in this reproduction. The fix is strict type validation
+  plus no-write malformed-state regression coverage.
+- ADW-R2: appended guarded wrong actual-window background selectors to temporary
+  profile copies. Both the #29362f and #555555 copies pass the complete 22-case
+  suite despite wrong rendered surfaces and unchanged declared variables.
+  The green example has 307,916 opaque wrong-color pixels. A measurement-only
+  scratch checker reports grey-background focus contrast 2.36:1 versus the
+  existing assertion's 4.74:1, exposing a false positive in its 3:1 gate.
+  No acceptance assertion was changed in that scratch checker. Recommend real
+  surface/adjacent-background pixel assertions and an additional mutation.
+- ADW-R3: exercised the actual staging function with an audit-only one-byte
+  source and usr/stage destination. It recursively includes its own output;
+  stopped after seven copytree calls with an explicit audit cap. No real
+  repository/source-tree recursive copy was run. Resolve/reject containment
+  before creating output and add a bounded negative control.
+- Tested a BOM/import idea too; the original fixture already has a parser
+  error, so did not report that as a new defect. Did not manufacture a theme
+  stylesheet issue from a pre-existing invalid input.
+- Re-ran the normal 22 native cases, all 15 existing activation tests, six
+  existing profile mutations and ordinary package staging: pass. This confirms
+  the current suite's success does not cover the reproduced cases. Did not
+  repeat unrelated GTK suites because their implementation/assets are unchanged.
+- Prepended findings with source lines, reproductions, impact and recommended
+  fixes to audit.md, and linked the open findings from the plan. Three P2
+  issues remain open; this review applies no fixes or live settings changes.

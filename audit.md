@@ -1,3 +1,133 @@
+# Libadwaita implementation audit — 2026-10-30
+
+Reviewer: Codex (GPT-6). Audited commit:
+`83b5736ae68399cb84a6a7455090854e1bb57003`. Starting working tree was clean.
+Scope: color profile, native activation/recovery, automated acceptance tests,
+independent-app probe and package staging. This is a review; no implementation
+or theme fixes were applied.
+
+**Result: three reproducible P2 findings remain open.** The unmodified profile
+passes the current 22-case native suite, 15 activation tests and six mutation
+controls, and ordinary package staging succeeds. Those passes do not cover the
+edge cases below. I recommend addressing these before a package release.
+
+## ADW-R1 — P2: an invalid state flag can delete an original empty gtk.css
+
+Locations: `tools/vapor-libadwaita:103` (state validation) and `:160–162`
+(disable/removal decision). The loader validates original_exists as a boolean,
+but never validates created_import_file, which later controls whether an empty
+gtk.css is removed.
+
+Reproduction, using a disposable configuration:
+
+1. Create an existing empty gtk-4.0/gtk.css, then run enable normally.
+2. Confirm saved state has original_exists=true and created_import_file=false.
+3. Change only created_import_file to the JSON string `"false"`, leaving the
+   original checksum, profile checksum and backup intact.
+4. Run disable. It exits successfully and deletes the original gtk.css, because
+   the string is truthy. Expected: refuse inconsistent metadata before writing
+   anything, preserving the original file and managed recovery files.
+
+The reproduction deletes an empty file, not existing nonempty CSS contents;
+it is nevertheless an incorrect removal decision and violates the helper's
+inconsistent-state refusal and original-file preservation contract. The existing
+bad-state/backup test changes the backup, not this destructive-decision flag.
+
+Recommended fix: require a real boolean whenever created_import_file is present,
+retain a deliberate compatibility rule for older state lacking the field, and
+add malformed-flag tests that assert no file changes. Evidence:
+`/tmp/vapor-adw-review-9u20g82e/activation-evidence.json` and check-activation.py.
+
+## ADW-R2 — P2: visible surface regressions can pass all native checks
+
+Locations: `tools/check-libadwaita.py:190–196` (checks inherited variable values)
+and `:243–249` (focus contrast uses the declared window variable).
+
+The renderer draws the real window background, but the suite does not assert
+that an actual neutral window pixel matches the expected Vapor surface. The
+focus-ring denominator also uses the variable rather than the actual adjacent
+rendered background. Correct variable declarations can therefore hide a later
+selector that paints a different surface.
+
+Confirmed without editing the working profile: append this to a disposable copy:
+
+```css
+@media (prefers-color-scheme: dark) and (prefers-contrast: no-preference) {
+  window { background-color: #555555; }
+}
+```
+
+Run the complete existing check-libadwaita.py against that copy. **All 22 cases
+pass.** Metadata still reports window-bg-color as RGB 36,39,44, while actual
+opaque window pixels are RGB 85,85,85. In a scratch copy of the checker that
+only adds measurement (no changed assertions), the focus case reports **4.74:1**
+against the declared color but only **2.36:1** against its actual adjacent
+background, below the suite's stated 3:1 gate. The unchanged assertions pass.
+
+A second #29362f surface mutation also passes all 22 cases, with 307,916 opaque
+pixels showing the wrong green surface instead of the expected window color.
+This is a test-coverage defect; the production profile does not currently
+contain either bad selector. The original profile's current focus measurement
+is not invalidated by this deliberate mutation.
+
+Recommended fix: assert real neutral surface pixels (including relevant header,
+sidebar/card/dialog/popover surfaces), measure ring contrast against actual
+adjacent background pixels and add a wrong-rendered-surface negative control.
+An additional profile-format check can enforce the intended variables-only
+contract, but should not replace checking what the actual widgets render.
+
+Evidence: wrong-surface/ and wrong-contrast-surface/ contain complete passing
+mutant reports/captures; surface-evidence.json records the green pixels;
+actual-focus/results.json records the 4.74 vs 2.36 measurement. The scratch
+measure-actual-focus.py only changes the output measurements and repository
+lookup; it retains all acceptance assertions.
+
+## ADW-R3 — P2: staging inside the copied usr tree recursively includes itself
+
+Location: `tools/stage-package.py:18–24`. The checks require an absolute,
+empty, non-symlink final destination but do not resolve containment relative to
+the recursively copied source directory. For example, a previously absent
+`<repo>/usr/stage` passes validation. The tool creates it, then copies repo/usr
+into that same tree, including its own output recursively.
+
+Verified with an audit-only minimal ROOT containing a one-byte usr source, not
+the real theme tree. The real staging function accepted usr/stage and descended
+through seven nested copytree calls before an audit cap deliberately stopped it.
+The production helper has no such cap and would keep nesting until a filesystem
+or recursion error, leaving partial output and potentially using substantial
+space. Normal documented /tmp staging still succeeds.
+
+Recommended fix: resolve destination and source paths, reject a destination
+inside the copied ROOT/usr tree (including parent-symlink aliases) before mkdir,
+and add a bounded negative-control test. Do not forbid ordinary repository build
+directories outside usr unnecessarily. Evidence: staging-evidence.json and
+check-staging.py; no recursive copying was attempted in the real repository.
+
+## Verification and scope
+
+- Re-ran the unchanged profile's full 22-case native suite: passes with the
+  already documented Broadway timing-warning allowance.
+- Re-ran all 15 activation tests and all six existing profile mutation controls:
+  pass. They do not reject the new reproductions above.
+- Normal package staging succeeds. Reviewed the app probe and bounded idle-CPU
+  measurements; no additional demonstrated regression found there. Their
+  startup-only/headless/small-sample limitations still apply.
+- Considered an import-order/BOM issue, but GTK rejected the original BOM fixture
+  before activation as well; rejected it as a new activation regression.
+- Existing light/high-contrast guard results, stock semantic colors and measured
+  native allocations remain valid within the recorded fixture coverage. The
+  accent-API/custom-drawing mismatch, broader live accessibility/GPU/fractional
+  display coverage and unvalidated Flatpak support remain known limitations,
+  not newly introduced findings in this review.
+
+All source/config/mutant files used to reproduce the findings are under
+`/tmp/vapor-adw-review-9u20g82e`. Starting tracked-file hashes are saved there.
+Only this report, the plan's open-findings pointer and gtk4port.md were updated;
+production code, existing tests, theme/artwork, AUR files and real user settings
+were not modified. The review does not upgrade the feature's release status.
+
+---
+
 # Initial native libadwaita implementation — 2026-10-30
 
 Agent: Codex (GPT-6). Base: `4694f03`. User authorized engaging the port.

@@ -20,6 +20,11 @@ Base: `5dcae96`. Evidence and detailed findings: [audit.md](audit.md).
 The stages below retain the full roadmap and acceptance criteria; the table
 distinguishes the implemented native milestone from remaining validation.
 
+Post-implementation review: **ADW-R1–R3 are open** in [audit.md](audit.md).
+Before release, validate the activation state flag, add actual-surface/focus
+background regression checks and reject staging destinations inside the copied
+usr source tree. These findings have been reproduced but are not yet fixed.
+
 ## Recommended target
 
 Build an **optional Vapor color profile for libadwaita**, initially targeting the
