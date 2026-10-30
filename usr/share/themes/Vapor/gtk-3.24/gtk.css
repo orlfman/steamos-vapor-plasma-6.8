@@ -3331,6 +3331,7 @@ spinbutton:not(.vertical) {
     spinbutton:not(.vertical) button:backdrop:disabled {
       color: rgba(216, 218, 221, 0.35);
       background-color: transparent;
+      background-image: none;
       border-style: none; }
     spinbutton:not(.vertical) button:dir(ltr):last-child {
       border-radius: 0 3px 3px 0; }
@@ -3379,6 +3380,7 @@ spinbutton.vertical button {
   spinbutton.vertical button:backdrop:disabled {
     color: rgba(216, 218, 221, 0.35);
     background-color: #202325;
+    background-image: none;
     border-color: rgba(88, 92, 95, 0.35); }
 spinbutton.vertical button.up {
   border-radius: 3px 3px 0 0;
@@ -3773,3 +3775,10 @@ headerbar.selection-mode button.titlebutton,
   headerbar.selection-mode button.titlebutton:backdrop,
   .titlebar.selection-mode button.titlebutton:backdrop {
     -gtk-icon-shadow: none; }
+
+/* Keep enabled blue-filled buttons readable in inactive windows: the generic
+ * label:backdrop rule must not replace their selected foreground. */
+button:backdrop:checked:not(:disabled) label,
+button:backdrop:active:not(:disabled) label {
+  color: inherit;
+}

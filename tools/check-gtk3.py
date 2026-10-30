@@ -2,7 +2,7 @@
 """Check Vapor CSS/assets and theme discovery/rendering with GTK 3.24.
 
 Uses temporary XDG settings and a private Broadway server over Unix sockets.
-Requires python-gobject, python-cairo, gtk3 (including broadwayd), and fonts.
+Requires python-gobject, python-cairo, python-pillow, gtk3 (broadwayd), and fonts.
 No installed theme or desktop settings are modified. Optional PNGs go to --output.
 """
 import argparse
@@ -29,7 +29,7 @@ def worker(args):
     theme = Path(args.theme)
     errors = []
     providers = []
-    for css in sorted(theme.glob('gtk-*/gtk.css')):
+    for css in sorted(theme.glob('gtk-3*/gtk.css')):
         if args.baseline and css.parent.name != 'gtk-3.20':
             continue
         provider = Gtk.CssProvider()
@@ -301,13 +301,13 @@ def main():
         assert (theme/'gtk-3.24/gtk.css').is_file(), 'Missing GTK 3.24 entry'
         assert (theme/'gtk-3.0/gtk.css').is_file(), 'Missing chooser entry'
         assert not (theme/'gtk-3.18').exists() and not (theme/'gtk-3.20').exists(), 'Obsolete GTK styles remain'
-    for css in theme.glob('gtk-*/*.css'):
+    for css in theme.glob('gtk-3*/*.css'):
         if args.baseline and css.parent.name != 'gtk-3.20':
             continue
         for url in re.findall(r'url\(["\']?([^"\')]+)', css.read_text()):
             assert (css.parent / url).is_file(), f'Missing asset: {css} -> {url}'
     if not args.baseline:
-        used = {Path(url).name for css in theme.glob('gtk-*/*.css')
+        used = {Path(url).name for css in theme.glob('gtk-3*/*.css')
                 for url in re.findall(r'url\(["\']?([^"\')]+)', css.read_text())}
         unused = sorted(f.name for f in (theme/'assets').iterdir() if f.name not in used)
         assert not unused, f'Unreferenced assets: {unused[:5]} ({len(unused)})'
@@ -322,7 +322,7 @@ def main():
             env[key] = str(path)
         staged = scratch / 'data/themes/Vapor'
         shutil.copytree(theme, staged)
-        for css in staged.glob('gtk-*/gtk.css'):
+        for css in staged.glob('gtk-3*/gtk.css'):
             css.write_text('@define-color vapor_test_fixture #11171d;\n' + css.read_text())
         env.update({'XDG_CONFIG_DIRS': str(scratch/'config'), 'XDG_DATA_DIRS': '/usr/share',
                     'GDK_BACKEND': 'broadway', 'BROADWAY_DISPLAY': ':1',
@@ -358,6 +358,12 @@ def main():
         finally:
             server.terminate()
             server.communicate(timeout=5)
+    if not args.baseline:
+        command = [sys.executable, '-I', str(ROOT/'tools/check-gtk-regressions.py'),
+                   '--gtk', '3.0', '--theme', str(theme)]
+        if args.output:
+            command += ['--output', str(args.output.resolve()/'behavior')]
+        subprocess.run(command, check=True)
     print('GTK 3.24 CSS, assets, isolated theme discovery and widget rendering: PASS')
 
 

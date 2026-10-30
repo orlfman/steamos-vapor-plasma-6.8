@@ -1,8 +1,8 @@
 # SteamOS Vapor - Plasma 6.8
 
 The KDE Plasma themes from SteamOS desktop mode (Vapor, Vapor for Steam Deck and
-VGUI2 Classic), fixed and checked against Plasma 6.8.2, plus matching Konsole and
-Alacritty colors.
+VGUI2 Classic), fixed and checked against Plasma 6.8.2, plus matching Konsole,
+Alacritty and kitty colors.
 
 Based on Valve's `steamdeck-kde-presets` 3.9.4-2 from the SteamOS 3.9 repository,
 theme files only. SteamOS system files (configs, scripts, systemd units, Steam
@@ -15,11 +15,13 @@ shortcuts) are left out.
 | Global themes: Vapor, Vapor (Steam Deck), VGUI2 Classic | `usr/share/plasma/look-and-feel/com.valve.*` |
 | Vapor Plasma style | `usr/share/plasma/desktoptheme/Vapor` |
 | Vapor and VGUI color schemes, plus Union versions | `usr/share/color-schemes` |
-| Vapor GTK 3.24 theme | `usr/share/themes/Vapor` |
+| Vapor GTK 3.24 theme | `usr/share/themes/Vapor/gtk-3.0`, `gtk-3.24` |
+| Vapor GTK 4 theme, initial (plain GTK 4 apps; libadwaita apps ignore themes) | `usr/share/themes/Vapor/gtk-4.0` |
 | Vapor Konsole profile and colors | `usr/share/konsole` |
 | Steam Deck wallpapers (`SteamDeckLogo` is the themes' default) | `usr/share/wallpapers` |
 | Steam Deck start menu icon | `usr/share/icons/hicolor` |
 | Vapor Alacritty colors | `alacritty/vapor.toml` |
+| Vapor kitty colors | `kitty/vapor.conf` |
 
 ## What was fixed
 
@@ -35,7 +37,7 @@ The short version (details in [CHANGES.txt](CHANGES.txt)):
 - GTK 3.24: maintained stylesheet and standard theme-chooser entry, fixed
   inactive text selections, unused images removed, no startup warnings or blank
   hovered partly-checked checkboxes. GTK 2 support dropped.
-- Konsole and Alacritty: black is a visible dark grey instead of the background color.
+- Konsole, Alacritty and kitty: black is a visible dark grey instead of the background color.
 
 ## Install
 
@@ -75,12 +77,24 @@ Alacritty: add the theme under `[general]` in `~/.config/alacritty/alacritty.tom
 import = ["/usr/share/alacritty/themes/steamos-vapor.toml"]
 ```
 
+kitty (since 1.0.3): add near the top of `~/.config/kitty/kitty.conf`:
+
+```conf
+include /usr/share/kitty/themes/steamos-vapor.conf
+```
+
+Besides colors it sets the tab bar, split borders and highlight marks, and
+redefines kitty's default hint shortcuts (Ctrl+Shift+E and Ctrl+Shift+P
+keys) to draw Vapor-colored labels. Your own maps for those keys go after the
+include. Set `background_opacity 0.9` yourself to match Konsole.
+
 ## GTK 3.24 compatibility
 
 The working tree targets GTK **3.24** explicitly. Its maintained stylesheet lives
 in `usr/share/themes/Vapor/gtk-3.24/gtk.css`; `gtk-3.0/gtk.css` imports it for
 standard theme choosers and direct CSS consumers. The obsolete GTK 3.18/3.20
-copies are removed. GTK 2 and GTK 4 are not supported.
+copies are removed. GTK 3.24 is supported since v1.0.2; a separate, initial GTK 4
+theme ships since v1.0.3 (below). GTK 2 is not supported.
 
 Vapor keeps its own styling and artwork. Its GTK selection blue/text now match
 Vapor.colors (#569fcc / #1f1f26), including related accents and check/radio
@@ -89,9 +103,42 @@ The previous gtk-3.20 stylesheet already worked under GTK 3.24; this update
 makes the supported target explicit and fixes selectors that missed their
 intended nodes. See [GTK3.md](GTK3.md) for validation, limits and check commands.
 
-These changes are in release **1.0.2** (AUR `plasma6-themes-steamos-vapor-fixed`
+These changes are in release **1.0.2** and later (AUR `plasma6-themes-steamos-vapor-fixed`
 1.0.2-1). When replacing an existing manual installation, replace the entire `Vapor` theme
 folder rather than merging it, so obsolete versioned styles do not remain.
+
+## GTK 4 (initial, since 1.0.3)
+
+Release 1.0.3 ships an initial native GTK 4 theme, with a separate
+`gtk-4.0/gtk.css` and explicit dark entry. It preserves Vapor's palette and shared
+artwork and has isolated native-widget/parser checks on GTK 4.24.1. It is not yet
+a release-ready claim of complete GTK 4 application coverage or libadwaita styling.
+
+[gtk4port.md](gtk4port.md) records every implementation step, failed experiment,
+correction, test result, remaining gap and next step. [audit.md](audit.md) is the
+pre-port assessment. To run the two independent toolkit checks:
+
+```sh
+python3 -I tools/check-gtk3.py
+python3 -I tools/check-gtk4.py
+```
+
+Both checkers also run inactive-label contrast and spin-background regressions.
+The GTK 3 checker additionally needs `python-pillow`. To prove the tests reject
+the original bugs on both toolkits, run:
+
+```sh
+python3 -I tools/test-gtk-regressions.py
+```
+
+The GTK 4 checker needs `gtk4` (with gtk4-broadwayd), `python-gobject`,
+`python-pillow` and fonts. All display/config/output state is temporary;
+`--output /tmp/vapor-gtk4-preview` retains its screenshots.
+
+Released in 1.0.3 as initial support. Not yet verified: keyboard focus outlines,
+open popovers/menus, full-window/HiDPI, accessibility, and real applications on
+a live compositor. Most GTK 4 apps use libadwaita, which ignores GTK themes;
+this theme applies to plain GTK 4 apps when Vapor is the selected GTK theme.
 
 ## License
 

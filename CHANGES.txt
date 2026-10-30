@@ -1,3 +1,62 @@
+1.0.3 (released 2026-10-30) — 2026-10-30, Codex (GPT-6): resolve audit R1/R2
+
+- GTK 3/4 inactive checked/pressed button labels inherit their button color only
+  when enabled. Real checked-label contrast improves from ~2.65:1 to ~5.4:1;
+  ordinary/disabled labels and dimmed text selections keep their prior treatment.
+- Added shared behavior checks to both existing toolkit suites: actual child
+  foreground/contrast, pressed/disabled guards and horizontal/vertical spin
+  min/middle/max/disabled backgrounds in normal/backdrop states.
+- Added six disposable negative-control tests. Removing the label rule or either
+  spin-button gradient reset now fails the corresponding R1/R2 assertion.
+- Full GTK 3 and GTK 4 suites pass; GTK3.md/README requirements updated for the
+  added Pillow test dependency. audit.md and gtk4port.md record the work/proof.
+- Local and uncommitted; no installation, image/palette edits, release or push.
+
+1.0.3 (released 2026-10-30) — 2026-10-30, Claude Code (Opus 5.5): spin button fix (GTK 3 and GTK 4)
+
+- In unfocused windows a disabled spin button "-"/"+" got a grey box: the
+  generic button:backdrop:disabled rule adds a gradient background-image that
+  the spin button rules (which set background-color only) didn't reset.
+  Inherited from Valve, so released 1.0.2 GTK 3 has it too. Added
+  background-image: none to spinbutton:not(.vertical) and spinbutton.vertical
+  button:backdrop:disabled in gtk-3.24/gtk.css and gtk-4.0/gtk.css.
+  Renders: no box in GTK 3 or GTK 4; check-gtk3.py and check-gtk4.py pass.
+
+1.0.3 (released 2026-10-30) — 2026-10-30, Claude Code (Opus 5.5): Vapor kitty colors
+
+- Added kitty/vapor.conf: the alacritty/vapor.toml palette in kitty form
+  (foreground/background, cursor, selection, 16 colors; all 22 values identical,
+  checked against the Alacritty file). kitty has no faint palette, so Alacritty's
+  dim colors have no counterpart; kitty fades faint text by dim_opacity.
+- Added Vapor colors for what kitty draws itself: tab bar (active tab = Vapor
+  selection, 5.6:1), split borders, bell border, mark1-3 and url_color.
+- Hint labels match Alacritty's hints.start (#1f1f26 on #fdbc4b) instead of
+  kitty's black on green. The hints kitten only takes colors as arguments, so
+  the file redefines kitty's eight default hint shortcuts through one
+  action_alias; README says to include it before the user's own maps.
+- Loads without warnings in kitty 0.49.2. The 1.0.3 package installs it as
+  /usr/share/kitty/themes/steamos-vapor.conf (optdepends: kitty).
+
+1.0.3 (released 2026-10-30) — 2026-10-30, Codex (GPT-6): start the native GTK 4 port
+
+- Added independent gtk-4.0/gtk.css and gtk-dark.css, based on released Vapor
+  GTK 3.24 styling. Preserved existing GTK 3 CSS and all shared image bytes.
+- Removed 27 GTK 3 style properties, converted 4 icon effects and all 16 legacy
+  radial images to GTK 4 syntax. Added text/spin/grouped-check/menu mappings,
+  modern selection rows, popover surfaces, dropdown/header controls and focus
+  outlines. Reduced-motion overrides included; effects/idle work need review.
+- Added tools/check-gtk4.py: native widgets, model-selected rows, named theme
+  discovery and GSK/Cairo snapshots on a private display. Restricted GTK 3
+  checker globs to GTK 3 so the new files do not enter its parser.
+- Initial GTK 4 suite passes ten content renders (five states x two variants),
+  with zero CSS/worker warnings, correct selected list/table text and matching
+  normal/dark pictures. GTK 3 suite still passes. Keyboard-visible focus,
+  open popovers, full-window/compositor/HiDPI and wider widget coverage remain
+  unverified. This is a first development milestone, not full GTK 4 support.
+- gtk4port.md is the complete work log and handoff. README records development
+  scope; audit.md remains the pre-port evidence. No installation, commit, tag,
+  GitHub/AUR publication or release-asset replacement. Recipe still v1.0.2.
+
 1.0.2 (released 2026-10-30) — 2026-10-29, Codex (GPT-6): match Vapor GTK selection colors
 
 - Matched GTK selection background/foreground to Vapor.colors Colors:Selection:

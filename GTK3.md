@@ -69,7 +69,7 @@ Run from the repository root:
 python3 -I tools/check-gtk3.py
 ```
 
-Requirements: `gtk3` (with broadwayd), `python-gobject`, `python-cairo`, and
+Requirements: `gtk3` (with broadwayd), `python-gobject`, `python-cairo`, `python-pillow`, and
 fonts (the fixture selects DejaVu Sans). An optional `--output /tmp/vapor-gtk`
 keeps the captures; otherwise every test output is temporary. `--theme PATH`
 can validate another unpacked theme directory. `--baseline` is only for
@@ -122,3 +122,13 @@ References:
 - [GTK CSS nodes and selectors](https://docs.gtk.org/gtk3/css-overview.html)
 - [GTK Scale CSS nodes](https://docs.gtk.org/gtk3/class.Scale.html)
 - [GTK Label selection node](https://docs.gtk.org/gtk3/class.Label.html)
+
+
+## Inactive-control regressions (1.0.3)
+
+The regular checker now invokes tools/check-gtk-regressions.py for checked/
+pressed child-label contrast and spin-arrow background checks. The normal and
+inactive horizontal/vertical range/disabled matrix protects Claude's image-layer
+reset. Run `python3 -I tools/test-gtk-regressions.py` to prove the guards reject
+six deliberately reverted fixes across GTK 3/4. This extra proof needs both
+installed toolkit test environments. See gtk4port.md section 10 for details.
