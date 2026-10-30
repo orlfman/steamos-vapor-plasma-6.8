@@ -1,3 +1,157 @@
+# Libadwaita feasibility investigation — 2026-10-30
+
+Agent: Codex (GPT-6). Audited base: `5dcae96`. Request: investigate adding
+libadwaita compatibility, record findings here and create a plan. Production
+theme code and installed user settings were not changed. The proposed extension
+is beyond the scope of the initial plain GTK 4 port documented below.
+
+**Conclusion:** a separate, opt-in Vapor **color profile** is feasible on the
+tested libadwaita 1.10.0 / GTK 4.24.1 installation. A small guarded custom-property
+overlay supplies Vapor's accent pair and dark surfaces while leaving Adwaita's
+widget structure intact. Full Vapor widget restyling is substantially larger
+work. See [libadwaita-plan.md](libadwaita-plan.md) for six implementation stages,
+deliverables, acceptance criteria and rollout/rollback requirements.
+
+## L1 — Named GTK theme selection does not supply libadwaita support
+
+The matching style-manager implementation sets `gtk-theme-name` to
+`Adwaita-empty` and loads its own stylesheet when `GTK_THEME` is absent. If the
+environment variable is present, it skips installing those providers. Forcing
+`GTK_THEME=Vapor` therefore removes styling needed by Adw widgets rather than
+adding a complete libadwaita port. This is a design constraint for the proposed
+extension, not a newly discovered defect in the released plain GTK theme.
+[Source: libadwaita 1.10.0 style manager](https://github.com/GNOME/libadwaita/blob/1.10.0/src/adw-style-manager.c).
+
+Local verification: selecting staged Vapor in settings still produced
+`Adwaita-empty`, stock #3584e4 accent and no staged-theme marker. Forcing the
+environment variable retained Vapor but removed the Adwaita accent definitions;
+the sample action-row allocation shrank from 548x50 to 548x32. It exited without
+parser warnings, demonstrating why a clean parser alone cannot prove support.
+
+## L2 — Use color variables, with paired foregrounds and separate test assertions
+
+Libadwaita exposes CSS custom properties for its color roles. These are a more
+suitable starting point than Vapor's global button/reset selectors. The test
+used `--accent-bg-color: #569fcc` and `--accent-fg-color: #1f1f26`, plus dark
+neutral surface pairs. It retained derived standalone accents for text/focus.
+[Reference: CSS variables](https://gnome.pages.gitlab.gnome.org/libadwaita/doc/1.10/css-variables.html).
+
+Both `:root` and `window` scopes worked on the installed version. The sample
+suggested-button label resolved to #1f1f26, window/view definitions became
+#24272c/#151c23, and tested button/action-row sizes matched baseline. The solid
+Vapor accent pair is 5.64:1 by the existing sRGB contrast calculation; white on
+the same solid fill is only 2.91:1. This is not a contrast certification for
+translucent row selections, disabled controls or every app-specific surface.
+
+**Important limit:** after the overlay, CSS consumers used #569fcc while
+`@accent_bg_color`, `@theme_selected_bg_color` and StyleManager's accent RGBA API
+still reported #3584e4 in the controlled blue-accent environment. Custom drawing
+or legacy color lookups can remain different. A CSS override cannot promise
+that every arbitrary application color/API now matches Vapor. Existing checks
+based on legacy named colors must not be reused as the only acceptance gate.
+The installed style-manager header exposes accent getters, not a public setter
+for an arbitrary Vapor RGB value; the finite system accent choices are not an
+exact arbitrary-color replacement. [Accent handling](https://gnome.pages.gitlab.gnome.org/libadwaita/doc/1.10/styles-and-appearance.html).
+
+Injecting the complete current Vapor GTK CSS via user CSS produced a mixed
+result: legacy selection blue changed, but Adwaita's accent variable stayed
+stock and the real suggested label was light #eff0f1. This supports a separate
+profile rather than treating the old stylesheet as the port.
+
+## L3 — Activation must preserve existing KDE-generated user CSS
+
+GTK loads `$XDG_CONFIG_HOME/gtk-4.0/gtk.css` as user styling. This provides a
+route to stock native libadwaita apps, but affects GTK 4 applications broadly;
+it is not a separate per-app theme selector. [GTK stylesheet loading](https://docs.gtk.org/gtk4/class.CssProvider.html).
+
+The current user's file is a regular file importing `colors.css`. That file
+contains KDE-generated Vapor palette definitions with `_breeze` suffixes, not
+the proposed Adwaita variables. Replacing either file or linking the full Vapor
+stylesheet over `gtk.css` would discard/interfere with desktop integration.
+Neither was edited during the audit.
+
+Recommended implementation: ship an inert profile asset and provide explicit,
+reversible user activation with one managed import, backups, status/dry-run and
+careful removal. Preserve existing imports, unrelated CSS and later user edits.
+Account for symlinks and external tools rewriting the file. Do not activate it
+from AUR install hooks or redirect an application's whole configuration path.
+Upstream documents application CSS customization; the proposed cross-app user
+overlay remains compatibility work maintained by this project.
+
+## L4 — Preserve appearance preferences, accessibility and version boundaries
+
+The scratch overlay was guarded by
+`(prefers-color-scheme: dark) and (prefers-contrast: no-preference)`. It applied
+in normal dark appearance and did not recolor the light/high-contrast probes.
+That demonstrates the guard on this version; full accessibility, dynamic
+appearance switching, keyboard/popup behavior and reduced-motion testing remain.
+Keep upstream border/dim/disabled opacity, radius and motion helpers initially.
+
+Libadwaita introduced its CSS variable approach in 1.6, but GTK media queries
+are available only since 4.20. A promise of compatibility with every 1.6+
+runtime would therefore be premature for this guarded design. Start with the
+measured 1.10.0/4.24.1 combination; test older/newer combinations explicitly.
+[Libadwaita 1.6 release explanation](https://blogs.gnome.org/alicem/2024/09/13/libadwaita-1-6/),
+[GTK media-query requirements](https://docs.gtk.org/gtk4/css-properties.html).
+
+## L5 — New application coverage and Flatpak validation are required
+
+GTK Widget Factory exercises plain GTK, not Adw widgets. Its passing native and
+4K/175% results do not establish libadwaita support. The production plan needs
+real Adw fixtures, open dialogs/popovers, sidebars, selected rows and independent
+application coverage. No Adwaita demo executable was found on this installation;
+the library, development files and Python Adw bindings are available.
+
+Flatpak uses app-specific configuration and isolated filesystem/runtime paths.
+Host `/usr/share` imports and theme selection cannot be assumed sufficient.
+Prefer investigating a self-contained profile and relative import in an
+explicitly selected app's own configuration, rather than broad filesystem
+permissions. No Flatpak executable/runtime was available here, so this route is
+proposed, not validated. Native success and a GTK theme extension are not proof
+of libadwaita Flatpak coverage. [Flatpak configuration conventions](https://docs.flatpak.org/en/latest/conventions.html),
+[filesystem isolation](https://docs.flatpak.org/en/latest/sandbox-permissions.html).
+
+## Controlled experiments and evidence
+
+Scratch directory: `/tmp/vapor-libadwaita-audit-vlq92pyg`. Saved source copies,
+`probe.py`, `run-probes.py`, per-case JSON/logs and `summary.json` document the
+experiments. Source reads were pinned to libadwaita 1.10.0 where applicable.
+Each run used fresh HOME/XDG directories, a staged theme, private Broadway and
+service-free D-Bus, software rendering and test-only appearance/debug controls.
+It constructed real Adw.Window/ToolbarView/HeaderBar, preference/action/switch/
+entry rows and ordinary/suggested/destructive buttons. No app actions or desktop
+input were sent. Only unused marker/query labels were added for measurement.
+
+| Case | Result |
+| --- | --- |
+| Named Vapor theme, dark | Adwaita-empty; stock #3584e4 accent; staged marker absent |
+| Forced GTK_THEME=Vapor | Adwaita accent definitions absent; action-row height 50 -> 32 |
+| Full Vapor as user CSS | Mixed legacy Vapor/Adwaita variables; suggested label stays light |
+| Token overlay on :root | Vapor accent/text/surfaces; tested allocations preserved |
+| Token overlay on window | Same measured color/geometry results |
+| Guarded overlay, light | Upstream light window #fafafb and stock accent preserved |
+| Guarded overlay, high contrast | High contrast active; stock accent/window definitions preserved |
+
+All seven workers exited 0 with empty stderr. Additional assertions verified
+the measured color pairs, geometry comparisons, inactive guard cases and the
+expected legacy/API mismatch. These are feasibility assertions, not a supported
+profile test suite. Root/window descendants, custom app styles, actual popup
+surfaces and dynamic transitions need the implementation matrix in the plan.
+
+Content snapshots contain transparency because they omit the window background;
+they are not full-window appearance proof. Measured inherited values, real
+label colors and allocations are the primary evidence. Derived Oklab accents
+can have out-of-sRGB raw channels; future pixel/contrast tests must account for
+rendering/gamut handling. No performance benchmark was conducted.
+
+Scope of repository changes: this audit, the new plan, a README pointer,
+CHANGES.txt and a work-log entry. Existing theme/terminal assets, test tools,
+package metadata and installed configuration remain unchanged. The existing
+GTK suites need no rerun for documentation-only changes; the new isolated
+feasibility assertions were run. Production port/activation remains future work.
+
+---
+
 # Manual 4K / 175% scaling check — 2026-10-30
 
 The user tested Vapor with the installed GTK Widget Factory on a 4K monitor

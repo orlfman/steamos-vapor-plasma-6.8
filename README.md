@@ -170,6 +170,12 @@ application coverage still need validation. Most GTK 4 apps use libadwaita,
 which ignores GTK themes; this theme applies to plain GTK 4 apps when Vapor
 is the selected GTK theme.
 
+Libadwaita investigation: [audit.md](audit.md) records successful isolated
+color-overlay experiments and their limits. [libadwaita-plan.md](libadwaita-plan.md)
+proposes a separate, opt-in Vapor color profile, preserving Adwaita layouts and
+existing user CSS. That profile is planned; this package does not yet ship or
+activate it.
+
 ## License
 
 The theme files are Valve's, shipped by Valve under the GPL (GPL-2.0-or-later

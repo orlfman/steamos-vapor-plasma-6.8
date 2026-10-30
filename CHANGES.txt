@@ -1,5 +1,11 @@
 Unreleased — 2026-10-30, Codex (GPT-6): installed GTK Widget Factory checks
 
+- Investigated libadwaita 1.10.0 / GTK 4.24.1 compatibility in seven isolated
+  native-widget experiments. A guarded color-token overlay supplies Vapor's
+  accent pair and dark surfaces; forcing/importing the full GTK theme is not
+  equivalent. Legacy color lookups and the accent API can still report stock
+  colors. Added findings to audit.md and stages/acceptance criteria to
+  libadwaita-plan.md. No production overlay, activation or package changes.
 - Added tools/check-widget-factory.py and a test-only C helper. Drives the
   installed gtk4-widget-factory's actual pages under private Broadway/D-Bus,
   with disposable theme/config copies and no desktop input or app actions.

@@ -541,3 +541,49 @@ other display/scaling configurations, accessibility, animation/performance and
 wider application coverage remain open. No code, theme assets, installed
 settings or packaging changed; the unchanged software suites were not rerun
 for this documentation-only update. Checked whitespace and Markdown fences.
+
+
+## 14. Investigate libadwaita compatibility — 2026-10-30
+
+User requested investigating a libadwaita port, adding findings to audit.md and
+creating a plan. This authorizes investigation/planning beyond the initial plain
+GTK scope; production implementation and live activation have not started.
+
+- Read libadwaita 1.10.0 headers/GI data, matching upstream style-manager,
+  settings and stylesheet sources, embedded installed CSS and official GTK,
+  libadwaita and Flatpak documentation. Confirmed installed versions 1.10.0 and
+  GTK 4.24.1. A guessed _defaults.scss source path did not exist; inspected the
+  upstream directory and actual _colors.scss instead. GI resource access first
+  required calling an Adw function to load the library; corrected the scratch
+  resource-read experiment accordingly.
+- Saved starting tracked-file hashes and source/probe/results under
+  /tmp/vapor-libadwaita-audit-vlq92pyg. Existing user gtk.css imports KDE's
+  colors.css; inspected it read-only and did not alter either file.
+- Wrote scratch-only native Adw fixtures and a private-display/session runner.
+  Seven cases compare named-theme selection, forced GTK_THEME, full CSS user
+  import, :root/window color-variable overlays, light and high-contrast guards.
+  All exit normally with empty stderr. Explicit follow-up assertions pass.
+- Both variable-overlay scopes produce #569fcc / #1f1f26 accent fill/text and
+  the intended window/view colors, preserving the two measured allocations.
+  Legacy named colors and the style-manager API remain stock in that test:
+  recorded this as an application/custom-drawing limitation, not a solved case.
+- Captured/inspected content images. Transparent areas omit the window itself;
+  alpha pixel checks confirmed their appearance is not a full-window rendering
+  result. Used inherited values, actual label colors and geometry as evidence.
+  Raw derived colors can exceed the sRGB range; production contrast assertions
+  will need rendered/gamut-aware colors.
+- The guard works on the tested current runtime, but GTK media queries require
+  4.20+. Libadwaita 1.6's variable support alone is not enough to claim older
+  compatibility for this design. No Adwaita demo or Flatpak executable was
+  available, so real demo/Flatpak application checks remain planned.
+- Prepended findings, measurements and limits to audit.md. Created
+  libadwaita-plan.md with six stages: separate dark color profile, native Adw
+  tests/standard-suite integration, reversible activation preserving KDE CSS,
+  real application/display/performance checks, separate Flatpak validation and
+  packaging/documentation. Added README/CHANGES pointers with no support claim.
+
+Recommended milestone is an opt-in color compatibility profile; full Vapor
+widget geometry is a later decision with a larger maintenance/test scope.
+No theme CSS/images, existing tools, installed settings, release or AUR metadata
+changed. Existing software suites were not repeated for documentation-only edits.
+The scratch feasibility assertions are the only new runtime checks this turn.
