@@ -160,10 +160,15 @@ all other diagnostics fail the check. `--strict` rejects it too. This is a
 content-rendering smoke test, with the application's own CSS still loaded; it
 does not replace the widget behavior tests above or manual interaction checks.
 
-Released in 1.0.3 as initial support. Not yet verified: keyboard focus outlines,
-open popovers/menus, full-window/HiDPI, accessibility, and real applications on
-a live compositor. Most GTK 4 apps use libadwaita, which ignores GTK themes;
-this theme applies to plain GTK 4 apps when Vapor is the selected GTK theme.
+Manual validation (2026-10-30): the user tested Widget Factory on a 4K monitor
+at **175% scaling** and reported that everything looked correct. This records a
+successful visual check for that configuration; automated checks remain at scale 1.
+
+Released in 1.0.3 as initial support. Broader focus/popup interaction, other
+scaling/display configurations, accessibility, animation/performance and wider
+application coverage still need validation. Most GTK 4 apps use libadwaita,
+which ignores GTK themes; this theme applies to plain GTK 4 apps when Vapor
+is the selected GTK theme.
 
 ## License
 

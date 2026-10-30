@@ -1,3 +1,20 @@
+# Manual 4K / 175% scaling check — 2026-10-30
+
+The user tested Vapor with the installed GTK Widget Factory on a 4K monitor
+set to 175% scaling and reported: "everything looked good".
+
+**Result: user-reported visual pass for that display configuration.** This adds
+live application coverage alongside the isolated automated suite below. No theme
+fix was indicated by this check. Exact renderer/session details and individual
+control results were not captured, so this is not a separate certification of
+every focus/popup state, GPU backend or scaling configuration.
+
+Broader interaction, other display/scaling configurations, accessibility,
+animation/performance and wider application coverage remain open. The automated
+suite itself still uses Broadway/Cairo at scale 1. See gtk4port.md section 13.
+
+---
+
 # Installed GTK Widget Factory verification — 2026-10-30
 
 Agent: Codex (GPT-6). Base: clean `1f0b925` after release 1.0.3. User requested

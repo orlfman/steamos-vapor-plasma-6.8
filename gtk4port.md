@@ -521,3 +521,23 @@ its documentation and the integration described here.
 
 The user-authorized Git commit and push follow these passing checks. This is
 test integration and documentation, with no installation, release or AUR update.
+
+
+## 13. User validation on a 4K monitor at 175% — 2026-10-30
+
+The user set a 4K monitor to 175% scaling and tested the installed GTK Widget
+Factory with the Vapor theme. After guidance to check appearance, clipping,
+menus, focus and inactive states, the user reported: "everything looked good".
+
+Recorded as a user-reported manual visual pass for this display configuration.
+The report supplies useful live application/scaling coverage beyond the
+automated scale-1 Broadway/Cairo captures. No theme adjustment was indicated.
+The user did not provide per-control results or renderer/session metadata, so
+the evidence does not establish every individual interaction/backend case.
+
+Updated README.md, audit.md and CHANGES.txt to reflect this result and avoid
+describing all live HiDPI validation as absent. Broader focus/popup interaction,
+other display/scaling configurations, accessibility, animation/performance and
+wider application coverage remain open. No code, theme assets, installed
+settings or packaging changed; the unchanged software suites were not rerun
+for this documentation-only update. Checked whitespace and Markdown fences.

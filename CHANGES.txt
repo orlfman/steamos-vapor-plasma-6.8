@@ -12,6 +12,9 @@ Unreleased — 2026-10-30, Codex (GPT-6): installed GTK Widget Factory checks
   state, mapped controls and nonblank opaque content images; retains logs/report.
 - Integrated standard GTK 4 run passes all ten native-widget renders, existing
   R1/R2 behavior assertions and all ten application cases.
+- User-reported live Widget Factory visual check passes on a 4K monitor at
+  175% scaling. Recorded as manual coverage for that display configuration;
+  automated coverage remains scale 1 and broader validation is still open.
 - Wrong-blue and invalid-CSS negative controls fail as intended. A known page-3
   Broadway timing warning also occurs without Vapor styling: retain/count the
   exact diagnostic, reject all others; optional --strict rejects that warning too.
