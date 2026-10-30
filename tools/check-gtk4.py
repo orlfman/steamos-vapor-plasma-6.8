@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Parse and render the initial Vapor GTK 4 port without touching the desktop.
 
-Requires gtk4 (gtk4-broadwayd), python-gobject, python-pillow and fonts.
+Requires gtk4 >= 4.24 (gtk4-broadwayd and development/pkg-config files),
+gtk4-demos, pkgconf, a C compiler, dbus-run-session, python-gobject,
+python-pillow and fonts. Includes the installed Widget Factory application test.
 Creates a private Unix-socket display and temporary HOME/XDG settings. Captures
 can be retained with --output DIR. Tested on GTK 4.24.1 with the Cairo renderer.
 """
@@ -308,7 +310,12 @@ def main():
     if args.output:
         command += ['--output', str(args.output.resolve()/'behavior')]
     subprocess.run(command, check=True)
-    print('GTK 4 CSS, assets, native theme discovery, selection rows and rendering: PASS')
+    command = [sys.executable, '-I', str(ROOT/'tools/check-widget-factory.py'),
+               '--theme', str(theme)]
+    if args.output:
+        command += ['--output', str(args.output.resolve()/'widget-factory')]
+    subprocess.run(command, check=True)
+    print('GTK 4 CSS, assets, native widgets, behavior and installed Widget Factory: PASS')
 
 
 if __name__ == '__main__':

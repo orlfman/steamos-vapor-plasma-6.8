@@ -347,3 +347,177 @@ kitty file, GitHub or AUR package was changed. Nothing committed or pushed.
 The original port's keyboard focus, open menus, live Wayland/HiDPI, accessibility,
 reduced-motion/effects and wider application coverage remain separate work.
 These fixes do not upgrade that development milestone to full GTK 4 support.
+
+
+## 11. Installed GTK Widget Factory automation — 2026-10-30
+
+User installed gtk4-demos and requested using Widget Factory for automated
+testing. Starting repository is clean at 1f0b925 (v1.0.3 recipe pin); earlier
+milestones are now released by the user's intervening workflow.
+
+### Implementation
+
+- Confirmed gtk4-demos/GTK 4.24.1, cc/pkg-config and private Broadway support.
+  Widget Factory's CLI provides help/version, not an automation/screenshot mode.
+- Read the [matching upstream source](https://github.com/GNOME/gtk/blob/4.24.1/demos/widget-factory/widget-factory.c)
+  and [command documentation](https://docs.gtk.org/gtk4/gtk4-widget-factory.html).
+  Identified application ID org.gtk.WidgetFactory4, GtkBuildable main-stack ID
+  toplevel_stack and page1/page2/page3. The installed binary's actual widgets
+  are tested; the UI is not reconstructed or replaced with a fixture app.
+- Added tools/widget-factory-probe.c. The runner compiles it into a temporary
+  shared helper, with -Wall -Wextra -Werror. LD_PRELOAD is set only for the
+  final application child. It wraps public gtk_window_present, verifies the
+  expected app/stack, selects the requested page before mapping and schedules
+  a capture after layout. It never loads into the display/D-Bus wrappers or
+  existing user processes. A changed upstream layout fails explicitly.
+- The helper disables animations/cursor blink for captures, sets the requested
+  color scheme, applies synthetic backdrop or RTL and verifies effective state.
+  Mapping can reset backdrop flags, so state is reapplied immediately before
+  allocation/capture. No keyboard/pointer events or app actions are invoked.
+- Uses public gtk_widget_snapshot_child after settling allocation. Renders the
+  selected page over the actual window CSS background with GskCairoRenderer,
+  saving content-only PNGs. These are not window-decoration/native-surface
+  screenshots. Deprecated style-context color/background helpers are narrowly
+  wrapped for compile warnings; there are no private GTK APIs.
+- Added tools/check-widget-factory.py. It creates disposable HOME and every
+  writable XDG path, copies Vapor and appends only an unused named-color marker.
+  Settings select that staged theme; GTK_THEME is cleared. Selection named
+  colors must still match #569fcc/#1f1f26. The app's own CSS remains active.
+- Each case gets a fresh private Broadway display and D-Bus session with no
+  service directories. GDK no-portals prevents portal discovery. GPU rendering
+  and Vulkan driver enumeration are disabled only in test children; Cairo
+  handles exports. A Unix HTTP socket and private XDG runtime separate displays
+  from the user's desktop. Process groups/timeouts clean up test descendants.
+- The runner checks metadata/state, mapped controls, PNG dimensions, opacity,
+  nonblank content and distinct page images. Retains per-case stdout/stderr,
+  PNGs and results.json with binary/CSS hashes and warning counts. A failed run
+  removes an earlier success report in the same output folder.
+
+### Failed experiments and corrections
+
+1. Default private D-Bus configuration attempted to start its own desktop
+   portals/backends; GTK_USE_PORTAL=0 alone was insufficient. Replaced it with
+   a service-free private bus plus GDK_DEBUG=no-portals. No user bus or config
+   was changed. Failed private sessions were stopped.
+2. Guessed gl-disable/vulkan-disable debug options were unsupported. Inspected
+   the installed help and [GTK runtime documentation](https://docs.gtk.org/gtk4/running.html),
+   then used GDK_DISABLE=gl:vulkan:offload. Vulkan enumeration still loaded the
+   system RADV driver and emitted its non-conformance warning. Setting the
+   [loader's documented driver filter](https://github.com/KhronosGroup/Vulkan-Loader/blob/main/docs/LoaderInterfaceArchitecture.md)
+   VK_LOADER_DRIVERS_DISABLE=* for the child prevents that unused driver load;
+   the warning is not filtered from stderr. No system driver settings changed.
+3. GtkWidgetPaintable snapshots of the active demo page stayed empty across
+   retries. Public child snapshotting succeeded, initially warning about pending
+   GtkBox allocation. Explicitly consuming the page allocation before snapshot
+   resolved that warning. Rendering the window CSS background beneath the page
+   fixed transparent areas in the first proof image. Removed the unused paintable.
+4. Page 3 emits a GDK frame-timing warning before the capture callback:
+   gdk_frame_timings_submitted() called on submitted frame. Fresh displays and
+   the native Broadway renderer did not remove it. A scratch debugger run with
+   fatal warnings stopped in GTK/GDK's main-loop dispatch before the helper's
+   capture. A minimal control stylesheet containing only the two expected named
+   selection colors, with no Vapor styling, reproduces the same warning.
+5. Kept that exact backend diagnostic visible in logs/report and counted it;
+   normal mode accepts only that precise warning, rejecting all other stderr.
+   Added --strict to reject it too. This is an observed non-Vapor reproduction,
+   not a diagnosis/fix of the backend's underlying cause. No broad warning filter
+   or theme change was used to produce a green result.
+6. gresource CLI is absent; runtime GtkBuildable IDs provided the needed lookup
+   without installing another package. An initial combined file-replacement
+   patch was rejected by the patch tool; rewrote the new runner successfully.
+
+### Validation and results
+
+- Full run: python3 -I tools/check-widget-factory.py --output
+  /tmp/vapor-factory-d4yo6hy1/full — PASS, ten cases on GTK 4.24.1:
+  three normal pages, three dark-request pages, three backdrop pages and page 1
+  in RTL. All content images are 1215x705. Mapped-widget counts are 320, 227 and
+  431 for the respective pages (including internal widgets, not distinct controls).
+- Three known Broadway frame-timing warnings were retained, one for each page-3
+  case. No other diagnostics, including CSS parser warnings, occurred.
+- Visually inspected real page-1, page-3 and RTL captures. A rotating demo image
+  has its own black surface; the surrounding page now has the actual dark window
+  background rather than transparent black. These inspections do not establish
+  pixel-perfect behavior or exhaustive widget coverage.
+- Wrong-blue negative control: copied Vapor under /tmp and changed only the
+  selection named color to old Breeze blue #3daee9. The runner rejects it for
+  the specific FACTORY TEST FAILED: wrong selection blue reason.
+- Invalid-CSS negative control: another disposable copy adds the unknown
+  vapor-invalid-property declaration. The parser reports it; the runner fails
+  even though the application produced a screenshot and otherwise exited cleanly.
+- Strict-mode proof: the three-page quick run fails on page 3's known timing
+  diagnostic as intended. All failed controls leave no success results.json.
+- Scratch/control output is retained under /tmp/vapor-factory-d4yo6hy1.
+- Completion checks pass: Python AST syntax, git diff --check, trailing
+  whitespace and Markdown fences. Starting tracked-file hashes confirm only
+  README.md, CHANGES.txt, audit.md and this log changed; the two test tools are
+  new. All theme/assets, prior test tools, terminal files and AUR files match.
+  Process inspection confirms no private factory/display/test processes remain;
+  the user's existing desktop portal processes were left running.
+
+### Status and limits
+
+README documents requirements/commands; CHANGES.txt and audit.md record these
+results. This adds an optional application test alongside the narrower native
+widget assertions, rather than replacing them. Requires installed gtk4-demos,
+GTK 4.24+ headers/pkg-config files, pkgconf, C compiler, dbus-run-session,
+python-pillow and fonts. Runtime IDs were verified specifically on GTK 4.24.1;
+future Widget Factory layout changes may require updating the helper.
+
+No theme CSS/artwork, installed theme/user settings, kitty/terminal files, AUR
+recipe/metadata, release tags/assets, GitHub or AUR content changed. Nothing
+committed or pushed. Earlier toolkit suites were not repeated because neither
+their code nor theme/fixtures changed since their previous passing verification.
+
+Remaining: true keyboard focus, popup surfaces, pointer interaction, live
+compositor/GPU/HiDPI, accessibility, animation/performance and libadwaita checks.
+This is scale-1 content rendering with synthetic inactive/direction states,
+not complete GTK 4 coverage or a warning-free strict-mode result.
+
+
+## 12. Make Widget Factory part of the standard suite — 2026-10-30
+
+User requested running Widget Factory with the standard tests, then explicitly
+authorized committing and pushing when complete. Section 11's optional runner
+was still uncommitted at the start; this commit includes that implementation,
+its documentation and the integration described here.
+
+### Changes
+
+- tools/check-gtk4.py now runs tools/check-widget-factory.py unconditionally
+  after its native widget/parser and R1/R2 behavior stages. The worker mode
+  returns before orchestration, so rendering workers do not start nested suites.
+- Passes the same resolved --theme to every stage. When --output is supplied,
+  application screenshots/logs/report go under widget-factory/ alongside the
+  existing top-level widget captures and behavior/ subdirectory.
+- Uses subprocess.run(check=True): dependency/startup/assertion failures in
+  the application stage fail the standard command. No automatic dependency skip
+  or reduced application case list. The final suite PASS prints only after
+  every stage succeeds.
+- README and the GTK 4 checker's help list the now-required gtk4-demos, GTK 4.24+
+  development/pkg-config files, pkgconf, C compiler and dbus-run-session alongside
+  existing Python/font dependencies. Standalone factory --quick/--strict remain
+  available for targeted runs; the standard suite runs all ten default cases.
+- Updated CHANGES.txt and the current audit summary. The exact known page-3
+  Broadway warning remains retained/counted; every other diagnostic still fails.
+
+### Verification
+
+- Ran python3 -I tools/check-gtk4.py --output /tmp/vapor-gtk4-standard-suite.
+  PASS: ten native-widget renders, normal/dark requests over all five states,
+  each with zero parser errors and the expected Vapor selection palette.
+- R1/R2 behavior stage passes: checked-label contrast 5.43:1 in both normal and
+  backdrop; 16 flat spin backgrounds per state (32 total).
+- The same standard invocation then runs all ten installed application cases
+  successfully. It retains the expected three known Broadway warnings and no
+  other diagnostics. Application images/report are under widget-factory/;
+  behavior evidence stays under behavior/.
+- Earlier standalone wrong-blue, invalid-CSS and strict-mode negative controls
+  remain the proof that application assertions/diagnostics can fail the runner.
+  They were not repeated because that runner/helper did not change here.
+- GTK 3, theme CSS/artwork, terminal themes and packaging are unchanged; the
+  independent GTK 3 suite was not repeated. Final syntax/whitespace, artifact
+  inventory, scope and process-cleanup checks accompany the commit review.
+
+The user-authorized Git commit and push follow these passing checks. This is
+test integration and documentation, with no installation, release or AUR update.

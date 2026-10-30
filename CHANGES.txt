@@ -1,3 +1,24 @@
+Unreleased — 2026-10-30, Codex (GPT-6): installed GTK Widget Factory checks
+
+- Added tools/check-widget-factory.py and a test-only C helper. Drives the
+  installed gtk4-widget-factory's actual pages under private Broadway/D-Bus,
+  with disposable theme/config copies and no desktop input or app actions.
+- Standard tools/check-gtk4.py now requires/runs all ten application cases after
+  its native widget and behavior checks, using the same --theme. --output saves
+  application evidence under widget-factory/. Failures/dependency errors fail
+  the whole suite; README lists the additional required testing dependencies.
+- Ten cases pass on GTK 4.24.1: all three normal, dark-request and synthetic
+  backdrop pages, plus page 1 in RTL. Asserts theme discovery, selection colors,
+  state, mapped controls and nonblank opaque content images; retains logs/report.
+- Integrated standard GTK 4 run passes all ten native-widget renders, existing
+  R1/R2 behavior assertions and all ten application cases.
+- Wrong-blue and invalid-CSS negative controls fail as intended. A known page-3
+  Broadway timing warning also occurs without Vapor styling: retain/count the
+  exact diagnostic, reject all others; optional --strict rejects that warning too.
+- README/audit.md/gtk4port.md describe requirements, results and remaining limits.
+  Theme CSS/assets, packaging and release files are unchanged. Git commit/push
+  authorized by the user after integration verification; no installation/release.
+
 1.0.3 (released 2026-10-30) — 2026-10-30, Codex (GPT-6): resolve audit R1/R2
 
 - GTK 3/4 inactive checked/pressed button labels inherit their button color only

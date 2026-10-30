@@ -1,3 +1,64 @@
+# Installed GTK Widget Factory verification — 2026-10-30
+
+Agent: Codex (GPT-6). Base: clean `1f0b925` after release 1.0.3. User requested
+automated testing with the newly installed GTK Widget Factory, then requested
+including it in the standard suite. This work changes test tools and
+documentation only.
+
+- The standard `tools/check-gtk4.py` entry point runs all ten application cases
+  after native widget/parser checks and R1/R2 behavior checks. It forwards
+  `--theme`, places application `--output` evidence under `widget-factory/` and
+  propagates failures, including missing dependencies. No automatic skip.
+
+- `tools/check-widget-factory.py` compiles a temporary C helper and loads it
+  only into the installed `/usr/bin/gtk4-widget-factory` child. It drives the
+  actual application stack on private Broadway/D-Bus with temporary HOME/XDG
+  paths, staged Vapor and software rendering. The application's own CSS remains
+  active. No existing desktop input, application actions or settings changes.
+- **10 cases pass on GTK 4.24.1:** all three pages in normal and dark requests,
+  all three with synthetic backdrop, plus page 1 in RTL. Each page is 1215x705;
+  mapped-widget counts are 320 / 227 / 431 respectively. These counts include
+  internal widgets and are not counts of distinct user-facing controls.
+- Assertions cover the staged theme's unused marker, #569fcc/#1f1f26 selection
+  definitions, requested/effective page/state/direction, mapped controls,
+  correctly sized, opaque, nonblank PNGs and distinct first-three-page images.
+  This does not assert every control's computed color; the existing focused
+  widget/regression suites retain that responsibility.
+- Negative controls reject a disposable wrong-blue theme with the specific
+  `wrong selection blue` failure and a disposable unknown CSS property with
+  its parser warning. Strict mode also rejects the known warning below.
+- **Known backend diagnostic:** page 3 emits
+  `gdk_frame_timings_submitted() called on submitted frame.` once per run.
+  It reproduces with a minimal stylesheet containing only two named colors
+  and no Vapor rules, before capture, including under a debugger. Thus it is
+  not evidence of a Vapor CSS defect. The normal run preserves/counts only
+  this exact diagnostic (three total); every other stderr diagnostic fails.
+  `--strict` rejects it as well. The backend cause has not been fully diagnosed;
+  these runs are not warning-free passes in strict mode.
+
+Reproduce from the repository root:
+
+```sh
+python3 -I tools/check-gtk4.py --output /tmp/vapor-gtk4-standard-suite
+```
+
+Screenshots, raw per-case logs, binary/theme hashes and a machine-readable
+report from the first standalone run were retained locally under
+`/tmp/vapor-factory-d4yo6hy1/full`. The integrated standard suite also passes:
+ten native-widget renders with zero parser errors, R1/R2 behavior assertions
+(5.43:1 checked-label contrast and 32 flat spin backgrounds), and all ten
+application cases with the same three known backend warnings. Integrated
+application evidence is under `/tmp/vapor-gtk4-standard-suite/widget-factory`.
+`gtk4port.md` sections 11–12 record implementation, experiments and integration.
+No theme fix was needed for these assertions. The independent GTK 3 suite was
+not repeated: its source and theme files are unchanged since its passing run.
+
+Limits: content snapshots on Broadway/Cairo at scale 1 with synthetic states;
+no keyboard/pointer input, open popup surfaces, live Wayland/GPU/HiDPI,
+accessibility, animation/performance measurement or libadwaita coverage.
+
+---
+
 # R1/R2 fixes and verification — 2026-10-30
 
 Agent: Codex (GPT-6). User requested fixing findings 1 and 2 from the review

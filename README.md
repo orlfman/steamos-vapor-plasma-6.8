@@ -116,7 +116,7 @@ a release-ready claim of complete GTK 4 application coverage or libadwaita styli
 
 [gtk4port.md](gtk4port.md) records every implementation step, failed experiment,
 correction, test result, remaining gap and next step. [audit.md](audit.md) is the
-pre-port assessment. To run the two independent toolkit checks:
+initial assessment and subsequent reviews. To run the two independent toolkit checks:
 
 ```sh
 python3 -I tools/check-gtk3.py
@@ -124,6 +124,9 @@ python3 -I tools/check-gtk4.py
 ```
 
 Both checkers also run inactive-label contrast and spin-background regressions.
+The GTK 4 checker also runs all ten installed Widget Factory application cases
+automatically. Application failures and missing application/build dependencies
+fail the standard suite; there is no automatic skip.
 The GTK 3 checker additionally needs `python-pillow`. To prove the tests reject
 the original bugs on both toolkits, run:
 
@@ -131,9 +134,31 @@ the original bugs on both toolkits, run:
 python3 -I tools/test-gtk-regressions.py
 ```
 
-The GTK 4 checker needs `gtk4` (with gtk4-broadwayd), `python-gobject`,
-`python-pillow` and fonts. All display/config/output state is temporary;
-`--output /tmp/vapor-gtk4-preview` retains its screenshots.
+The GTK 4 checker needs `gtk4` **4.24 or later** (with gtk4-broadwayd, headers and
+pkg-config files), `gtk4-demos`, `pkgconf`, a C compiler, `dbus-run-session`,
+`python-gobject`, `python-pillow` and fonts. All display/config/output state is
+temporary; `--output /tmp/vapor-gtk4-preview` retains widget screenshots at the
+top level, behavior evidence under `behavior/` and application evidence under
+`widget-factory/`. A supplied `--theme` is used by every stage.
+
+To run only the **GTK Widget Factory** application stage:
+
+```sh
+python3 -I tools/check-widget-factory.py --output /tmp/vapor-widget-factory
+```
+
+This application check drives the installed binary's three pages on a private
+display with temporary theme/config copies. Ten cases check normal and dark requests,
+synthetic inactive states and right-to-left layout, saving content screenshots,
+logs and a `results.json` report. Theme discovery, selection colors and nonblank
+rendering are asserted. No desktop input or application actions are invoked.
+Use `--quick` for just the three normal pages.
+
+GTK 4.24.1 emits a Broadway frame-timing warning on page 3 even with a minimal
+stylesheet containing no Vapor rules. That exact warning is retained and counted;
+all other diagnostics fail the check. `--strict` rejects it too. This is a
+content-rendering smoke test, with the application's own CSS still loaded; it
+does not replace the widget behavior tests above or manual interaction checks.
 
 Released in 1.0.3 as initial support. Not yet verified: keyboard focus outlines,
 open popovers/menus, full-window/HiDPI, accessibility, and real applications on
