@@ -89,10 +89,8 @@ The previous gtk-3.20 stylesheet already worked under GTK 3.24; this update
 makes the supported target explicit and fixes selectors that missed their
 intended nodes. See [GTK3.md](GTK3.md) for validation, limits and check commands.
 
-These changes are **unreleased**. The AUR recipe still points to v1.0.1; building
-that recipe will use the published source until a new release is made. To test
-this working tree manually, use the theme directory described above. When
-replacing an existing manual installation, replace the entire `Vapor` theme
+These changes are in release **1.0.2** (AUR `plasma6-themes-steamos-vapor-fixed`
+1.0.2-1). When replacing an existing manual installation, replace the entire `Vapor` theme
 folder rather than merging it, so obsolete versioned styles do not remain.
 
 ## License

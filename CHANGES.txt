@@ -1,4 +1,4 @@
-Unreleased — 2026-10-29, Codex (GPT-6): match Vapor GTK selection colors
+1.0.2 (released 2026-10-30) — 2026-10-29, Codex (GPT-6): match Vapor GTK selection colors
 
 - Matched GTK selection background/foreground to Vapor.colors Colors:Selection:
   #569fcc (86,159,204) with #1f1f26 (31,31,38) text. This fixes Valve's inherited
@@ -14,8 +14,7 @@ Unreleased — 2026-10-29, Codex (GPT-6): match Vapor GTK selection colors
   colors with Vapor.colors, preserve ordinary button text, decode every PNG,
   reject old solid Breeze-blue pixels and require Vapor blue in the artwork.
   CSS/assets/discovery and six-state rendering plus eight indicator checks pass.
-- Updated GTK3.md/README. Changes remain local, uncommitted and unreleased;
-  no installed settings/files, GitHub release or AUR package was changed.
+- Updated GTK3.md/README. Released as 1.0.2 (tag v1.0.2, AUR 1.0.2-1).
 - Review fix (Claude Code): unfocused-window selections had dark text on the
   half-strength blue, 2.34:1. Dimmed selections (text, entries, tree views) now
   use light #eff0f1 text (6.1:1, Valve's original choice); activatable rows
@@ -23,7 +22,7 @@ Unreleased — 2026-10-29, Codex (GPT-6): match Vapor GTK selection colors
   dark text (5.6:1) via a row.activatable:selected:backdrop label rule.
   check-gtk3.py asserts >= 4.5:1 for both; it fails on the earlier version.
 
-Unreleased — 2026-10-29, Codex (GPT-6): explicit GTK 3.24 support
+1.0.2 (released 2026-10-30) — 2026-10-29, Codex (GPT-6): explicit GTK 3.24 support
 
 - Moved the maintained Vapor stylesheet from gtk-3.20 to gtk-3.24, with a
   gtk-3.0 import entry for standard theme choosers/direct consumers. Removed the
@@ -47,9 +46,7 @@ Unreleased — 2026-10-29, Codex (GPT-6): explicit GTK 3.24 support
   pixel-identical to baseline; backdrop selection changes 1,126 pixels. Eight checkbox/radio
   indicator renders (checked/mixed-hover, both scales) are pixel-identical.
   Full-window scale-2/live Wayland and application-specific testing remain open.
-- GTK3.md records rationale, tests and limits. README marks the working-tree
-  changes unreleased; the AUR recipe still pins the unchanged v1.0.1 release.
-  All changes are local and uncommitted.
+- GTK3.md records rationale, tests and limits. Released as 1.0.2.
 
 Previous changes (historical paths below refer to their original versions):
 

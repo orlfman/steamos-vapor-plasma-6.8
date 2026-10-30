@@ -6,7 +6,7 @@ through GTK's version fallback, and it parsed with zero errors. The changes
 make the supported target explicit, remove obsolete styles and fix confirmed
 selectors while preserving Vapor's colors and artwork.
 
-## Selection palette update (unreleased)
+## Selection palette update (1.0.2)
 
 Valve's GTK stylesheet used Breeze blue independently of KDE's active colors.
 The GTK 3.24 compatibility work did not cause or fix that mismatch. GTK now
@@ -110,10 +110,9 @@ This is GTK 3.24 compatibility work, not GTK 4/libadwaita support.
 
 ## Packaging and status
 
-These changes remain local and uncommitted until requested. The existing AUR
-recipe still points to the immutable v1.0.1 source, so it does not include this
-working-tree change yet. A later authorized release must use a new version,
-archive checksum and AUR metadata. Replacing the whole theme directory removes
+Released as 1.0.2 (tag v1.0.2, AUR `plasma6-themes-steamos-vapor-fixed`
+1.0.2-1). Later changes need a new version, archive checksum and AUR metadata.
+Replacing the whole theme directory removes
 old versioned subdirectories during a manual upgrade; do not merge directories.
 Pacman will remove old package-owned files during a packaged upgrade.
 
