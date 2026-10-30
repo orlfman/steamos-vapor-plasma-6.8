@@ -858,3 +858,17 @@ feedback. Updated audit.md and the plan to include both application reports.
 
 This follow-up changes documentation only. The previous automated suite results
 remain applicable; no theme code, package release or AUR update was needed.
+
+## 19. Publish the live-testing screenshot — 2026-10-30
+
+The user supplied Screenshot_20261030_160538.png and explicitly authorized
+pushing it to GitHub as testing evidence/example. Copied the original
+3394x1264 PNG unchanged to
+[the documentation screenshots directory](docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png).
+It shows FFmpeg Converter GTK on the left and Mission Center on the right
+during the previously reported successful live-overlay tests.
+
+Added an inline README preview with a dated caption and linked the same image
+from audit.md. Verified the image decodes, matches the source SHA-256 exactly,
+and all updated Markdown links resolve. This adds documentation/evidence only;
+no theme code, automated-test expectations or package release files change.

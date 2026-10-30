@@ -14,6 +14,12 @@ check with the overlay enabled, without inferring its toolkit or app version.
 Broader interaction, accessibility, scaling/performance and Flatpak validation
 remain open.
 
+The user supplied and authorized publishing a full-resolution screenshot of
+both applications during this test:
+[Mission Center and FFmpeg Converter GTK visual evidence](docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png).
+The original 3394x1264 PNG is preserved unchanged and shown in the README.
+This is manual visual evidence; the automated test results are recorded separately.
+
 See [gtk4port.md](gtk4port.md), section 18, and the current status table in
 [libadwaita-plan.md](libadwaita-plan.md). Historical disabled-overlay statements
 below describe the state before the user requested live activation.

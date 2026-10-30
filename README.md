@@ -196,6 +196,12 @@ app/accessibility/performance testing and Flatpak remain separate validation.
 See [audit.md](audit.md), [libadwaita-plan.md](libadwaita-plan.md) and
 [gtk4port.md](gtk4port.md) for evidence and remaining work.
 
+Manual testing, **2026-10-30**: FFmpeg Converter GTK (left) and Mission Center
+(right) with the Vapor libadwaita overlay enabled. The user reported both looked
+good. This screenshot records the live appearance during testing.
+
+![Vapor manual testing: FFmpeg Converter GTK and Mission Center](docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png)
+
 ## License
 
 The theme files are Valve's, shipped by Valve under the GPL (GPL-2.0-or-later
