@@ -15,7 +15,7 @@ optdepends=('aurorae: Plastik window decoration for VGUI'
             'alacritty: Vapor Alacritty colors')
 conflicts=('plasma6-themes-vapor-steamos' 'plasma5-themes-vapor-steamos' 'steamdeck-kde-presets')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('SKIP')
+sha256sums=('aa4fdf1fcc704726ac806fabec230a6cc38303559960429d8bc1c174d3d6e683')
 
 package() {
   cd "$_reponame-$pkgver"
