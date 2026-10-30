@@ -82,7 +82,9 @@ in `usr/share/themes/Vapor/gtk-3.24/gtk.css`; `gtk-3.0/gtk.css` imports it for
 standard theme choosers and direct CSS consumers. The obsolete GTK 3.18/3.20
 copies are removed. GTK 2 and GTK 4 are not supported.
 
-Vapor keeps its own styling and artwork. It does not import Breeze GTK.
+Vapor keeps its own styling and artwork. Its GTK selection blue/text now match
+Vapor.colors (#569fcc / #1f1f26), including related accents and check/radio
+artwork. It does not import Breeze GTK.
 The previous gtk-3.20 stylesheet already worked under GTK 3.24; this update
 makes the supported target explicit and fixes selectors that missed their
 intended nodes. See [GTK3.md](GTK3.md) for validation, limits and check commands.

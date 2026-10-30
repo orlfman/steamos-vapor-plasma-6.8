@@ -6,6 +6,38 @@ through GTK's version fallback, and it parsed with zero errors. The changes
 make the supported target explicit, remove obsolete styles and fix confirmed
 selectors while preserving Vapor's colors and artwork.
 
+## Selection palette update (unreleased)
+
+Valve's GTK stylesheet used Breeze blue independently of KDE's active colors.
+The GTK 3.24 compatibility work did not cause or fix that mismatch. GTK now
+matches Vapor.colors: **#569fcc** selection background with **#1f1f26** text.
+The palette remains Vapor-specific; it does not dynamically follow arbitrary
+KDE color schemes. Selected text and rows use that pair, while gradients,
+alpha states, focus/hover borders, progress, switches and sliders derive their
+accent from the same named GTK color.
+
+The blue portions of 32 check/radio PNGs were remapped as well. For saturated
+blue pixels near the original accent hue, hue is shifted by the old/new accent
+difference and saturation/value scaled by their ratios. Alpha, image dimensions,
+neutral outlines and dark glyphs are preserved. The remaining images are unchanged.
+Unfocused windows: dimmed selections (text, entries, tree views; half-strength
+blue over the view) use light **#eff0f1** text, 6.1:1. Rows that GTK keeps at
+full strength when unfocused (activatable list rows, the places sidebar) keep
+the dark **#1f1f26** text, 5.6:1; a `row.activatable:selected:backdrop label`
+rule is needed because `label:backdrop` otherwise forces light text there.
+The first palette pass used dark text everywhere (2.34:1 unfocused); fixed in
+Claude Code's review, and check-gtk3.py now asserts >= 4.5:1 for both cases.
+
+Link and semantic warning/error/success colors are unchanged. Original contrast
+and alpha treatment of disabled/inactive states is preserved, using the new blue.
+
+Regression checks now compare actual label/entry/list/tree style-context selection
+colors to Vapor.colors, assert ordinary button text is unchanged, decode all PNGs,
+reject old solid Breeze blue in artwork and require the new blue. Both stylesheet
+entries parse; discovery and all six window states/eight indicator renders pass.
+This supersedes the palette-preservation statements in the historical port
+verification below. The local changes have not been installed or released.
+
 ## Layout and fixes
 
 - `usr/share/themes/Vapor/gtk-3.24/gtk.css`: maintained GTK 3.24 stylesheet.

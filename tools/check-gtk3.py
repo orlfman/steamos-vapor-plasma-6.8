@@ -68,11 +68,95 @@ def worker(args):
     fine = node_context(Gtk.Scale, ['scale', 'contents', 'trough'], ('fine-tune', 'horizontal'))
     fine_margin = fine.get_margin(Gtk.StateFlags.NORMAL).left
     if not args.baseline:
-        assert selection_rgba == [round(v, 5) for v in (61/255, 174/255, 233/255, .5)], selection_rgba
+        assert selection_rgba == [round(v, 5) for v in (86/255, 159/255, 204/255, .5)], selection_rgba
         # Kept as upstream Breeze GTK has it: the scale.fine-tune.trough rule never
         # matches, so a slider keeps its 9px trough margin (and size) while GTK's
         # fine-tune (zoom) drag is active instead of shrinking by 2px mid-drag.
         assert fine_margin == 9, fine_margin
+
+    if not args.baseline:
+        import configparser
+        scheme = configparser.ConfigParser()
+        scheme.read(ROOT / 'usr/share/color-schemes/Vapor.colors')
+        expected_bg = [int(n)/255 for n in scheme['Colors:Selection']['BackgroundNormal'].split(',')]
+        expected_fg = [int(n)/255 for n in scheme['Colors:Selection']['ForegroundNormal'].split(',')]
+        for widget_type, names, flags in (
+                (Gtk.Label, ['label', 'selection'], Gtk.StateFlags.NORMAL),
+                (Gtk.Entry, ['entry', 'selection'], Gtk.StateFlags.NORMAL),
+                (Gtk.ListBox, ['list', 'row'], Gtk.StateFlags.SELECTED),
+                (Gtk.TreeView, ['treeview'], Gtk.StateFlags.SELECTED)):
+            context = node_context(widget_type, names, ('view',) if widget_type == Gtk.TreeView else (), flags)
+            background = context.get_background_color(flags)
+            foreground = context.get_color(flags)
+            assert [round(v, 5) for v in (background.red, background.green, background.blue)] == [round(v, 5) for v in expected_bg], names
+            assert [round(v, 5) for v in (foreground.red, foreground.green, foreground.blue)] == [round(v, 5) for v in expected_fg], (names, foreground.to_string())
+        assert '#3daee9' not in (theme/'gtk-3.24/gtk.css').read_text().lower()
+        # Unfocused (backdrop) selections must stay readable. Dimmed selections are
+        # drawn at half strength over the view and need light text; activatable rows
+        # (list boxes, places sidebar) stay full strength and need the dark text.
+        def luminance(rgb):
+            return sum(w * (v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4)
+                       for w, v in zip((0.2126, 0.7152, 0.0722), rgb))
+
+        def contrast(a, b):
+            la, lb = sorted((luminance(a), luminance(b)), reverse=True)
+            return (la + 0.05) / (lb + 0.05)
+
+        def over(rgba, under):
+            return [c * rgba.alpha + u * (1 - rgba.alpha)
+                    for c, u in zip((rgba.red, rgba.green, rgba.blue), under)]
+
+        view = node_context(Gtk.TreeView, ['treeview'], ('view',))
+        view_bg = view.get_background_color(Gtk.StateFlags.NORMAL)
+        view_rgb = [view_bg.red, view_bg.green, view_bg.blue]
+        backdrop = Gtk.StateFlags.BACKDROP
+        for widget_type, names, classes, flags in (
+                (Gtk.TreeView, ['treeview'], ('view',), Gtk.StateFlags.SELECTED | backdrop),
+                (Gtk.TextView, ['textview', 'text', 'selection'], ('view',), backdrop),
+                (Gtk.Entry, ['entry', 'selection'], (), backdrop)):
+            context = node_context(widget_type, names, classes, flags)
+            background = over(context.get_background_color(flags), view_rgb)
+            foreground = over(context.get_color(flags), background)
+            ratio = contrast(foreground, background)
+            assert ratio >= 4.5, (names, 'backdrop contrast', round(ratio, 2))
+
+        path = Gtk.WidgetPath.new()
+        state = Gtk.StateFlags.SELECTED | backdrop
+        for index, (gtype, name, classes) in enumerate(((Gtk.ListBox, 'list', ()),
+                                                        (Gtk.ListBoxRow, 'row', ('activatable',)),
+                                                        (Gtk.Label, 'label', ()))):
+            path.append_type(gtype)
+            path.iter_set_object_name(index, name)
+            path.iter_set_state(index, state)
+            for cls in classes:
+                path.iter_add_class(index, cls)
+        row_label = Gtk.StyleContext.new()
+        row_label.set_path(path)
+        row_label.set_state(state)
+        row_label.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_THEME)
+        label_fg = row_label.get_color(state)
+        ratio = contrast([label_fg.red, label_fg.green, label_fg.blue], expected_bg)
+        assert ratio >= 4.5, ('activatable row label, backdrop', round(ratio, 2))
+        ordinary = node_context(Gtk.Button, ['button'])
+        fg = ordinary.get_color(Gtk.StateFlags.NORMAL)
+        assert [round(v*255) for v in (fg.red, fg.green, fg.blue)] == [239, 240, 241]
+        gi.require_version('GdkPixbuf', '2.0')
+        from gi.repository import GdkPixbuf
+        accent_pixels = 0
+        for image in (theme/'assets').glob('*.png'):
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file(str(image))
+            pixels = pixbuf.get_pixels()
+            stride, channels = pixbuf.get_rowstride(), pixbuf.get_n_channels()
+            for y in range(pixbuf.get_height()):
+                for x in range(pixbuf.get_width()):
+                    i = y * stride + x * channels
+                    if channels == 4 and pixels[i+3] == 0:
+                        continue
+                    rgb = tuple(pixels[i:i+3])
+                    assert rgb != (61, 174, 233), f'Old solid blue in {image.name}'
+                    accent_pixels += rgb == (86, 159, 204)
+        assert accent_pixels > 0, 'Missing Vapor blue in check/radio artwork'
+
 
     # Broadway has a scale-1 display. Exercise @2 artwork separately through
     # GTK's scaled style contexts and Cairo, without claiming a scale-2 window.

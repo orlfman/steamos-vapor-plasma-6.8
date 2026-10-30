@@ -1,3 +1,28 @@
+Unreleased — 2026-10-29, Codex (GPT-6): match Vapor GTK selection colors
+
+- Matched GTK selection background/foreground to Vapor.colors Colors:Selection:
+  #569fcc (86,159,204) with #1f1f26 (31,31,38) text. This fixes Valve's inherited
+  Breeze-blue mismatch; it is separate from the preceding GTK 3.24 port.
+- Replaced literal Breeze blue and its gradient/alpha variants with GTK named
+  selection colors and derived shades across selected text/rows, active buttons,
+  switches, progress, sliders, focus/hover borders and rubberband selections.
+  Link, warning/error/success, neutral colors and widget geometry are retained.
+- Shifted blue pixels in 32 referenced check/radio PNGs (including @2) to the
+  same accent family; preserved dimensions, alpha and neutral pixels. All 110
+  referenced assets remain. Blue hue/saturation/value remap preserves edge shades.
+- Extended tools/check-gtk3.py to compare rendered label/entry/list/tree selection
+  colors with Vapor.colors, preserve ordinary button text, decode every PNG,
+  reject old solid Breeze-blue pixels and require Vapor blue in the artwork.
+  CSS/assets/discovery and six-state rendering plus eight indicator checks pass.
+- Updated GTK3.md/README. Changes remain local, uncommitted and unreleased;
+  no installed settings/files, GitHub release or AUR package was changed.
+- Review fix (Claude Code): unfocused-window selections had dark text on the
+  half-strength blue, 2.34:1. Dimmed selections (text, entries, tree views) now
+  use light #eff0f1 text (6.1:1, Valve's original choice); activatable rows
+  (list boxes, places sidebar), which stay full blue when unfocused, keep the
+  dark text (5.6:1) via a row.activatable:selected:backdrop label rule.
+  check-gtk3.py asserts >= 4.5:1 for both; it fails on the earlier version.
+
 Unreleased — 2026-10-29, Codex (GPT-6): explicit GTK 3.24 support
 
 - Moved the maintained Vapor stylesheet from gtk-3.20 to gtk-3.24, with a
