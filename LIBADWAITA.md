@@ -1,15 +1,30 @@
 # Vapor colors for libadwaita
 
-Status: initial native compatibility profile, unreleased. Tested with libadwaita
-1.10.0 and GTK 4.24.1. The existing 1.0.3 AUR release does not contain this feature.
+Status: a standard installed component since 1.0.4. Tested with libadwaita
+1.10.0 and GTK 4.24.1, plus successful user visual checks in Mission Center and
+FFmpeg Converter GTK. Packages before 1.0.4 do not contain this feature.
 
-The optional profile matches Vapor's dark surfaces and #569fcc accent with dark
+The profile matches Vapor's dark surfaces and #569fcc accent with dark
 #1f1f26 text. Adwaita keeps its widget shapes, spacing, responsive layouts and
 semantic colors. It applies when the application uses dark appearance with
 normal contrast; light and high-contrast appearances retain upstream colors.
 It does not force an application's appearance preference.
 
-## Try it from this checkout
+## Activation
+
+The package installs the profile, helper and a Plasma XDG autostart entry.
+At each Plasma login, `vapor-libadwaita auto` reads the selected GTK theme from
+the user's `gtk-4.0/settings.ini`, falling back to `gtk-3.0/settings.ini`. It
+enables or refreshes the overlay for **Vapor** or **Vapor-dark**, and removes
+only its managed overlay if another theme is selected. Other users' existing
+themes are left alone. The process exits after checking; there is no watcher.
+
+Apply a changed theme selection immediately with `vapor-libadwaita auto`, then
+restart GTK 4 applications. Choose dark appearance to see Vapor colors; light
+and high-contrast appearances retain their original styling. The package build
+and root package transaction do not modify any user's home directory.
+
+## Use it from this checkout
 
 Requires Python 3, GTK 4.24+ and libadwaita 1.10+. From the repository root:
 
@@ -21,8 +36,7 @@ python3 -I tools/vapor-libadwaita status
 
 Restart the GTK 4 applications you want to inspect. Choose dark appearance in
 those applications or through the desktop's normal preference if needed.
-After installation in a future package, the command is `vapor-libadwaita`.
-No activation occurs merely by installing the files or selecting a global theme.
+With the package installed, the command is `vapor-libadwaita`.
 
 The helper honors `XDG_CONFIG_HOME` (normally `~/.config`). It adds a marked
 relative import to `gtk-4.0/gtk.css` and copies `vapor-libadwaita.css` beside it.
@@ -37,6 +51,11 @@ python3 -I tools/vapor-libadwaita disable --dry-run
 python3 -I tools/vapor-libadwaita disable
 ```
 
+Disable also records a small `.vapor-libadwaita-disabled` preference beside the
+GTK files, so future logins respect the choice. Enable clears that preference.
+Dry runs change neither the overlay nor the preference. Disable before removing
+the package if you want its user CSS removed as well.
+
 Removal preserves unrelated CSS and edits made after activation. A missing
 original `gtk.css` is removed again only if nothing else remains. Managed
 profile edits, inconsistent backups, edited markers, symlinks, name collisions
@@ -48,7 +67,9 @@ editing the same files concurrently.
 
 If KDE or another tool rewrites `gtk.css`, `status` reports the missing import.
 Run enable again to reapply it while preserving the new file. There is no
-background watcher. `--config-home /absolute/test/config` and `--profile FILE`
+background watcher. The next automatic login check also reapplies it when Vapor
+is still selected and automatic activation has not been disabled.
+`--config-home /absolute/test/config` and `--profile FILE`
 allow isolated testing; `--json` produces machine-readable operation details.
 
 ## Scope and limits
@@ -77,7 +98,7 @@ separate testing; this native helper changes no Flatpak permissions.
 ## Tests
 
 Standard GTK 4 checks include native fixtures, Widget Factory, the same plain
-GTK tests with the overlay, 22 libadwaita cases, 17 activation/recovery tests,
+GTK tests with the overlay, 22 libadwaita cases, 28 activation/recovery tests,
 15 deliberately broken-profile checks and eight package-staging tests:
 
 ```sh
@@ -105,6 +126,8 @@ contrast uses the actual adjacent background from the widget snapshot. Wrong
 painted surfaces and a weak focus ring fail even when color variables are correct.
 Activation tests cover malformed state flags without writing files and preserve
 compatibility with older state files that omit the flag.
+The same tests cover automatic theme selection, switching away/back, persistent
+disable, dry runs, preference collisions and transactional rollback.
 
 The two precise Broadway frame-timing warnings reproduced without the profile
 are retained in reports; every other diagnostic fails. `check-libadwaita.py
@@ -132,13 +155,13 @@ Prepare an empty staging directory with:
 python3 -I tools/stage-package.py --destdir /tmp/vapor-package-stage
 ```
 
-It includes the existing theme/terminal files, profile, activation helper and
-documentation. Destinations inside the copied `usr` source tree are rejected
+It includes the existing theme/terminal files, profile, activation helper,
+Plasma login entry, documentation and testing screenshot. Destinations inside
+the copied `usr` source tree are rejected
 before creating output, including paths through parent symlinks. An empty
 repository `build/` directory outside `usr` is allowed.
-It does not install or activate them. For the next release,
-update the AUR recipe/version/checksum and have its package function use the
-staging tool (Python build dependency; optional Python/libadwaita runtime
-requirements for activation). The current published recipe/tag/checksum remain
-unchanged until that release is prepared. Flatpak integration remains a
-separate milestone in [libadwaita-plan.md](libadwaita-plan.md).
+Staging does not install or activate anything. The 1.0.4 AUR package uses this
+tool for its full payload and requires Python, GTK 4.24+ and libadwaita 1.10+.
+The installed login entry performs activation in the logged-in user's session.
+Flatpak integration remains a separate milestone in
+[libadwaita-plan.md](libadwaita-plan.md).

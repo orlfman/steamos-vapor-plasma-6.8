@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test Vapor's optional libadwaita colors using temporary user CSS and real widgets.
+"""Test Vapor's native libadwaita colors using temporary user CSS and real widgets.
 
 Requires GTK 4.24+, libadwaita 1.10+, Python GI/Pillow, gtk4-broadwayd and D-Bus.
 Includes light/high-contrast baselines, popup/dialog roots, scale 2, state and

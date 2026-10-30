@@ -2,7 +2,7 @@
 """Stage the working tree's theme payload into an empty package directory.
 
 Does not install anything, activate user CSS, build a release or update the AUR.
-The published AUR recipe remains pinned to its existing release until a new tag.
+Includes the standard libadwaita profile, helper and Plasma login integration.
 """
 import argparse
 from pathlib import Path
@@ -33,8 +33,11 @@ def main():
     install('kitty/vapor.conf','usr/share/kitty/themes/steamos-vapor.conf')
     install('libadwaita/vapor.css','usr/share/steamos-vapor/libadwaita/vapor.css')
     install('tools/vapor-libadwaita','usr/bin/vapor-libadwaita',0o755)
+    install('autostart/steamos-vapor-libadwaita.desktop','etc/xdg/autostart/steamos-vapor-libadwaita.desktop')
     for name in ('README.md','CHANGES.txt','GTK3.md','gtk4port.md','LIBADWAITA.md','libadwaita-plan.md','audit.md'):
         install(name,'usr/share/doc/plasma6-themes-steamos-vapor-fixed/'+name)
+    image='docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png'
+    install(image,'usr/share/doc/plasma6-themes-steamos-vapor-fixed/'+image)
     print('Staged theme payload:',destination)
 
 

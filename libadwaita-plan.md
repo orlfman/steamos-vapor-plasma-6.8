@@ -1,8 +1,9 @@
 # Vapor libadwaita compatibility plan
 
 Date: 2026-10-30 (America/Phoenix). Agent: Codex (GPT-6).
-Status: initial native color profile implemented and tested; broader validation
-and Flatpak remain open. This feature is not yet in a published package release.
+Status: native color profile promoted to the standard installation for 1.0.4
+after automated and live application testing. Broader validation and Flatpak
+remain open.
 Base: `5dcae96`. Evidence and detailed findings: [audit.md](audit.md).
 
 ## Implementation status — 2026-10-30
@@ -11,10 +12,10 @@ Base: `5dcae96`. Evidence and detailed findings: [audit.md](audit.md).
 | --- | --- |
 | 1: separate profile | Implemented in libadwaita/vapor.css; 27 role definitions, guarded dark/normal contrast |
 | 2: standard tests | 22 native Adw cases with painted-surface/adjacent-focus checks, 15 negative controls, native GTK/Widget Factory coexistence; broader widget inventory/accessibility remains |
-| 3: activation | Implemented helper; 17 preservation/recovery tests pass, including malformed and legacy state; enabled on the user's system at their request, preservation verified |
+| 3: activation | Default Plasma login activation follows the Vapor GTK selection; persistent disable supported; 28 preservation/recovery tests pass; live overlay enabled and preservation verified |
 | 4: applications/displays/performance | Upstream Adwaita demo 1.10.0 and GNOME Font Viewer 49.0 startup comparisons pass; user reports Mission Center 1.2.0 and FFmpeg Converter look good with the live overlay; broader display/interaction/accessibility/performance validation remains |
 | 5: Flatpak | Deferred: no local Flatpak executable/runtime; no support claim |
-| 6: packaging | Working-tree staging tool includes profile/helper/docs; eight staging tests cover source containment and allowed destinations; published 1.0.3 recipe/tag/checksum unchanged pending a new release |
+| 6: packaging | Standard 1.0.4 payload includes profile/helper/login entry/docs/screenshot with required runtime dependencies; eight staging tests cover contents and safe destinations |
 
 [LIBADWAITA.md](LIBADWAITA.md) contains current usage/support instructions.
 The stages below retain the full roadmap and acceptance criteria; the table
@@ -28,7 +29,9 @@ The full standard GTK 4 suite passes; the broader roadmap below still applies.
 
 ## Recommended target
 
-Build an **optional Vapor color profile for libadwaita**, initially targeting the
+The original plan proposed an optional profile; the user subsequently approved
+including it by default after live testing. Maintain a **Vapor color profile for
+libadwaita**, initially targeting the
 tested libadwaita 1.10.0 / GTK 4.24.1 combination. Preserve Adwaita's widget
 structure, spacing, shapes, responsive layouts and behavior. Match Vapor's
 selection/accent pair and dark neutral surfaces through CSS custom properties.
@@ -145,8 +148,9 @@ reports distinguish tested widgets/states from untested surfaces and app behavio
 
 Staged installed asset:
 `/usr/share/steamos-vapor/libadwaita/vapor.css`.
-Implemented helper source: `tools/vapor-libadwaita` with enable/disable/status and
-dry-run operations. Installation copies assets; activation is a user action.
+Implemented helper source: `tools/vapor-libadwaita` with enable/disable/status/auto
+and dry-run operations. Installation copies assets; a Plasma login action
+automatically follows the selected Vapor GTK theme. Explicit disable persists.
 
 - Honor `XDG_CONFIG_HOME`. Add one identifiable managed import in
   `gtk-4.0/gtk.css`, preserving the existing KDE `colors.css` import and unrelated
@@ -167,8 +171,9 @@ dry-run operations. Installation copies assets; activation is a user action.
 
 Acceptance: disposable configuration tests prove preservation of the current
 KDE import, unrelated CSS, later user edits, missing/broken targets, repeated
-operations, failure recovery and clean removal. Live activation remains a
-separate user action after the concrete result can be reviewed.
+operations, failure recovery, automatic selection, persistent disable and clean
+removal. Root package transactions leave user files alone; activation runs in
+the user's login session or through an explicit helper command.
 
 ## Stage 4 — Validate real libadwaita applications and displays
 
@@ -223,17 +228,18 @@ correct. If this stage is deferred, label the first milestone native-only.
 
 - Install the separate profile/helper and its instructions without activating
   user CSS in package install/upgrade hooks. Keep existing themes intact.
-- Add `libadwaita` as an optional runtime dependency for this optional feature,
-  while making its test requirements explicit for development. Do not change
-  the package into a replacement libadwaita or mandatory GNOME runtime bundle.
+- Require Python, GTK 4.24+ and libadwaita 1.10+ for the standard color profile
+  and login integration, as approved after live testing. Keep the separate
+  development/test requirements explicit.
 - Update README, CHANGES, audit and port log with exact tested scope, known
   accent-API/custom-drawing limitations, light/high-contrast policy and rollback.
   Include the plan/support docs in package documentation when shipping the feature.
 - Run the standard suite, negative controls and a staged package build before
   proposing a release. Do not alter the checksum/tag of the existing release.
 
-Completion means an opt-in color compatibility profile with tested activation,
-rollback, native application coverage and documented limits. Flatpak is included
+Completion means a standard color compatibility profile with tested automatic
+activation, persistent disable, rollback, native application coverage and
+documented limits. Flatpak is included
 only after stage 5 passes. Full Vapor widget geometry and an upstream-supported
 universal libadwaita theme remain separate claims.
 

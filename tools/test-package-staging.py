@@ -22,6 +22,8 @@ class Staging(unittest.TestCase):
         self.source=self.root/'source';(self.source/'usr/share/theme').mkdir(parents=True)
         (self.source/'usr/share/theme/sentinel').write_bytes(b'x')
         for name in ('libadwaita/vapor.css','tools/vapor-libadwaita','alacritty/vapor.toml','kitty/vapor.conf',
+                     'autostart/steamos-vapor-libadwaita.desktop',
+                     'docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png',
                      'README.md','CHANGES.txt','GTK3.md','gtk4port.md','LIBADWAITA.md','libadwaita-plan.md','audit.md'):
             p=self.source/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(name+'\n')
 
@@ -63,6 +65,11 @@ class Staging(unittest.TestCase):
         self.assertEqual((destination/'usr/share/steamos-vapor/libadwaita/vapor.css').read_bytes(),
                          (self.source/'libadwaita/vapor.css').read_bytes())
         self.assertEqual(stat.S_IMODE((destination/'usr/bin/vapor-libadwaita').stat().st_mode),0o755)
+        for source,target in (
+                ('autostart/steamos-vapor-libadwaita.desktop','etc/xdg/autostart/steamos-vapor-libadwaita.desktop'),
+                ('docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png',
+                 'usr/share/doc/plasma6-themes-steamos-vapor-fixed/docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png')):
+            self.assertEqual((destination/target).read_bytes(),(self.source/source).read_bytes())
         self.assertEqual((self.source/'usr/share/theme/sentinel').read_bytes(),b'x')
 
     def test_allow_repository_build_directory_outside_usr(self):

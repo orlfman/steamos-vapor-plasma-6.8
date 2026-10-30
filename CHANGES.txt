@@ -1,4 +1,19 @@
-Unreleased — 2026-10-30, Codex (GPT-6): resolve libadwaita audit ADW-R1–R3
+1.0.4 — 2026-10-30, Codex (GPT-6): native libadwaita in the standard installation
+
+- Include the color profile, helper and Plasma login integration by default.
+  Python, GTK 4.24+ and libadwaita 1.10+ are required package dependencies.
+- At Plasma login, apply the overlay when Vapor/Vapor-dark is the selected GTK
+  theme. Switching to another theme removes only the managed overlay at the
+  next login or explicit auto run. No background watcher or root user-file edits.
+- Disable persists across logins; enable restores automatic activation. Existing
+  KDE imports, user edits, backups and file permissions retain their protections.
+- Activation/recovery tests increase to 28, covering default activation, theme
+  switching, persistent disable, dry runs, collisions and write rollback.
+- The standard package stager also includes the full-resolution testing image
+  and linked documentation. Mission Center/FFmpeg Converter visual checks and
+  automated results support promoting native support; Flatpak remains separate.
+
+1.0.4 — 2026-10-30, Codex (GPT-6): resolve libadwaita audit ADW-R1–R3
 
 - Validate created_import_file as a boolean before any changes; malformed flags
   preserve all files. Older state without the field retains its compatibility
@@ -11,10 +26,10 @@ Unreleased — 2026-10-30, Codex (GPT-6): resolve libadwaita audit ADW-R1–R3
   before mkdir/copy, including parent-symlink aliases. Eight bounded staging
   tests join the standard suite; external and repository build paths work.
 - Full standard GTK 4 suite passes. audit.md/gtk4port.md record the fixes and
-  before/after evidence. Profile/theme/artwork/terminal files, user settings and
-  the published AUR recipe remain unchanged; libadwaita is still unreleased.
+  before/after evidence. The fixes preserve profile/theme/artwork/terminal files;
+  the standard-installation changes above promote native support in 1.0.4.
 
-Unreleased — 2026-10-30, Codex (GPT-6): initial native libadwaita color profile
+1.0.4 — 2026-10-30, Codex (GPT-6): initial native libadwaita color profile
 
 - Added a separate guarded dark color profile: Vapor #569fcc / #1f1f26 accent
   pair and neutral surfaces; preserves Adwaita geometry, semantics, light and
@@ -30,11 +45,11 @@ Unreleased — 2026-10-30, Codex (GPT-6): initial native libadwaita color profil
   checks pass. Two-second idle process-CPU observations stay below 1ms in both
   cases; these are small headless observations, not a desktop benchmark.
 - Added a working-tree package staging tool and LIBADWAITA.md. This feature is
-  not in AUR release 1.0.3; the published recipe/tag/checksum are unchanged.
+  new in 1.0.4; existing 1.0.3 release assets/checksums are unchanged.
   Flatpak, live fractional/GPU and broader application/accessibility coverage
   remain open. audit.md/gtk4port.md record implementation, tests and limits.
 
-Unreleased — 2026-10-30, Codex (GPT-6): installed GTK Widget Factory checks
+1.0.4 — 2026-10-30, Codex (GPT-6): installed GTK Widget Factory checks
 
 - Investigated libadwaita 1.10.0 / GTK 4.24.1 compatibility in seven isolated
   native-widget experiments. A guarded color-token overlay supplies Vapor's

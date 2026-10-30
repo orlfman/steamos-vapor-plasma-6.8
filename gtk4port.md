@@ -872,3 +872,57 @@ Added an inline README preview with a dated caption and linked the same image
 from audit.md. Verified the image decodes, matches the source SHA-256 exactly,
 and all updated Markdown links resolve. This adds documentation/evidence only;
 no theme code, automated-test expectations or package release files change.
+
+## 20. Make native libadwaita support standard — 2026-10-30
+
+The user approved the tested native profile for the default installation.
+Started at clean commit 7b6ae22 and saved tracked-file hashes/evidence under
+/tmp/vapor-default-install-x_d6ke6a. Existing color definitions and theme artwork
+stay intact; the feature's packaging and activation policy change for 1.0.4.
+
+- Added a packaged XDG autostart entry, limited to Plasma, invoking
+  vapor-libadwaita auto once per login. It follows the selected Vapor/Vapor-dark
+  GTK theme and exits. Switching to another GTK theme removes only the managed
+  overlay at the next login/auto run. Package transactions do not edit homes.
+- Added a validated .vapor-libadwaita-disabled preference beside the managed
+  GTK files. Explicit disable writes it transactionally with CSS removal;
+  enable clears it. Automatic checks respect the preference. Foreign content,
+  symlinks, read-only targets, invalid metadata and edited profiles retain the
+  existing refusal/rollback protections. Status exposes automatic_enabled.
+- Read the selected theme from user GTK 4 settings, then GTK 3 as fallback,
+  without starting GTK or contacting the desktop. Malformed settings refuse
+  automatic changes. Existing command-line enable/disable still work independently
+  of the selected theme, and dry runs never write the preference.
+- Added eleven activation/recovery tests and updated removal expectations for
+  the persistent preference: all 28 pass. Coverage includes no-op other/missing
+  themes, Vapor/dark activation, idempotence, switching away/back, persistent
+  disable/re-enable, external CSS regeneration/profile updates, dry runs,
+  preference collisions/symlinks, settings precedence, malformed settings and
+  rollback of the preference with CSS after an injected write failure.
+- Extended standard staging to include the login entry and full-resolution
+  testing screenshot. Existing eight bounded staging tests verify these bytes
+  and helper permissions, alongside source-containment guards. Desktop-entry
+  validation passes.
+- Full standard tools/check-gtk4.py run passes: native widget/behavior and both
+  ten-case Widget Factory runs, overlay coexistence, 22 Adw cases, 28 recovery
+  tests, 15 deliberately broken profiles and eight staging tests (standard/ and
+  standard.log). The precise existing Broadway warnings remain allowed/counted.
+- Updated README, LIBADWAITA.md, the plan, audit and changelog for standard native
+  support and persistent disable. Broader live scaling, accessibility,
+  performance and Flatpak validation remain separate.
+- Built a complete private 1.0.4-1 Arch package before publishing. Inspected
+  required payload bytes/helper mode and exercised the packaged helper through
+  auto/status/disable/auto/enable/auto plus a switch to Breeze in an isolated
+  configuration. Original KDE imports and mode restore correctly; the actual
+  user's GTK configuration is unchanged. Evidence: preflight-build.log,
+  preflight-extract/ and packaged-helper-results.json. namcap reports no errors;
+  its warnings concern existing transitive QML/icon dependencies and dependencies
+  it cannot infer from theme files/ctypes library loading.
+- A dry run against the live user reports selected_theme=Vapor, status=enabled,
+  automatic_enabled=true and no changes. Release packaging will use a new
+  v1.0.4 source archive/checksum, leaving existing release tags untouched.
+
+Implementation references:
+[XDG autostart specification](https://specifications.freedesktop.org/autostart/latest/),
+[GTK settings](https://docs.gtk.org/gtk4/class.Settings.html), and
+[Arch package guidelines](https://wiki.archlinux.org/title/Arch_package_guidelines).

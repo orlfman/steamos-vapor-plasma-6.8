@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Enable, disable or inspect the optional Vapor libadwaita color overlay.
+"""Enable, disable or inspect the Vapor libadwaita color overlay.
 
 Edits only an explicitly managed import and sibling profile/state/backup files.
 Uses XDG_CONFIG_HOME by default. No desktop settings or Flatpak permissions change.
 """
 import argparse
+import configparser
 import contextlib
 import ctypes
 import fcntl
@@ -23,6 +24,32 @@ START = b'/* BEGIN steamos-vapor libadwaita */'
 END = b'/* END steamos-vapor libadwaita */'
 NAMES = ('gtk.css', 'vapor-libadwaita.css', '.vapor-libadwaita.json',
          '.vapor-libadwaita.gtk.css.backup')
+DISABLED_NAME = '.vapor-libadwaita-disabled'
+DISABLED_CONTENT = b'Disabled by vapor-libadwaita; run vapor-libadwaita enable to restore automatic activation.\n'
+
+
+def automatic_allowed(directory):
+    marker = inspect(directory / DISABLED_NAME)
+    if marker is not None and marker[0] != DISABLED_CONTENT:
+        raise ValueError('Unrecognized automatic-activation preference; preserve it for manual recovery.')
+    return marker is None
+
+
+def selected_theme(config_home):
+    """Read the GTK theme selected by Plasma without initializing a display."""
+    for version in ('gtk-4.0', 'gtk-3.0'):
+        path = config_home / version / 'settings.ini'
+        if not path.is_file():
+            continue
+        parser = configparser.ConfigParser(interpolation=None)
+        try:
+            parser.read_string(path.read_text(encoding='utf-8'))
+        except (configparser.Error, UnicodeError) as error:
+            raise ValueError(f'Cannot read GTK theme preference: {path}: {error}') from None
+        name = parser.get('Settings', 'gtk-theme-name', fallback='').strip()
+        if name:
+            return name
+    return ''
 
 
 def digest(data):
@@ -122,6 +149,12 @@ def manage(directory, profile, action, dry_run):
     if directory.exists() and not directory.is_dir():
         raise ValueError(f'Expected a configuration directory: {directory}')
     files = {name: inspect(directory / name) for name in NAMES}
+    files[DISABLED_NAME] = inspect(directory / DISABLED_NAME)
+    automatic = automatic_allowed(directory)
+    requested = action
+    theme = selected_theme(directory.parent) if action == 'auto' else None
+    if action == 'auto':
+        action = 'enable' if automatic and theme in ('Vapor', 'Vapor-dark') else 'disable'
     state = load_state(files)
     css = files['gtk.css'][0] if files['gtk.css'] else b''
     blocks = css.count(BLOCK)
@@ -136,13 +169,21 @@ def manage(directory, profile, action, dry_run):
             raise ValueError('Managed profile has local edits; refusing to overwrite or delete it.')
     elif blocks or any(files[name] for name in NAMES[1:]):
         raise ValueError('Unowned managed-name files/import exist; refusing to replace them.')
-    result = {'action': action, 'status': status, 'config_directory': str(directory),
-              'dry_run': dry_run, 'changes': []}
+    result = {'action': requested, 'status': status, 'config_directory': str(directory),
+              'dry_run': dry_run, 'changes': [], 'automatic_enabled': automatic}
+    if requested == 'auto':
+        result['selected_theme'] = theme
     if action == 'status':
         if state and profile.is_file():
             result['profile_update_available'] = digest(profile.read_bytes()) != state['profile_sha256']
         return result
     changes = {}
+    if requested == 'enable':
+        changes[DISABLED_NAME] = None
+        result['automatic_enabled'] = True
+    elif requested == 'disable':
+        changes[DISABLED_NAME] = DISABLED_CONTENT, 0o600
+        result['automatic_enabled'] = False
     if action == 'enable':
         if not state:
             original = css
@@ -182,7 +223,7 @@ def manage(directory, profile, action, dry_run):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=('enable', 'disable', 'status'))
+    parser.add_argument('action', choices=('enable', 'disable', 'status', 'auto'))
     parser.add_argument('--dry-run', action='store_true', help='describe changes without writing files')
     parser.add_argument('--json', action='store_true', help='machine-readable result')
     parser.add_argument('--config-home', type=Path, help='explicit configuration home (default: XDG_CONFIG_HOME)')
@@ -195,12 +236,14 @@ def main():
         parser.error('Configuration home must be an absolute path.')
     directory = config_home / 'gtk-4.0'
     try:
-        if args.action == 'enable':
+        auto_enable = (args.action == 'auto' and automatic_allowed(directory)
+                       and selected_theme(config_home) in ('Vapor', 'Vapor-dark'))
+        if args.action == 'enable' or auto_enable:
             check_runtime()
         # A directory lock avoids adding/removing a lock file and serializes
         # cooperating operations. Re-read after taking it. No directory creation
-        # for dry-run/status; create only for actual enable.
-        if args.action == 'enable' and not args.dry_run:
+        # for dry-run/status or an automatic check of an unrelated theme.
+        if (args.action == 'enable' or auto_enable) and not args.dry_run:
             if directory.is_symlink():
                 raise ValueError(f'Refusing a linked gtk-4.0 directory: {directory}')
             directory.mkdir(parents=True, exist_ok=True)

@@ -17,7 +17,7 @@ shortcuts) are left out.
 | Vapor and VGUI color schemes, plus Union versions | `usr/share/color-schemes` |
 | Vapor GTK 3.24 theme | `usr/share/themes/Vapor/gtk-3.0`, `gtk-3.24` |
 | Vapor GTK 4 theme, initial (plain GTK 4 apps; libadwaita apps ignore themes) | `usr/share/themes/Vapor/gtk-4.0` |
-| Optional native libadwaita color profile (unreleased) | `libadwaita/vapor.css` |
+| Native libadwaita colors, installed by default since 1.0.4 | `libadwaita/vapor.css` |
 | Vapor Konsole profile and colors | `usr/share/konsole` |
 | Steam Deck wallpapers (`SteamDeckLogo` is the themes' default) | `usr/share/wallpapers` |
 | Steam Deck start menu icon | `usr/share/icons/hicolor` |
@@ -51,6 +51,15 @@ Manually, for your user only: copy the folders under `usr/share` into
 into `/usr/share`.
 
 Then pick a global theme in System Settings > Colors & Themes > Global Theme.
+
+Since **1.0.4**, the package includes native libadwaita colors, the
+`vapor-libadwaita` helper and Plasma login integration. When the GTK application
+theme is **Vapor**, the colors activate at the next Plasma login. Run
+`vapor-libadwaita auto` to apply the current selection immediately, then restart
+GTK 4 apps. `vapor-libadwaita disable` turns it off and remembers that choice;
+`vapor-libadwaita enable` restores it. See [LIBADWAITA.md](LIBADWAITA.md).
+For a per-user manual installation from this checkout, also run
+`python3 -I tools/vapor-libadwaita enable`.
 
 ### Using Union
 
@@ -112,8 +121,9 @@ folder rather than merging it, so obsolete versioned styles do not remain.
 
 Release 1.0.3 ships an initial native GTK 4 theme, with a separate
 `gtk-4.0/gtk.css` and explicit dark entry. It preserves Vapor's palette and shared
-artwork and has isolated native-widget/parser checks on GTK 4.24.1. It is not yet
-a release-ready claim of complete GTK 4 application coverage or libadwaita styling.
+artwork and has isolated native-widget/parser checks on GTK 4.24.1. Native
+libadwaita color support is included separately starting with 1.0.4. Broader
+application coverage remains under validation.
 
 [gtk4port.md](gtk4port.md) records every implementation step, failed experiment,
 correction, test result, remaining gap and next step. [audit.md](audit.md) is the
@@ -145,7 +155,7 @@ temporary; `--output /tmp/vapor-gtk4-preview` retains widget screenshots at the
 top level, behavior evidence under `behavior/` and application evidence under
 `widget-factory/`. Overlay coexistence evidence is under `coexistence/` and
 native Adw evidence under `libadwaita/`. A supplied `--theme` is used by the plain
-GTK stages; `--libadwaita-profile FILE` selects the optional color profile.
+GTK stages; `--libadwaita-profile FILE` selects the color profile to test.
 
 To run only the **GTK Widget Factory** application stage:
 
@@ -173,21 +183,23 @@ successful visual check for that configuration; automated checks remain at scale
 Released in 1.0.3 as initial support. Broader focus/popup interaction, other
 scaling/display configurations, accessibility, animation/performance and wider
 application coverage still need validation. The normal GTK theme applies to
-plain GTK 4 apps; libadwaita uses the separate optional color profile below.
+plain GTK 4 apps; libadwaita uses the separate color profile below.
 
-## Optional libadwaita colors (unreleased)
+## Libadwaita colors (since 1.0.4)
 
-The working tree includes an initial native libadwaita profile that matches
+The standard installation includes a native libadwaita profile that matches
 Vapor's dark surfaces and accent/text pair while retaining Adwaita's layouts.
 It preserves light/high-contrast styling and existing KDE user CSS. It requires
-GTK 4.24+ and libadwaita 1.10+; it is not included in the current 1.0.3 AUR release.
+Python 3, GTK 4.24+ and libadwaita 1.10+, supplied as package dependencies.
 
 From the checkout, preview activation with
 `python3 -I tools/vapor-libadwaita enable --dry-run`. Explicit enable/disable,
-requirements and limits are in [LIBADWAITA.md](LIBADWAITA.md). Installing or
-selecting the normal global theme does not activate this overlay automatically.
+requirements and limits are in [LIBADWAITA.md](LIBADWAITA.md). The packaged
+login action applies the current GTK theme choice once per session; it does not
+run a background watcher. Selecting another GTK theme removes the managed
+overlay at the next login or `vapor-libadwaita auto` run.
 
-The standard suite includes 22 native Adw cases, 17 activation/recovery tests,
+The standard suite includes 22 native Adw cases, 28 activation/recovery tests,
 15 deliberately broken-profile tests and eight package-staging tests. Surface
 checks read rasterized widget backgrounds; focus contrast uses the adjacent
 background in the captured image. Matching Adwaita demo and independent

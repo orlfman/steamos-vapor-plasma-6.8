@@ -1,3 +1,38 @@
+# Default native libadwaita installation — 2026-10-30
+
+The user approved making native libadwaita support part of the standard
+installation after automated tests and successful Mission Center/FFmpeg
+Converter visual checks. Version 1.0.4 includes the profile, helper and Plasma
+login entry, with Python, GTK 4.24+ and libadwaita 1.10+ as runtime dependencies.
+Earlier references to an opt-in/unreleased milestone below are historical.
+
+The login command runs once as the logged-in user. It reads the selected GTK
+theme (GTK 4 settings first, GTK 3 fallback), applies/updates the overlay for
+Vapor/Vapor-dark, and removes its managed overlay when another theme is selected.
+Explicit disable records a validated preference so the next login cannot
+silently re-enable it. Enable clears that preference. Builds/install hooks do
+not edit home directories; no persistent watcher or root user-file changes.
+
+The full standard GTK 4 suite passes, including all 22 native Adw cases,
+28 activation/recovery tests, 15 deliberate bad profiles and eight staging
+tests. New tests cover automatic selection and idempotence, switching away/back,
+persistent disable, theme-setting precedence, dry runs, collisions, malformed
+preferences and write rollback. Staging includes the login entry and screenshot
+so the installed README's image link also resolves. Existing theme CSS/artwork
+and the libadwaita color definitions are unchanged.
+
+A full private Arch package build and packaged-helper activation/disable/theme
+switch smoke test pass. Payload inspection confirms the login entry, profile,
+helper and screenshot are installed at their intended paths. The real user's
+GTK files remain unchanged. Package lint reports no errors; transitive/runtime
+dependency detection warnings are detailed in the work log.
+
+Work/evidence: [gtk4port.md](gtk4port.md), section 20, and
+`/tmp/vapor-default-install-x_d6ke6a`. Standard installation does not expand the
+tested native scope to Flatpak or unmeasured accessibility/performance cases.
+
+---
+
 # Live libadwaita activation and application checks — 2026-10-30
 
 At the user's request, enabled the Vapor libadwaita overlay using the documented

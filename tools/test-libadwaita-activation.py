@@ -17,6 +17,8 @@ PROFILE = ROOT/'libadwaita/vapor.css'
 MODULE = runpy.run_path(str(HELPER))
 BLOCK = MODULE['BLOCK']
 NAMES = MODULE['NAMES']
+DISABLED_NAME = MODULE['DISABLED_NAME']
+ALL_NAMES = (*NAMES, DISABLED_NAME)
 
 
 class Activation(unittest.TestCase):
@@ -43,6 +45,13 @@ class Activation(unittest.TestCase):
         path = self.directory/'gtk.css';path.write_bytes(data);path.chmod(mode)
         return path
 
+    def theme(self, name, version='gtk-4.0'):
+        directory=self.config/version;directory.mkdir(parents=True,exist_ok=True)
+        (directory/'settings.ini').write_text('[Settings]\ngtk-theme-name='+name+'\n')
+
+    def snapshot(self):
+        return {name:MODULE['inspect'](self.directory/name) for name in ALL_NAMES}
+
     def test_kde_import_and_mode_round_trip(self):
         path = self.original()
         original = path.read_bytes()
@@ -53,7 +62,7 @@ class Activation(unittest.TestCase):
         self.run_helper('disable')
         self.assertEqual(path.read_bytes(), original)
         self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o640)
-        self.assertEqual(sorted(p.name for p in self.directory.iterdir()), ['gtk.css'])
+        self.assertEqual(sorted(p.name for p in self.directory.iterdir()), [DISABLED_NAME,'gtk.css'])
 
     def test_missing_config_and_idempotence(self):
         self.assertEqual(self.run_helper('status')['status'], 'disabled')
@@ -63,7 +72,7 @@ class Activation(unittest.TestCase):
         self.assertEqual(self.run_helper('enable')['changes'], [])
         self.assertEqual(first, {p.name:p.read_bytes() for p in self.directory.iterdir()})
         self.run_helper('disable')
-        self.assertEqual(list(self.directory.iterdir()), [])
+        self.assertEqual([p.name for p in self.directory.iterdir()], [DISABLED_NAME])
         self.assertEqual(self.run_helper('disable')['changes'], [])
 
     def test_dry_run_creates_nothing(self):
@@ -110,7 +119,7 @@ class Activation(unittest.TestCase):
         path=self.original();self.run_helper('enable');path.unlink()
         self.run_helper('enable');self.run_helper('disable')
         self.assertFalse(path.exists())
-        self.assertEqual(list(self.directory.iterdir()), [])
+        self.assertEqual([p.name for p in self.directory.iterdir()], [DISABLED_NAME])
 
     def test_readonly_directory_refused(self):
         path=self.original();before=path.read_bytes()
@@ -172,11 +181,11 @@ class Activation(unittest.TestCase):
             with self.subTest(value=value):
                 state=dict(valid,created_import_file=value)
                 statepath.write_text(json.dumps(state))
-                before={name:MODULE['inspect'](self.directory/name) for name in NAMES}
-                for action in ('status','enable','disable'):
+                before=self.snapshot()
+                for action in ('status','enable','disable','auto'):
                     result=self.run_helper(action,ok=False)
                     self.assertIn('Managed state/backup is inconsistent',result.stderr)
-                    self.assertEqual(before,{name:MODULE['inspect'](self.directory/name) for name in NAMES})
+                    self.assertEqual(before,self.snapshot())
 
     def test_legacy_state_without_created_flag(self):
         for existed in (True,False):
@@ -189,7 +198,107 @@ class Activation(unittest.TestCase):
                 self.run_helper('disable')
                 self.assertEqual((self.directory/'gtk.css').exists(),existed)
                 if existed:(self.directory/'gtk.css').unlink()
+                (self.directory/DISABLED_NAME).unlink()
                 self.directory.rmdir()
+
+    def test_auto_other_or_missing_theme_creates_nothing(self):
+        self.assertEqual(self.run_helper('auto')['changes'],[])
+        self.assertFalse(self.config.exists())
+        self.theme('Breeze')
+        before=self.snapshot()
+        self.assertEqual(self.run_helper('auto')['changes'],[])
+        self.assertEqual(before,self.snapshot())
+
+    def test_auto_selected_vapor_preserves_kde_and_is_idempotent(self):
+        path=self.original();original=path.read_bytes();self.theme('Vapor')
+        self.assertEqual(self.run_helper('auto')['status'],'enabled')
+        self.assertEqual(path.read_bytes(),BLOCK+original)
+        self.assertEqual((self.directory/NAMES[3]).read_bytes(),original)
+        self.assertEqual(stat.S_IMODE(path.stat().st_mode),0o640)
+        before=self.snapshot()
+        self.assertEqual(self.run_helper('auto')['changes'],[])
+        self.assertEqual(before,self.snapshot())
+
+    def test_auto_selected_dark_variant(self):
+        self.theme('Vapor-dark')
+        self.assertEqual(self.run_helper('auto')['status'],'enabled')
+
+    def test_auto_disable_persists_and_enable_clears_optout(self):
+        self.theme('Vapor');self.run_helper('auto');self.run_helper('disable')
+        before=self.snapshot()
+        self.assertFalse(self.run_helper('status')['automatic_enabled'])
+        for _ in range(3):
+            self.assertEqual(self.run_helper('auto')['changes'],[])
+            self.assertEqual(before,self.snapshot())
+        self.run_helper('enable')
+        self.assertFalse((self.directory/DISABLED_NAME).exists())
+        self.assertTrue(self.run_helper('status')['automatic_enabled'])
+        self.assertEqual(self.run_helper('auto')['changes'],[])
+
+    def test_auto_switch_away_and_back_restores(self):
+        path=self.original();original=path.read_bytes();self.theme('Vapor');self.run_helper('auto')
+        self.theme('Breeze')
+        self.assertEqual(self.run_helper('auto')['status'],'disabled')
+        self.assertEqual(path.read_bytes(),original)
+        self.assertFalse((self.directory/DISABLED_NAME).exists())
+        self.theme('Vapor')
+        self.assertEqual(self.run_helper('auto')['status'],'enabled')
+        self.assertEqual(path.read_bytes(),BLOCK+original)
+
+    def test_auto_reapply_and_update(self):
+        path=self.original();self.theme('Vapor');self.run_helper('auto')
+        replacement=b"@import 'colors.css';\n/* KDE regeneration */\n";path.write_bytes(replacement)
+        profile=self.root/'updated.css';profile.write_bytes(PROFILE.read_bytes()+b'\n/* update */\n')
+        self.run_helper('auto','--profile',str(profile))
+        self.assertEqual(path.read_bytes(),BLOCK+replacement)
+        self.assertEqual((self.directory/NAMES[1]).read_bytes(),profile.read_bytes())
+        self.run_helper('disable')
+        self.assertEqual(path.read_bytes(),replacement)
+
+    def test_auto_and_disable_dry_runs_preserve_every_file(self):
+        self.theme('Vapor');before=self.snapshot()
+        self.run_helper('auto','--dry-run')
+        self.assertEqual(before,self.snapshot())
+        self.run_helper('enable');before=self.snapshot()
+        self.run_helper('disable','--dry-run')
+        self.assertEqual(before,self.snapshot())
+
+    def test_automatic_preference_collision_and_symlink_refused(self):
+        self.theme('Vapor');marker=self.directory/DISABLED_NAME
+        marker.write_bytes(b'not managed by Vapor');before=self.snapshot()
+        for action in ('status','auto','enable','disable'):
+            self.run_helper(action,ok=False);self.assertEqual(before,self.snapshot())
+        marker.unlink();target=self.root/'foreign';target.write_bytes(b'untouched');marker.symlink_to(target)
+        for action in ('status','auto','enable','disable'):
+            self.run_helper(action,ok=False)
+            self.assertTrue(marker.is_symlink());self.assertEqual(target.read_bytes(),b'untouched')
+
+    def test_auto_gtk4_precedence_and_gtk3_fallback(self):
+        self.theme('Vapor','gtk-3.0')
+        self.assertEqual(self.run_helper('auto')['status'],'enabled')
+        self.theme('Breeze','gtk-4.0')
+        self.assertEqual(self.run_helper('auto')['status'],'disabled')
+
+    def test_auto_malformed_theme_refused_without_writes(self):
+        self.theme('Vapor')
+        (self.directory/'settings.ini').write_text('[Settings]\n[Settings]\n')
+        before=self.snapshot()
+        result=self.run_helper('auto',ok=False)
+        self.assertIn('Cannot read GTK theme preference',result.stderr)
+        self.assertEqual(before,self.snapshot())
+
+    def test_disable_preference_rolls_back_with_css_after_failure(self):
+        self.original();self.run_helper('enable');before=self.snapshot()
+        function=MODULE['manage'];real=MODULE['atomic_write'];calls=0
+        def fail_once(*args):
+            nonlocal calls
+            calls+=1
+            if calls==2:raise OSError('intentional disable failure')
+            return real(*args)
+        with patch.dict(function.__globals__,{'atomic_write':fail_once}):
+            with self.assertRaisesRegex(OSError,'intentional disable failure'):
+                function(self.directory,PROFILE,'disable',False)
+        self.assertEqual(before,self.snapshot())
 
     def test_edited_or_duplicate_import_refused(self):
         path = self.original();self.run_helper('enable')
