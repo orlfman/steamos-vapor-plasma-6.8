@@ -16,6 +16,6 @@ pkgbase = plasma6-themes-steamos-vapor-fixed
 	conflicts = plasma5-themes-vapor-steamos
 	conflicts = steamdeck-kde-presets
 	source = plasma6-themes-steamos-vapor-fixed-1.0.3.tar.gz::https://github.com/orlfman/steamos-vapor-plasma-6.8/archive/refs/tags/v1.0.3.tar.gz
-	sha256sums = SKIP
+	sha256sums = 5731bd432594572ce02954b3189349e94447866ccd9a4c66e0a725978c5d5512
 
 pkgname = plasma6-themes-steamos-vapor-fixed
