@@ -1,3 +1,19 @@
+# VGUI2 Classic port feasibility audit — 2026-10-30
+
+The GTK 3.24 / GTK 4 / native libadwaita investigation is saved separately in
+[vgui2-audit.md](vgui2-audit.md), with the implementation roadmap in
+[vgui2-plan.md](vgui2-plan.md) and durable
+[measurement evidence](docs/audits/vgui2-feasibility.json).
+
+The port is feasible. Important requirements are readable text on gold, stronger
+actual focus contrast, independent GTK styling/artwork, family-aware tests and
+safe switching through one shared libadwaita manager. A private pale-gold accent
+trial passes all 22 adapted native Adw cases, with focus at 3.19:1; it does not
+implement or validate the proposed GTK theme. Existing Vapor files, live settings
+and the published package remain unchanged by this documentation investigation.
+
+---
+
 # Default native libadwaita installation — 2026-10-30
 
 The user approved making native libadwaita support part of the standard

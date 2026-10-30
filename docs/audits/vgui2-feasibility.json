@@ -1,0 +1,250 @@
+{
+  "date": "2026-10-30",
+  "timezone": "America/Phoenix",
+  "base_commit": "e626869fbfc096499d3bdade87bd8263d13cab63",
+  "scope": "Documentation-only feasibility investigation; no installed VGUI2 port or real user-setting changes.",
+  "installed_versions": {
+    "plasma": "6.8.2",
+    "qt": "6.12.0",
+    "gtk3": "3.24.52",
+    "gtk4": "4.24.1",
+    "libadwaita": "1.10.0"
+  },
+  "palette_contrast": [
+    {
+      "name": "classic selection",
+      "foreground": "#fcfcfc",
+      "background": "#958831",
+      "contrast": 3.503
+    },
+    {
+      "name": "recommended selection",
+      "foreground": "#181810",
+      "background": "#958831",
+      "contrast": 4.965
+    },
+    {
+      "name": "window text",
+      "foreground": "#fcfcfc",
+      "background": "#4d5845",
+      "contrast": 7.317
+    },
+    {
+      "name": "view text",
+      "foreground": "#fcfcfc",
+      "background": "#3f4638",
+      "contrast": 9.545
+    },
+    {
+      "name": "half-gold inactive light text",
+      "foreground": "#fcfcfc",
+      "background": "#6a6734",
+      "contrast": 5.682
+    },
+    {
+      "name": "half-gold inactive dark text",
+      "foreground": "#181810",
+      "background": "#6a6734",
+      "contrast": 3.061
+    },
+    {
+      "name": "gold focus on window",
+      "foreground": "#958831",
+      "background": "#4d5845",
+      "contrast": 2.089
+    },
+    {
+      "name": "gold focus on view",
+      "foreground": "#958831",
+      "background": "#3f4638",
+      "contrast": 2.725
+    },
+    {
+      "name": "Union focus on window",
+      "foreground": "#f0e078",
+      "background": "#4d5845",
+      "contrast": 5.59
+    },
+    {
+      "name": "link text on window",
+      "foreground": "#b0b07b",
+      "background": "#4d5845",
+      "contrast": 3.34
+    },
+    {
+      "name": "link text on view",
+      "foreground": "#b0b07b",
+      "background": "#3f4638",
+      "contrast": 4.356
+    }
+  ],
+  "stylesheet_inventory": {
+    "gtk-3.24": {
+      "lines": 3784,
+      "unique_hex_colors": 33,
+      "urls": 176,
+      "unique_assets": 110,
+      "gradients": 58,
+      "top_colors": [
+        [
+          "#24272c",
+          113
+        ],
+        [
+          "#616569",
+          100
+        ],
+        [
+          "#eff0f1",
+          95
+        ],
+        [
+          "#151c23",
+          19
+        ],
+        [
+          "#f67400",
+          16
+        ],
+        [
+          "#da4453",
+          15
+        ],
+        [
+          "#7f8c8d",
+          10
+        ],
+        [
+          "#27ae60",
+          9
+        ]
+      ]
+    },
+    "gtk-4.0": {
+      "lines": 3892,
+      "unique_hex_colors": 33,
+      "urls": 176,
+      "unique_assets": 110,
+      "gradients": 58,
+      "top_colors": [
+        [
+          "#24272c",
+          113
+        ],
+        [
+          "#616569",
+          100
+        ],
+        [
+          "#eff0f1",
+          95
+        ],
+        [
+          "#151c23",
+          19
+        ],
+        [
+          "#f67400",
+          16
+        ],
+        [
+          "#da4453",
+          14
+        ],
+        [
+          "#7f8c8d",
+          10
+        ],
+        [
+          "#27ae60",
+          9
+        ]
+      ]
+    }
+  },
+  "prototype": {
+    "kind": "Temporary 27-role VGUI2 palette mapping plus separate standalone accent; native Adwaita geometry",
+    "checker_adaptations": {
+      "base": "tools/check-libadwaita.py",
+      "palette_substitutions": {
+        "569fcc": "958831",
+        "1f1f26": "181810",
+        "24272c": "4d5845",
+        "eff0f1": "fcfcfc",
+        "151c23": "3f4638",
+        "1a212a": "282f21",
+        "2d3136": "56604e"
+      },
+      "numeric_assertions_updated": [
+        "accent foreground",
+        "accent background"
+      ],
+      "preserved_checks": "surface pixels, contrast thresholds, geometry, light/high-contrast guards, semantics, transitions"
+    },
+    "focus_trials": [
+      {
+        "standalone": "derived",
+        "contrast": 2.38,
+        "passed": false
+      },
+      {
+        "standalone": "#f0e078",
+        "contrast": 2.63,
+        "passed": false
+      },
+      {
+        "standalone": "#fff2c2",
+        "contrast": 2.98,
+        "passed": false
+      },
+      {
+        "standalone": "#ffffe0",
+        "contrast": 3.19,
+        "passed": true
+      }
+    ],
+    "passing_native_cases": 22,
+    "passing_case_names": [
+      "00-main-normal-dark-s1-base",
+      "01-main-normal-dark-s1-vapor",
+      "02-main-normal-light-s1-base",
+      "03-main-normal-light-s1-vapor",
+      "04-main-normal-dark-hc-s1-base",
+      "05-main-normal-dark-hc-s1-vapor",
+      "06-main-normal-light-hc-s1-base",
+      "07-main-normal-light-hc-s1-vapor",
+      "08-sidebar-normal-dark-s1-base",
+      "09-sidebar-normal-dark-s1-vapor",
+      "10-dialog-normal-dark-s1-base",
+      "11-dialog-normal-dark-s1-vapor",
+      "12-popover-normal-dark-s1-base",
+      "13-popover-normal-dark-s1-vapor",
+      "14-menu-normal-dark-s1-base",
+      "15-menu-normal-dark-s1-vapor",
+      "16-main-backdrop-dark-s1-vapor",
+      "17-main-rtl-dark-s1-vapor",
+      "18-main-focus-dark-s1-vapor",
+      "19-main-normal-dark-s2-base",
+      "20-main-normal-dark-s2-vapor",
+      "21-transition-normal-dark-s1-vapor"
+    ],
+    "focus_background": [
+      77,
+      88,
+      69
+    ],
+    "focus_fixture_contrast": {
+      "suggested": 4.97,
+      "selected-row": 5.53,
+      "focus-ring": 3.19
+    },
+    "known_broadway_warnings": 26,
+    "limitations": [
+      "Palette-adjusted audit checker; production family selection not implemented.",
+      "No VGUI2 plain GTK or real-application validation.",
+      "Additional focus surfaces, live display scales, accessibility, performance and Flatpak remain untested."
+    ],
+    "candidate_sha256": "55d856dd6b65015457f7488fcf633d026981a874247a5dba889ccb9a50755ad5",
+    "original_checker_sha256": "28a5557a173cd9b42a5a487effdcd78f0cbb649bbe03b596313e14931b041587"
+  }
+}

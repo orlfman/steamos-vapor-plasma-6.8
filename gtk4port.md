@@ -947,3 +947,37 @@ Implementation references:
 - The fresh AUR checkout initially lacked a Git author identity. Configured only
   that checkout with the existing project's identity, then committed/pushed
   6e7eaf8 to the existing AUR package. No global Git settings were changed.
+
+## 21. Audit and plan VGUI2 Classic for GTK 3/4/libadwaita — 2026-10-30
+
+The user requested an audit followed by a plan for matching VGUI2 themes.
+Started at clean e626869. Reviewed VGUI/VGUIUnion schemes, global defaults,
+historical preview, existing GTK CSS/artwork, native Adw tests, the shared
+activation helper and staging. Read matching GTK/libadwaita documentation.
+
+- Saved baseline hashes, measured palette contrast and counted literal colors,
+  gradients and asset references under /tmp/vgui2-port-audit-cewuc_6t. GTK 3/4
+  branches each contain 33 literal hex colors, 58 gradients and 110 referenced
+  PNG assets; 30 images contain exact Vapor-blue pixels. No VGUI GTK family or
+  native color profile currently exists in the repository.
+- Classic light text on gold is 3.503:1; Union's dark text is 4.965:1. Original
+  links/focus are also too faint for the proposed gates on olive surfaces.
+  Dimmed selections require separate light foreground treatment. Recorded the
+  values and recommended keeping Qt definitions untouched during this port.
+- Built an audit-only color profile and a private palette-adjusted copy of the
+  native checker. Kept actual-surface/contrast/geometry/appearance assertions.
+  Derived gold focus fails at 2.38:1; Union gold fails at 2.63:1; #fff2c2 still
+  fails at 2.98:1. A separate #ffffe0 standalone accent passes all 22 cases,
+  measuring focus 3.19:1, suggested text 4.97:1 and selected-row text 5.53:1.
+  Original gold fills remain unchanged. All processes use private XDG/display
+  state; no candidate is copied into the real user configuration.
+- Wrote vgui2-audit.md with prioritized findings, source inventory, measurements,
+  prototype limits and implementation constraints. Wrote vgui2-plan.md with
+  family/palette decisions, harness work, GTK 3 then GTK 4 styling, Adw profile,
+  safe shared-manager migration, real app/display/performance checks and future
+  packaging. Libadwaita's first milestone retains native geometry; full classic
+  reskinning and Flatpak remain separate.
+- Saved portable measurements in docs/audits/vgui2-feasibility.json and linked
+  the reports from README/audit.md. The current production test harness remains
+  unchanged; only the disposable checker used VGUI palette substitutions. No
+  new theme, package version, AUR update or live theme switch is part of this work.
