@@ -18,10 +18,14 @@ def main():
     destination=args.destdir
     if not destination.is_absolute():parser.error('--destdir must be absolute')
     if destination.is_symlink():parser.error('Refusing a symlink destination')
+    destination=destination.resolve()
+    source=(ROOT/'usr').resolve()
+    if destination.is_relative_to(source):
+        parser.error('Destination must be outside the copied usr source tree')
     if destination.exists() and (not destination.is_dir() or any(destination.iterdir())):
         parser.error('Destination must be an empty directory')
     destination.mkdir(parents=True,exist_ok=True)
-    shutil.copytree(ROOT/'usr',destination/'usr',copy_function=shutil.copy2)
+    shutil.copytree(source,destination/'usr',copy_function=shutil.copy2)
     def install(source,target,mode=0o644):
         target=destination/target;target.parent.mkdir(parents=True,exist_ok=True)
         shutil.copyfile(ROOT/source,target);target.chmod(mode)

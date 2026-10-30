@@ -10,20 +10,21 @@ Base: `5dcae96`. Evidence and detailed findings: [audit.md](audit.md).
 | Stage | Current result |
 | --- | --- |
 | 1: separate profile | Implemented in libadwaita/vapor.css; 27 role definitions, guarded dark/normal contrast |
-| 2: standard tests | 22 native Adw cases, six negative controls, native GTK/Widget Factory coexistence; broader widget inventory/accessibility remains |
-| 3: activation | Implemented helper; 15 preservation/recovery tests pass; actual user overlay remains disabled |
+| 2: standard tests | 22 native Adw cases with painted-surface/adjacent-focus checks, 15 negative controls, native GTK/Widget Factory coexistence; broader widget inventory/accessibility remains |
+| 3: activation | Implemented helper; 17 preservation/recovery tests pass, including malformed and legacy state; actual user overlay remains disabled |
 | 4: applications/displays/performance | Upstream Adwaita demo 1.10.0 and GNOME Font Viewer 49.0 startup comparisons pass; short idle observations recorded; live fractional/GPU and broader interaction remain |
 | 5: Flatpak | Deferred: no local Flatpak executable/runtime; no support claim |
-| 6: packaging | Working-tree staging tool includes profile/helper/docs; published 1.0.3 recipe/tag/checksum unchanged pending a new release |
+| 6: packaging | Working-tree staging tool includes profile/helper/docs; eight staging tests cover source containment and allowed destinations; published 1.0.3 recipe/tag/checksum unchanged pending a new release |
 
 [LIBADWAITA.md](LIBADWAITA.md) contains current usage/support instructions.
 The stages below retain the full roadmap and acceptance criteria; the table
 distinguishes the implemented native milestone from remaining validation.
 
-Post-implementation review: **ADW-R1–R3 are open** in [audit.md](audit.md).
-Before release, validate the activation state flag, add actual-surface/focus
-background regression checks and reject staging destinations inside the copied
-usr source tree. These findings have been reproduced but are not yet fixed.
+Post-implementation review: **ADW-R1–R3 are fixed and regression-tested** in
+[audit.md](audit.md). Activation validates the optional state flag, rendered
+surface/focus checks reject the demonstrated false positives, and staging
+rejects resolved destinations inside the copied usr tree before creating output.
+The full standard GTK 4 suite passes; the broader roadmap below still applies.
 
 ## Recommended target
 

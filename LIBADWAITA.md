@@ -77,8 +77,8 @@ separate testing; this native helper changes no Flatpak permissions.
 ## Tests
 
 Standard GTK 4 checks include native fixtures, Widget Factory, the same plain
-GTK tests with the overlay, libadwaita, activation recovery and six deliberately
-broken-profile checks:
+GTK tests with the overlay, 22 libadwaita cases, 17 activation/recovery tests,
+15 deliberately broken-profile checks and eight package-staging tests:
 
 ```sh
 python3 -I tools/check-gtk4.py --output /tmp/vapor-all-gtk4
@@ -96,7 +96,15 @@ Targeted checks:
 python3 -I tools/check-libadwaita.py --output /tmp/vapor-libadwaita
 python3 -I tools/test-libadwaita-activation.py
 python3 -I tools/test-libadwaita-regressions.py
+python3 -I tools/test-package-staging.py
 ```
+
+Surface checks rasterize the real window/header/card/view/sidebar/dialog/popover
+CSS backgrounds over their ancestors and read the resulting pixels. Focus
+contrast uses the actual adjacent background from the widget snapshot. Wrong
+painted surfaces and a weak focus ring fail even when color variables are correct.
+Activation tests cover malformed state flags without writing files and preserve
+compatibility with older state files that omit the flag.
 
 The two precise Broadway frame-timing warnings reproduced without the profile
 are retained in reports; every other diagnostic fails. `check-libadwaita.py
@@ -125,7 +133,10 @@ python3 -I tools/stage-package.py --destdir /tmp/vapor-package-stage
 ```
 
 It includes the existing theme/terminal files, profile, activation helper and
-documentation. It does not install or activate them. For the next release,
+documentation. Destinations inside the copied `usr` source tree are rejected
+before creating output, including paths through parent symlinks. An empty
+repository `build/` directory outside `usr` is allowed.
+It does not install or activate them. For the next release,
 update the AUR recipe/version/checksum and have its package function use the
 staging tool (Python build dependency; optional Python/libadwaita runtime
 requirements for activation). The current published recipe/tag/checksum remain

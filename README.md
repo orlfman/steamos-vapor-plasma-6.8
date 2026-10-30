@@ -127,7 +127,8 @@ python3 -I tools/check-gtk4.py
 Both checkers also run inactive-label contrast and spin-background regressions.
 The GTK 4 checker runs all ten installed Widget Factory application cases,
 repeats plain GTK checks with the libadwaita overlay present, and runs native
-libadwaita, reversible-activation and broken-profile checks automatically.
+libadwaita, reversible-activation, broken-profile and package-staging checks
+automatically.
 Failures and missing dependencies fail the standard suite; no automatic skip.
 The GTK 3 checker additionally needs `python-pillow`. To prove the tests reject
 the original bugs on both toolkits, run:
@@ -186,8 +187,10 @@ From the checkout, preview activation with
 requirements and limits are in [LIBADWAITA.md](LIBADWAITA.md). Installing or
 selecting the normal global theme does not activate this overlay automatically.
 
-The standard suite includes 22 native Adw cases, 15 activation/recovery tests
-and six deliberately broken-profile tests. Matching Adwaita demo and independent
+The standard suite includes 22 native Adw cases, 17 activation/recovery tests,
+15 deliberately broken-profile tests and eight package-staging tests. Surface
+checks read rasterized widget backgrounds; focus contrast uses the adjacent
+background in the captured image. Matching Adwaita demo and independent
 GNOME Font Viewer startup checks also pass. Live fractional scaling, broader
 app/accessibility/performance testing and Flatpak remain separate validation.
 See [audit.md](audit.md), [libadwaita-plan.md](libadwaita-plan.md) and

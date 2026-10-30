@@ -767,3 +767,66 @@ stager. Saved source hashes and scratch reproductions in
 - Prepended findings with source lines, reproductions, impact and recommended
   fixes to audit.md, and linked the open findings from the plan. Three P2
   issues remain open; this review applies no fixes or live settings changes.
+
+## 17. Fix libadwaita audit ADW-R1–R3 — 2026-10-30
+
+User requested fixing the three findings from section 16. Started at clean
+commit 8722b7a; saved tracked-file SHA-256 values and all retained test evidence
+under /tmp/vapor-adw-fixes-9dw66ri8. The profile and existing theme/artwork are
+unchanged. No real overlay activation or package release is part of this work.
+
+### Changes and regression proof
+
+- Added malformed created_import_file coverage before changing the loader.
+  The string "false" reproduction fails the new test on old code (r1-before.log).
+  Added strict optional-boolean validation, preserving the older-state fallback.
+  Tests cover strings, numeric booleans, null, arrays and objects for all three
+  helper operations and compare all managed contents/modes after every refusal.
+  A separate legacy-state test verifies originally empty and originally absent
+  gtk.css restoration. All 17 activation/recovery tests pass.
+- Added bounded staging tests using tiny disposable source fixtures. The nested
+  usr destination fails the new test on old code (r3-before.log); copytree is
+  mocked to raise immediately if reached, so recursion cannot occur. Resolve
+  source/destination and reject containment before mkdir. Eight tests cover
+  nested/normalized paths, parent-symlink aliases, existing empty source
+  destinations, final symlinks, relative paths and allowed repository/external
+  destinations. Allowed fixtures check real payload bytes and helper mode 0755.
+- Extended the native Adw fixture with a text view and test-only selector
+  classes. Rasterize the real widget CSS backgrounds over their ancestors,
+  using the existing private Broadway display and dedicated Cairo snapshot
+  renderer. Text-view captures include its internal text-area node. Retain
+  per-role PNGs and RGB samples in metadata. Assert window/header/card/view and
+  relevant sidebar/dialog/popover pixels independently of the color queries.
+  All 22 native cases pass (native-surfaces/ and native-surfaces.log).
+- Focus contrast now uses the pixel next to the actual ring in the same image.
+  Store this measured background separately from numeric contrast metadata.
+  The unchanged Vapor profile measures 3.50:1 against RGB 36,39,44; suggested
+  button text remains 5.64:1. The fixture preserves baseline/profile geometry,
+  light/high-contrast identity, semantic colors, transitions and 2x checks.
+- Expanded six profile mutations to 15: grey/green wrong window surfaces,
+  wrong header/card/view/sidebar/dialog/popover surfaces, plus a wrong local
+  button-bar background that leaves the neutral roles untouched. That last
+  case fails specifically at actual-background focus contrast, proving the
+  denominator fix independently of the surface gate. All mutations fail their
+  expected assertions (mutations.log); production CSS is never edited.
+- Integrated the eight staging tests into tools/check-gtk4.py. The standard
+  run passes all native/behavior/Widget Factory stages both without and with
+  the overlay, 22 Adw cases, 17 recovery tests, 15 profile mutations and eight
+  staging tests (standard/ and standard.log). Exact known Broadway timing
+  warnings remain recorded/allowed; no broader warning exemption was added.
+- Updated README.md, LIBADWAITA.md, libadwaita-plan.md, CHANGES.txt and audit.md
+  with resolved findings, test counts, commands and limits. Original audit
+  reproductions remain as historical evidence, with a resolution pointer.
+- Staged the complete real payload under package/ and compared source bytes,
+  packaged docs, profile, terminal files and helper mode 0755. Ran the staged
+  helper through status/enable/status/disable/status with an explicit private
+  config/profile; it restores the original KDE import and mode 0640 exactly
+  (staged-helper-results.json). All ten plain-GTK PNGs are byte-identical with
+  and without the overlay. Syntax, Markdown link/fence and whitespace checks
+  pass. Final tracked-file hashes confirm existing usr assets, the profile,
+  terminal colors and AUR files are unchanged (final-integrity.json). A read-only
+  status query confirms the actual user's overlay remains disabled.
+
+Native libadwaita remains opt-in and unreleased. The established live-GPU,
+fractional scaling, accessibility, broader application/performance and Flatpak
+work remains open. Existing AUR version/tag/checksum are unchanged.

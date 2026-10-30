@@ -82,6 +82,7 @@ def worker(args):
     groups = Gtk.Box(spacing=20,homogeneous=True)
     group = Adw.PreferencesGroup(title='Appearance')
     action = Adw.ActionRow(title='Native action row',subtitle='Adwaita structure retained')
+    action.add_css_class('vapor-fixture-card')
     switchrow = Adw.SwitchRow(title='Native switch',active=True)
     entryrow = Adw.EntryRow(title='Text',text='Vapor')
     password = Adw.PasswordEntryRow(title='Password',text='example')
@@ -96,6 +97,7 @@ def worker(args):
     for row in (combo,expander,spinrow,buttonrow):group2.add(row)
     groups.append(group2);body.append(groups)
     buttons = Gtk.Box(spacing=12)
+    buttons.add_css_class('vapor-fixture-actions')
     ordinary = Gtk.Button(label='Ordinary')
     suggested = Gtk.Button(label='Suggested');suggested.add_css_class('suggested-action')
     disabled = Gtk.Button(label='Disabled');disabled.add_css_class('suggested-action');disabled.set_sensitive(False)
@@ -111,7 +113,11 @@ def worker(args):
     row = Gtk.ListBoxRow();selected_label=Gtk.Label(label='Selected content row',xalign=0,
                                                   margin_start=12,margin_top=10,margin_bottom=10)
     row.set_child(selected_label);rows.append(row);rows.select_row(row);body.append(rows)
-    text = Gtk.Entry(text='Selected entry text');text.select_region(0,-1);body.append(text)
+    fields=Gtk.Box(spacing=12)
+    text = Gtk.Entry(text='Selected entry text',hexpand=True);text.select_region(0,-1);fields.append(text)
+    view=Gtk.TextView(editable=False,cursor_visible=False)
+    view.get_buffer().set_text('Native view surface');view.set_size_request(220,36);fields.append(view)
+    body.append(fields)
     banner = Adw.Banner(title='Native banner surface');banner.set_revealed(True);body.append(banner)
     status = Adw.StatusPage(title='Vapor compatibility',description='Color profile; native Adwaita widgets',icon_name='preferences-desktop-theme-symbolic')
     status.add_css_class('compact')
@@ -126,6 +132,7 @@ def worker(args):
     if args.scene == 'sidebar':
         toolbar.set_content(None)
         sidebar = Adw.NavigationPage.new(Adw.StatusPage(title='Primary sidebar'),'Sidebar')
+        sidebar.add_css_class('vapor-fixture-sidebar')
         navigation = Adw.NavigationSplitView()
         navigation.set_sidebar(sidebar);navigation.set_content(Adw.NavigationPage.new(body,'Content'))
         toolbar.set_content(navigation);target=navigation
@@ -148,6 +155,7 @@ def worker(args):
             extra.append(Gtk.Label(label='Native popover'))
             popup.set_child(extra)
         # Queries inside the actual popup root validate variable inheritance.
+        extra.add_css_class('vapor-fixture-popup')
         for label in queries.values():body.remove(label);extra.append(label)
         popup_button=Gtk.Button(label='Suggested');popup_button.add_css_class('suggested-action');extra.append(popup_button)
         button.set_popover(popup)
@@ -157,6 +165,7 @@ def worker(args):
     if args.scene == 'dialog':
         toolbar.set_content(Gtk.Label(label='Window beneath dialog'))
         dialog=Adw.Dialog(title='Vapor dialog',content_width=1000,content_height=750)
+        body.add_css_class('vapor-fixture-dialog')
         dialog.set_child(body)
         GLib.timeout_add(150,lambda: (dialog.present(window),False)[1])
     if args.state=='rtl':window.set_direction(Gtk.TextDirection.RTL)
@@ -172,6 +181,38 @@ def worker(args):
     def rgb(widget):
         c=widget.get_color()
         return [max(0,min(255,round(v*255))) for v in (c.red,c.green,c.blue)]
+
+    def surface_pixels(widget,name,with_content=False):
+        """Rasterize the real node's CSS background over its actual ancestors.
+
+        No query label or CSS variable supplies these colors. Compositing the
+        ancestors accounts for transparent header/card/popup backgrounds. Text
+        views also snapshot their actual text-area node (not a GtkWidget).
+        """
+        assert widget.get_mapped(),f'ADW-SURFACE: unmapped {name}'
+        width,height=widget.get_width(),widget.get_height()
+        assert width>16 and height>16,f'ADW-SURFACE: no allocation for {name}'
+        ancestors=[];current=widget
+        while current:
+            ancestors.append(current);current=current.get_parent()
+        snap=Gtk.Snapshot();snap.scale(args.scale,args.scale)
+        for ancestor in reversed(ancestors):
+            snap.render_background(ancestor.get_style_context(),0,0,width,height)
+        if with_content:Gtk.WidgetPaintable.new(widget).snapshot(snap,width,height)
+        node=snap.to_node();assert node is not None,f'ADW-SURFACE: empty {name}'
+        renderer=Gsk.CairoRenderer.new();renderer.realize(None)
+        try:
+            rect=Graphene.Rect();rect.init(0,0,width*args.scale,height*args.scale)
+            path=args.output/f'{len(phases)}-surface-{name}.png'
+            renderer.render_texture(node,rect).save_to_png(str(path))
+        finally:renderer.unrealize()
+        with Image.open(path) as captured:
+            image=captured.convert('RGBA')
+        coordinates=([(width-8,height-8)] if with_content else
+                     [(width*fraction//4,height//2) for fraction in (1,2,3)])
+        pixels=[list(image.getpixel((x*args.scale,y*args.scale))) for x,y in coordinates]
+        assert all(pixel[3]==255 for pixel in pixels),f'ADW-SURFACE: transparent {name}: {pixels}'
+        return [pixel[:3] for pixel in pixels]
 
     def apply_test_state():
         if args.state=='backdrop':
@@ -190,6 +231,13 @@ def worker(args):
         colors={name:rgb(label) for name,label in queries.items()}
         dark=manager.get_dark();hc=manager.get_high_contrast()
         active=not args.baseline and dark and not hc
+        surface_widgets={'window':(window,False),'headerbar':(header,False),
+                         'card':(action,False),'view':(view,True)}
+        if args.scene=='sidebar':surface_widgets['sidebar']=(sidebar,False)
+        if dialog:surface_widgets['dialog']=(body,False)
+        if popup:surface_widgets['popover']=(extra,False)
+        surfaces={name:surface_pixels(widget,name,content)
+                  for name,(widget,content) in surface_widgets.items()}
         for name,expected in COLORS.items():
             if active:
                 wanted=[int(expected[i:i+2],16) for i in (0,2,4)]
@@ -197,6 +245,11 @@ def worker(args):
         if not active:
             assert colors['accent-bg-color']==[53,132,228], 'ADW-GUARD: non-Vapor appearance was recolored'
             assert colors['window-bg-color']==([34,34,38] if dark else [250,250,251]), 'ADW-GUARD: window changed'
+        else:
+            for name,pixels in surfaces.items():
+                expected=COLORS[name+'-bg-color']
+                wanted=[int(expected[i:i+2],16) for i in (0,2,4)]
+                assert all(pixel==wanted for pixel in pixels),f'ADW-SURFACE: {name}: {pixels} != {wanted}'
         assert settings.get_property('gtk-theme-name')=='Adwaita-empty','Adwaita providers must remain enabled'
         fg=rgb(suggested.get_child())
         assert fg==([31,31,38] if active else [255,255,255]),f'ADW-FOREGROUND: {fg}'
@@ -223,7 +276,7 @@ def worker(args):
         image=Image.open(args.output/filename).convert('RGB')
         assert width>80 and height>50 and len(image.getcolors(image.width*image.height) or [])>20,'ADW-SNAPSHOT: blank image'
         assert image.size==(width*args.scale,height*args.scale)
-        bg=None;selected_bg=None;ratios={}
+        bg=None;selected_bg=None;focus_background=None;ratios={}
         if popup is None:
             ok,bounds=suggested.compute_bounds(snapshot_target);assert ok
             point=((round(bounds.get_x())+6)*args.scale,round(bounds.get_y()+bounds.get_height()/2)*args.scale)
@@ -245,14 +298,19 @@ def worker(args):
             ok,bounds=suggested.compute_bounds(snapshot_target);assert ok
             x=round(bounds.get_x());y=round(bounds.get_y()+bounds.get_height()/2)
             ring=[image.getpixel((px,py)) for px in range(x-6,x) for py in range(y-2,y+3)]
-            ratios['focus-ring']=round(max(contrast(pixel,colors['window-bg-color']) for pixel in ring),2)
-            assert ratios['focus-ring']>=3,f'ADW-FOCUS: weak ring {ratios}'
+            # Sample the same image beside the ring; an ancestor may paint a
+            # different background while leaving --window-bg-color unchanged.
+            focus_background=list(image.getpixel((x-8,y)))
+            ratios['focus-ring']=round(max(contrast(pixel,focus_background) for pixel in ring),2)
+            assert ratios['focus-ring']>=3,f'ADW-FOCUS: weak ring {ratios} on actual {focus_background}'
         geom={name:[widget.get_width(),widget.get_height()] for name,widget in
               (('ordinary',ordinary),('suggested',suggested),('action-row',action),('switch-row',switchrow),
                ('entry-row',entryrow),('combo-row',combo),('spin-row',spinrow),('button-row',buttonrow))}
         api=manager.get_accent_color_rgba()
         return {'dark':dark,'high_contrast':hc,'active':active,'tokens':colors,'suggested_foreground':fg,
                 'suggested_background':bg,'selected_background':selected_bg,'contrast':ratios,'geometry':geom,
+                'focus_background':focus_background,
+                'rendered_surfaces':surfaces,
                 'image':filename,'image_sha256':hashlib.sha256(image.tobytes()).hexdigest(),
                 'image_size':list(image.size),'widget_scale':window.get_scale_factor(),
                 'popup_mapped':bool(popup and popup.get_mapped()),'dialog_mapped':bool(dialog and dialog.get_mapped()),

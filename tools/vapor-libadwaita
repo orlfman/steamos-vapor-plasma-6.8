@@ -102,6 +102,8 @@ def load_state(files):
         state = json.loads(value[0])
         if state['schema'] != 1 or not isinstance(state['original_exists'], bool):
             raise ValueError('Invalid state schema')
+        if 'created_import_file' in state and not isinstance(state['created_import_file'], bool):
+            raise ValueError('Invalid created-import flag')
         for key in ('original_sha256', 'profile_sha256'):
             if not isinstance(state[key], str) or len(state[key]) != 64:
                 raise ValueError('Invalid state digest')

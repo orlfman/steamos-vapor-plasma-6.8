@@ -1,3 +1,19 @@
+Unreleased — 2026-10-30, Codex (GPT-6): resolve libadwaita audit ADW-R1–R3
+
+- Validate created_import_file as a boolean before any changes; malformed flags
+  preserve all files. Older state without the field retains its compatibility
+  behavior. Activation/recovery coverage increases from 15 to 17 tests.
+- Assert rasterized window/header/card/view/sidebar/dialog/popover backgrounds
+  and measure focus against the actual adjacent background. All 22 native cases
+  pass; 15 broken profiles are rejected, including wrong painted surfaces with
+  correct variables and an independently weakened focus ring.
+- Resolve staging paths and reject destinations inside the copied usr tree
+  before mkdir/copy, including parent-symlink aliases. Eight bounded staging
+  tests join the standard suite; external and repository build paths work.
+- Full standard GTK 4 suite passes. audit.md/gtk4port.md record the fixes and
+  before/after evidence. Profile/theme/artwork/terminal files, user settings and
+  the published AUR recipe remain unchanged; libadwaita is still unreleased.
+
 Unreleased — 2026-10-30, Codex (GPT-6): initial native libadwaita color profile
 
 - Added a separate guarded dark color profile: Vapor #569fcc / #1f1f26 accent

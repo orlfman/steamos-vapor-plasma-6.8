@@ -1,4 +1,55 @@
-# Libadwaita implementation audit — 2026-10-30
+# Libadwaita audit fixes ADW-R1–R3 — 2026-10-30
+
+Agent: Codex (GPT-6). Base: `8722b7a`. User requested fixing all three findings.
+**All three findings are resolved with regression coverage.** The original audit
+below records the pre-fix behavior and source locations at the audited commit.
+
+- **ADW-R1:** the state loader requires a real boolean when
+  `created_import_file` is present. Strings, numbers, null, arrays and objects
+  cause status/enable/disable to refuse inconsistent state with all four managed
+  files' contents/modes intact. Older state lacking the flag keeps the existing
+  fallback; both originally present empty and originally absent files restore
+  correctly. The new malformed-state test failed before the fix; all **17**
+  activation/recovery tests now pass.
+- **ADW-R2:** the native fixture rasterizes real CSS backgrounds with their
+  ancestors for window/header/card/view/sidebar/dialog/popover roles and asserts
+  opaque pixels, in addition to variable/geometry checks. The text-view sample
+  includes the actual internal text node. Surface PNGs and measured RGB values
+  are retained with each case. Focus contrast reads the actual adjacent image
+  pixel, rather than a declared color variable. All **22** native cases pass;
+  the Vapor focus ring measures **3.50:1** against actual RGB 36,39,44.
+  All **15** deliberate bad profiles fail their intended assertion: the original
+  grey/green window reproductions, other wrong surfaces and a separate local
+  focus-background mutation that passes neutral-surface checks but fails the
+  3:1 focus gate. The production color profile needs no changes.
+- **ADW-R3:** resolve source/destination paths and reject destinations inside
+  the copied `usr` tree before mkdir or copy. This includes normalized paths
+  and parent-symlink aliases; ordinary repository `build/` and external staging
+  still work. The new rejection test failed on the original implementation
+  with copy mocked to stop immediately, avoiding recursion. All **eight**
+  staging tests pass and run as part of the standard suite.
+
+The complete `tools/check-gtk4.py` run passes, including native/plain GTK,
+Widget Factory, overlay coexistence, libadwaita, activation, deliberate
+regressions and staging-path tests. The existing Broadway timing-warning
+allowance and headless coverage limits still apply. Evidence and baseline
+hashes: `/tmp/vapor-adw-fixes-9dw66ri8`; reproduction details and work sequence:
+[gtk4port.md](gtk4port.md), section 17.
+
+The complete staged payload matches the source files, including documentation
+and executable helper mode 0755. An isolated staged-helper enable/status/disable
+round trip preserves the existing KDE import and mode. All ten plain-GTK PNGs
+are byte-identical with/without the overlay. Final SHA-256 comparisons confirm
+existing usr assets, the color profile, terminal themes and AUR files are intact.
+
+This fixes the three demonstrated defects without promoting the feature to a
+release. Live fractional/GPU, broader app/accessibility/performance and Flatpak
+validation remain open. Existing theme/profile/artwork/terminal files and the
+published AUR recipe are unchanged; the real user overlay remains disabled.
+
+---
+
+# Historical libadwaita implementation audit — 2026-10-30
 
 Reviewer: Codex (GPT-6). Audited commit:
 `83b5736ae68399cb84a6a7455090854e1bb57003`. Starting working tree was clean.
@@ -6,7 +57,8 @@ Scope: color profile, native activation/recovery, automated acceptance tests,
 independent-app probe and package staging. This is a review; no implementation
 or theme fixes were applied.
 
-**Result: three reproducible P2 findings remain open.** The unmodified profile
+**Result at review time: three reproducible P2 findings, since resolved above.**
+The unmodified profile
 passes the current 22-case native suite, 15 activation tests and six mutation
 controls, and ordinary package staging succeeds. Those passes do not cover the
 edge cases below. I recommend addressing these before a package release.

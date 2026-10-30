@@ -339,6 +339,7 @@ def main():
     subprocess.run(command,check=True)
     subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-libadwaita-activation.py')],check=True)
     subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-libadwaita-regressions.py')],check=True)
+    subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-package-staging.py')],check=True)
     print('GTK 4 native/Widget Factory, libadwaita, coexistence, activation and negative controls: PASS',flush=True)
 
 

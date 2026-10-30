@@ -164,6 +164,33 @@ class Activation(unittest.TestCase):
         self.run_helper('disable', ok=False)
         self.assertEqual(path.read_bytes(), before)
 
+    def test_invalid_created_import_flag_changes_nothing(self):
+        self.original(data=b'');self.run_helper('enable')
+        statepath=self.directory/NAMES[2]
+        valid=json.loads(statepath.read_text())
+        for value in ('false','true',0,1,None,[],{}):
+            with self.subTest(value=value):
+                state=dict(valid,created_import_file=value)
+                statepath.write_text(json.dumps(state))
+                before={name:MODULE['inspect'](self.directory/name) for name in NAMES}
+                for action in ('status','enable','disable'):
+                    result=self.run_helper(action,ok=False)
+                    self.assertIn('Managed state/backup is inconsistent',result.stderr)
+                    self.assertEqual(before,{name:MODULE['inspect'](self.directory/name) for name in NAMES})
+
+    def test_legacy_state_without_created_flag(self):
+        for existed in (True,False):
+            with self.subTest(original_exists=existed):
+                if existed:self.original(data=b'')
+                self.run_helper('enable')
+                statepath=self.directory/NAMES[2]
+                state=json.loads(statepath.read_text());del state['created_import_file']
+                statepath.write_text(json.dumps(state))
+                self.run_helper('disable')
+                self.assertEqual((self.directory/'gtk.css').exists(),existed)
+                if existed:(self.directory/'gtk.css').unlink()
+                self.directory.rmdir()
+
     def test_edited_or_duplicate_import_refused(self):
         path = self.original();self.run_helper('enable')
         path.write_bytes(BLOCK+path.read_bytes())
