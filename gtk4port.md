@@ -830,3 +830,26 @@ unchanged. No real overlay activation or package release is part of this work.
 Native libadwaita remains opt-in and unreleased. The established live-GPU,
 fractional scaling, accessibility, broader application/performance and Flatpak
 work remains open. Existing AUR version/tag/checksum are unchanged.
+
+## 18. Enable the live overlay and record Mission Center feedback — 2026-10-30
+
+The user explicitly requested activating the overlay to test it on their system.
+Read the activation guidance and helper, confirmed the repository was clean,
+then ran status and enable --dry-run. Status was disabled and the preview listed
+only the four managed GTK 4 configuration files.
+
+Enabled through tools/vapor-libadwaita. Compared the live gtk.css against the
+managed import plus its original bytes, verified the backup and original mode,
+checked that the copied profile matched libadwaita/vapor.css, and confirmed KDE
+colors.css was unchanged. Status now reports enabled with no profile update
+available. The helper's backup remains available for disable/recovery.
+
+The user subsequently reported Mission Center was "looking great". Confirmed
+the running executable is /usr/bin/missioncenter and its installed native
+package is mission-center 1.2.0-1.1. Added this successful user-reported visual
+check to audit.md and updated the plan's live activation/application status.
+The report does not specify a display scale, individual pages or performance
+measurements. Those broader checks and Flatpak remain separate work.
+
+This follow-up changes documentation only. The previous automated suite results
+remain applicable; no theme code, package release or AUR update was needed.

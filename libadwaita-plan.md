@@ -11,8 +11,8 @@ Base: `5dcae96`. Evidence and detailed findings: [audit.md](audit.md).
 | --- | --- |
 | 1: separate profile | Implemented in libadwaita/vapor.css; 27 role definitions, guarded dark/normal contrast |
 | 2: standard tests | 22 native Adw cases with painted-surface/adjacent-focus checks, 15 negative controls, native GTK/Widget Factory coexistence; broader widget inventory/accessibility remains |
-| 3: activation | Implemented helper; 17 preservation/recovery tests pass, including malformed and legacy state; actual user overlay remains disabled |
-| 4: applications/displays/performance | Upstream Adwaita demo 1.10.0 and GNOME Font Viewer 49.0 startup comparisons pass; short idle observations recorded; live fractional/GPU and broader interaction remain |
+| 3: activation | Implemented helper; 17 preservation/recovery tests pass, including malformed and legacy state; enabled on the user's system at their request, preservation verified |
+| 4: applications/displays/performance | Upstream Adwaita demo 1.10.0 and GNOME Font Viewer 49.0 startup comparisons pass; user reports Mission Center 1.2.0 looks great with the live overlay; broader display/interaction/accessibility/performance validation remains |
 | 5: Flatpak | Deferred: no local Flatpak executable/runtime; no support claim |
 | 6: packaging | Working-tree staging tool includes profile/helper/docs; eight staging tests cover source containment and allowed destinations; published 1.0.3 recipe/tag/checksum unchanged pending a new release |
 
