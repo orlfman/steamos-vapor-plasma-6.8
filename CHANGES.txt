@@ -1,0 +1,72 @@
+SteamOS Vapor/VGUI KDE theme, fixed for Plasma 6.8
+Based on steamdeck-kde-presets 3.9.4-2 (original package in ../steamos), theme files only.
+Made 2026-10-29, audited against Plasma 6.8.2 / Qt 6.12 / GTK 3.24.
+
+Fixes:
+- com.valve.vgui.desktop splash: Splash.qml replaced with the Vapor Deck one
+  (same file except it uses Kirigami.Units instead of Plasma 5's PlasmaCore.Units,
+  which no longer exists, so the spinner and fade-in were broken).
+- All three global themes, contents/defaults:
+  - removed [kwinrc][WindowSwitcher] LayoutName=org.kde.breeze.desktop
+    (that switcher was removed in Plasma 6; applying the theme overwrote your
+    Alt+Tab choice with it and KWin fell back to Thumbnail Grid)
+  - removed [kwinrc][DesktopSwitcher] (feature removed in Plasma 6)
+  - removed [KSplash] Theme=com.valve.vapor (wrong section and ID, never read)
+
+Improvements:
+- Vapor GTK theme (gtk-3.20/gtk.css): removed three style properties GTK 3.24
+  rejects (-GtkButton-child-displacement-x/-y, -GtkScrolledWindow-scrollbars-within-bevel),
+  so GTK 3 apps no longer print three warnings at startup. No visual change.
+- Wallpaper: "Steam Deck Logo Default.jpg" is now a Plasma wallpaper package,
+  wallpapers/SteamDeckLogo (contents/images/3840x2400.jpg). All three global themes
+  set [Wallpaper] Image=SteamDeckLogo, the Plasma 6 way: it is the default for
+  desktops without a wallpaper of their own, and it works from /usr/share or
+  ~/.local/share. The org.kde.plasma.folder.js setup scripts that hardcoded
+  /usr/share/wallpapers/... were removed from Vapor Deck and VGUI.
+- VGUI.colors: error/warning/success text was plain white in every group. Now
+  255,160,140 / 246,204,96 / 165,222,120 in Window, View, Button, Tooltip, Header
+  and Complementary (contrast >= 3.8:1 on window, >= 5:1 on views). Selection
+  keeps white, which reads best on the gold selection color.
+- com.valve.vapor.desktop: now has the Vapor Deck splash (contents/splash),
+  so applying plain Vapor sets the Steam Deck logo splash instead of keeping
+  whatever splash was there.
+- VGUI.colors [Colors:Header][Inactive]: was untouched Breeze Dark (grey 42,46,50,
+  blue accents), so unfocused KDE app toolbars turned grey. Now the same olive
+  values as [Colors:Header], matching VGUI's title bars (same olive focused or not).
+- Removed icons/hicolor/scalable/places/distributor-logo.svg (a symlink to
+  distributor-logo-steamdeck.svg, unused by the themes; installed, it would make the
+  generic distro logo the Steam Deck one).
+- Removed SteamOS-only icons used by the desktop entries left out of this copy:
+  actions/steam-gaming-return.svg, actions/steamdeck-gaming-return.svg,
+  actions/gaming-return.svg (symlink) and apps/install-firefox.svg. Only
+  places/distributor-logo-steamdeck.svg (Vapor Deck/VGUI start menu icon) is left.
+- konsole/Vapor.colorscheme [Color0]: 21,27,33 -> 77,87,97 (#4d5761). The old black
+  equaled the background, so black text was invisible; now matches the Alacritty theme.
+- Wallpaper JPGs: permissions 755 -> 644.
+- Removed GTK 2 support: themes/Vapor/gtk-2.0 and the 79 images in
+  themes/Vapor/assets only it used. GTK 3 (gtk-3.18, gtk-3.20) and the 166 remaining
+  assets are unchanged.
+- gtk-3.20/gtk.css: the hovered indeterminate check/radio in popovers and menus
+  pointed at check-mixed.png / radio-mixed.png (+@2), which don't exist, so the box
+  went blank. Now check-mixed-active / radio-mixed-active, like the checked:hover
+  rules next to it. gtk-3.20 now has no missing images (gtk-3.18 still references 12
+  missing scrollbar images, but GTK 3.24 never loads that folder).
+
+Added:
+- alacritty/vapor.toml: Alacritty theme matching the Vapor Konsole scheme
+  (normal/bright/dim = Konsole Color/Intense/Faint, same hex values), with
+  selection, search, hints and vi cursor in the Vapor Plasma selection blue.
+  Normal black is #4d5761 (2.4:1 on the background), same as the fixed Konsole
+  scheme (Valve's #151b21 equals the background and made black text invisible).
+  Use: import = ["<path>/vapor.toml"] under [general] in alacritty.toml.
+  Konsole's 0.9 opacity is not part of it ([window] opacity is a window setting).
+
+Left out of the copy: SteamOS system files (/etc configs, scripts, systemd units,
+avatars, kickoff actions, service menus, Steam desktop entries).
+
+Notes:
+- Vapor GTK theme is GTK 3 only (no GTK 2 or GTK 4).
+- No fullscreen preview images (System Settings shows only the small thumbnail).
+
+Install: see README.md (AUR package plasma6-themes-steamos-vapor-fixed, or copy
+usr/share into ~/.local/share or /usr/share).

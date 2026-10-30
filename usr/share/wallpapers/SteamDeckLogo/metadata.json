@@ -1,0 +1,13 @@
+{
+    "KPackageStructure": "Wallpaper/Images",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Valve"
+            }
+        ],
+        "Id": "SteamDeckLogo",
+        "License": "GPLv2+",
+        "Name": "Steam Deck Logo"
+    }
+}

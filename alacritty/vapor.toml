@@ -1,0 +1,73 @@
+# Vapor: Alacritty colors matching the SteamOS Vapor Konsole scheme (Vapor.colorscheme)
+# and the Vapor Plasma color scheme. normal = Konsole ColorN, bright = ColorNIntense,
+# dim = ColorNFaint, same as Konsole uses them.
+# Selection and search use the Vapor Plasma selection/focus colors. Konsole's 0.9
+# opacity is a window setting, so set [window] opacity in alacritty.toml.
+
+[colors.primary]
+background = '#151b21'
+foreground = '#eff0f1'
+bright_foreground = '#fcfcfc'
+dim_foreground = '#dce6e7'
+
+[colors.cursor]
+text = '#151b21'
+cursor = '#eff0f1'
+
+[colors.vi_mode_cursor]
+text = '#151b21'
+cursor = '#569fcc'
+
+[colors.selection]
+text = '#1f1f26'
+background = '#569fcc'
+
+[colors.search.matches]
+foreground = '#eff0f1'
+background = '#346c92'
+
+[colors.search.focused_match]
+foreground = '#1f1f26'
+background = '#569fcc'
+
+[colors.hints.start]
+foreground = '#1f1f26'
+background = '#fdbc4b'
+
+[colors.hints.end]
+foreground = '#1f1f26'
+background = '#569fcc'
+
+[colors.footer_bar]
+foreground = '#eff0f1'
+background = '#346c92'
+
+[colors.normal]
+black = '#4d5761'  # Valve's Konsole scheme used #151b21 (= background, invisible)
+red = '#ed1515'
+green = '#7ea64b'
+yellow = '#f67400'
+blue = '#1d99f3'
+magenta = '#9b59b6'
+cyan = '#e3ffc2'
+white = '#eff0f1'
+
+[colors.bright]
+black = '#7f8c8d'
+red = '#c0392b'
+green = '#6eb63f'
+yellow = '#fdbc4b'
+blue = '#3daee9'
+magenta = '#8e44ad'
+cyan = '#8dbd55'
+white = '#fcfcfc'
+
+[colors.dim]
+black = '#31363b'
+red = '#783228'
+green = '#5c9834'
+yellow = '#b65619'
+blue = '#1b668f'
+magenta = '#614a73'
+cyan = '#5b7638'
+white = '#63686d'
