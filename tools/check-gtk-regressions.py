@@ -36,6 +36,8 @@ def worker(args):
     from PIL import Image
     Gtk.init([]) if args.gtk == '3.0' else Gtk.init()
     Gtk.Settings.get_default().set_property('gtk-enable-animations',False)
+    if args.gtk=='4.0' and args.user_css:
+        Gtk.Settings.get_default().set_property('gtk-interface-color-scheme',Gtk.InterfaceColorScheme.DARK)
     window=Gtk.OffscreenWindow() if args.gtk=='3.0' else Gtk.Window()
     grid=Gtk.Grid(row_spacing=12,column_spacing=12)
     grid.set_column_homogeneous(True)
@@ -149,15 +151,21 @@ def main():
     parser.add_argument('--gtk',required=True,choices=('3.0','4.0'))
     parser.add_argument('--theme',required=True,type=Path)
     parser.add_argument('--output',type=Path)
+    parser.add_argument('--user-css',type=Path,help='stage a GTK 4 libadwaita overlay for coexistence checks')
     parser.add_argument('--worker',action='store_true',help=argparse.SUPPRESS)
     parser.add_argument('--state',choices=('normal','backdrop'),default='normal',help=argparse.SUPPRESS)
     args=parser.parse_args()
     if args.worker:worker(args);return
+    if args.user_css and args.gtk!='4.0':parser.error('--user-css is for GTK 4 only')
     with tempfile.TemporaryDirectory(prefix='vapor-behavior-check-') as name:
         root=Path(name);env=os.environ.copy()
         for variable,folder in (('HOME','home'),('XDG_CONFIG_HOME','config'),('XDG_DATA_HOME','data'),('XDG_CACHE_HOME','cache'),('XDG_RUNTIME_DIR','runtime'),('XDG_STATE_HOME','state')):
             (root/folder).mkdir(mode=0o700);env[variable]=str(root/folder)
         shutil.copytree(args.theme.resolve(),root/'data/themes/Vapor')
+        if args.user_css:
+            subprocess.run([sys.executable,'-I',str(Path(__file__).resolve().parent/'vapor-libadwaita'),'enable',
+                            '--config-home',str(root/'config'),'--profile',str(args.user_css.resolve()),'--json'],
+                           capture_output=True,text=True,check=True)
         env.update({'XDG_CONFIG_DIRS':str(root/'config'),'XDG_DATA_DIRS':'/usr/share','GTK_THEME':'Vapor','GDK_BACKEND':'broadway','BROADWAY_DISPLAY':':1','GSK_RENDERER':'cairo','GTK_A11Y':'none','NO_AT_BRIDGE':'1','GTK_MODULES':'','GTK3_MODULES':'','GSETTINGS_BACKEND':'memory','DBUS_SESSION_BUS_ADDRESS':'unix:path=/nonexistent','LC_ALL':'C.UTF-8','GDK_SCALE':'1','GDK_DPI_SCALE':'1'})
         for variable in ('DISPLAY','WAYLAND_DISPLAY','GTK_PATH','GTK_DEBUG','GSK_DEBUG','GDK_DEBUG','GTK_DATA_PREFIX'):env.pop(variable,None)
         daemon='broadwayd' if args.gtk=='3.0' else 'gtk4-broadwayd'
@@ -171,6 +179,7 @@ def main():
             output=args.output.resolve() if args.output else root/'captures';output.mkdir(parents=True,exist_ok=True)
             for state in ('normal','backdrop'):
                 command=[sys.executable,'-I',str(Path(__file__).resolve()),'--worker','--gtk',args.gtk,'--theme',str(root/'data/themes/Vapor'),'--state',state,'--output',str(output)]
+                if args.user_css:command += ['--user-css',str(args.user_css.resolve())]
                 result=subprocess.run(command,env=env,capture_output=True,text=True,timeout=15)
                 if result.returncode or result.stderr:raise RuntimeError(result.stdout+result.stderr)
                 print(result.stdout.strip())

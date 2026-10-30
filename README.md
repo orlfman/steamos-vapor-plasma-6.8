@@ -17,6 +17,7 @@ shortcuts) are left out.
 | Vapor and VGUI color schemes, plus Union versions | `usr/share/color-schemes` |
 | Vapor GTK 3.24 theme | `usr/share/themes/Vapor/gtk-3.0`, `gtk-3.24` |
 | Vapor GTK 4 theme, initial (plain GTK 4 apps; libadwaita apps ignore themes) | `usr/share/themes/Vapor/gtk-4.0` |
+| Optional native libadwaita color profile (unreleased) | `libadwaita/vapor.css` |
 | Vapor Konsole profile and colors | `usr/share/konsole` |
 | Steam Deck wallpapers (`SteamDeckLogo` is the themes' default) | `usr/share/wallpapers` |
 | Steam Deck start menu icon | `usr/share/icons/hicolor` |
@@ -124,9 +125,10 @@ python3 -I tools/check-gtk4.py
 ```
 
 Both checkers also run inactive-label contrast and spin-background regressions.
-The GTK 4 checker also runs all ten installed Widget Factory application cases
-automatically. Application failures and missing application/build dependencies
-fail the standard suite; there is no automatic skip.
+The GTK 4 checker runs all ten installed Widget Factory application cases,
+repeats plain GTK checks with the libadwaita overlay present, and runs native
+libadwaita, reversible-activation and broken-profile checks automatically.
+Failures and missing dependencies fail the standard suite; no automatic skip.
 The GTK 3 checker additionally needs `python-pillow`. To prove the tests reject
 the original bugs on both toolkits, run:
 
@@ -136,10 +138,13 @@ python3 -I tools/test-gtk-regressions.py
 
 The GTK 4 checker needs `gtk4` **4.24 or later** (with gtk4-broadwayd, headers and
 pkg-config files), `gtk4-demos`, `pkgconf`, a C compiler, `dbus-run-session`,
-`python-gobject`, `python-pillow` and fonts. All display/config/output state is
+`python-gobject`, `python-pillow`, `libadwaita` **1.10 or later** with Adw GI data,
+and fonts. All display/config/output state is
 temporary; `--output /tmp/vapor-gtk4-preview` retains widget screenshots at the
 top level, behavior evidence under `behavior/` and application evidence under
-`widget-factory/`. A supplied `--theme` is used by every stage.
+`widget-factory/`. Overlay coexistence evidence is under `coexistence/` and
+native Adw evidence under `libadwaita/`. A supplied `--theme` is used by the plain
+GTK stages; `--libadwaita-profile FILE` selects the optional color profile.
 
 To run only the **GTK Widget Factory** application stage:
 
@@ -166,15 +171,27 @@ successful visual check for that configuration; automated checks remain at scale
 
 Released in 1.0.3 as initial support. Broader focus/popup interaction, other
 scaling/display configurations, accessibility, animation/performance and wider
-application coverage still need validation. Most GTK 4 apps use libadwaita,
-which ignores GTK themes; this theme applies to plain GTK 4 apps when Vapor
-is the selected GTK theme.
+application coverage still need validation. The normal GTK theme applies to
+plain GTK 4 apps; libadwaita uses the separate optional color profile below.
 
-Libadwaita investigation: [audit.md](audit.md) records successful isolated
-color-overlay experiments and their limits. [libadwaita-plan.md](libadwaita-plan.md)
-proposes a separate, opt-in Vapor color profile, preserving Adwaita layouts and
-existing user CSS. That profile is planned; this package does not yet ship or
-activate it.
+## Optional libadwaita colors (unreleased)
+
+The working tree includes an initial native libadwaita profile that matches
+Vapor's dark surfaces and accent/text pair while retaining Adwaita's layouts.
+It preserves light/high-contrast styling and existing KDE user CSS. It requires
+GTK 4.24+ and libadwaita 1.10+; it is not included in the current 1.0.3 AUR release.
+
+From the checkout, preview activation with
+`python3 -I tools/vapor-libadwaita enable --dry-run`. Explicit enable/disable,
+requirements and limits are in [LIBADWAITA.md](LIBADWAITA.md). Installing or
+selecting the normal global theme does not activate this overlay automatically.
+
+The standard suite includes 22 native Adw cases, 15 activation/recovery tests
+and six deliberately broken-profile tests. Matching Adwaita demo and independent
+GNOME Font Viewer startup checks also pass. Live fractional scaling, broader
+app/accessibility/performance testing and Flatpak remain separate validation.
+See [audit.md](audit.md), [libadwaita-plan.md](libadwaita-plan.md) and
+[gtk4port.md](gtk4port.md) for evidence and remaining work.
 
 ## License
 

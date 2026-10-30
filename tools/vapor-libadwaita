@@ -1,0 +1,228 @@
+#!/usr/bin/env python3
+"""Enable, disable or inspect the optional Vapor libadwaita color overlay.
+
+Edits only an explicitly managed import and sibling profile/state/backup files.
+Uses XDG_CONFIG_HOME by default. No desktop settings or Flatpak permissions change.
+"""
+import argparse
+import contextlib
+import ctypes
+import fcntl
+import hashlib
+import json
+import os
+from pathlib import Path
+import stat
+import sys
+import tempfile
+
+BLOCK = (b'/* BEGIN steamos-vapor libadwaita */\n'
+         b'@import url("vapor-libadwaita.css");\n'
+         b'/* END steamos-vapor libadwaita */\n')
+START = b'/* BEGIN steamos-vapor libadwaita */'
+END = b'/* END steamos-vapor libadwaita */'
+NAMES = ('gtk.css', 'vapor-libadwaita.css', '.vapor-libadwaita.json',
+         '.vapor-libadwaita.gtk.css.backup')
+
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def check_runtime():
+    """Read library versions without GTK initialization or desktop access."""
+    versions = {}
+    for name, soname, prefix, minimum in (
+            ('GTK', 'libgtk-4.so.1', 'gtk', (4, 24)),
+            ('libadwaita', 'libadwaita-1.so.0', 'adw', (1, 10))):
+        library = ctypes.CDLL(soname)
+        version = []
+        for component in ('major', 'minor', 'micro'):
+            function = getattr(library, prefix + '_get_' + component + '_version')
+            function.restype = ctypes.c_uint
+            function.argtypes = []
+            version.append(function())
+        if tuple(version[:2]) < minimum:
+            raise ValueError(f'{name} {minimum[0]}.{minimum[1]} or newer is required; found {version}.')
+        versions[name] = '.'.join(map(str, version))
+    return versions
+
+
+def inspect(path):
+    """Refuse links and foreign/nonregular files instead of following them."""
+    if path.is_symlink():
+        raise ValueError(f'Refusing to manage a symlink: {path}')
+    if not path.exists():
+        return None
+    info = path.stat()
+    if not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid():
+        raise ValueError(f'Expected a regular file owned by this user: {path}')
+    return path.read_bytes(), stat.S_IMODE(info.st_mode)
+
+
+def atomic_write(path, data, mode):
+    descriptor, name = tempfile.mkstemp(prefix='.vapor-write-', dir=path.parent)
+    try:
+        with os.fdopen(descriptor, 'wb') as stream:
+            stream.write(data)
+            stream.flush()
+            os.fchmod(stream.fileno(), mode)
+            os.fsync(stream.fileno())
+        os.replace(name, path)
+    finally:
+        if os.path.exists(name):
+            os.unlink(name)
+
+
+def transaction(directory, before, changes):
+    """Rollback file contents/modes if any write or removal fails."""
+    try:
+        for name, value in changes.items():
+            path = directory / name
+            if value is None:
+                path.unlink(missing_ok=True)
+            else:
+                atomic_write(path, *value)
+    except BaseException:
+        for name in reversed(list(changes)):
+            path = directory / name
+            old = before[name]
+            if old is None:
+                path.unlink(missing_ok=True)
+            else:
+                atomic_write(path, *old)
+        raise
+
+
+def load_state(files):
+    value = files[NAMES[2]]
+    if value is None:
+        return None
+    try:
+        state = json.loads(value[0])
+        if state['schema'] != 1 or not isinstance(state['original_exists'], bool):
+            raise ValueError('Invalid state schema')
+        for key in ('original_sha256', 'profile_sha256'):
+            if not isinstance(state[key], str) or len(state[key]) != 64:
+                raise ValueError('Invalid state digest')
+            int(state[key], 16)
+        backup = files[NAMES[3]]
+        if backup is None or digest(backup[0]) != state['original_sha256']:
+            raise ValueError('Invalid backup')
+    except (ValueError, KeyError, TypeError):
+        raise ValueError('Managed state/backup is inconsistent; preserve it for manual recovery.') from None
+    return state
+
+
+def manage(directory, profile, action, dry_run):
+    if directory.is_symlink():
+        raise ValueError(f'Refusing a linked gtk-4.0 directory: {directory}')
+    if directory.exists() and not directory.is_dir():
+        raise ValueError(f'Expected a configuration directory: {directory}')
+    files = {name: inspect(directory / name) for name in NAMES}
+    state = load_state(files)
+    css = files['gtk.css'][0] if files['gtk.css'] else b''
+    blocks = css.count(BLOCK)
+    if css.count(START) != blocks or css.count(END) != blocks or blocks > 1:
+        raise ValueError('Managed import was edited or duplicated; preserve gtk.css for manual recovery.')
+    profile_bytes = profile.read_bytes() if action == 'enable' else None
+    status = 'disabled'
+    if state:
+        current = files[NAMES[1]]
+        status = ('enabled' if blocks == 1 and current else 'inactive_missing_import_or_profile')
+        if current and digest(current[0]) != state['profile_sha256']:
+            raise ValueError('Managed profile has local edits; refusing to overwrite or delete it.')
+    elif blocks or any(files[name] for name in NAMES[1:]):
+        raise ValueError('Unowned managed-name files/import exist; refusing to replace them.')
+    result = {'action': action, 'status': status, 'config_directory': str(directory),
+              'dry_run': dry_run, 'changes': []}
+    if action == 'status':
+        if state and profile.is_file():
+            result['profile_update_available'] = digest(profile.read_bytes()) != state['profile_sha256']
+        return result
+    changes = {}
+    if action == 'enable':
+        if not state:
+            original = css
+            state = {'schema': 1, 'original_exists': files['gtk.css'] is not None,
+                     'original_sha256': digest(original), 'profile_sha256': digest(profile_bytes)}
+            changes[NAMES[3]] = original, 0o600
+        state['profile_sha256'] = digest(profile_bytes)
+        if not blocks:
+            state['created_import_file'] = files['gtk.css'] is None
+        changes[NAMES[1]] = profile_bytes, 0o644
+        changes[NAMES[2]] = (json.dumps(state, indent=2) + '\n').encode(), 0o600
+        if not blocks:
+            changes['gtk.css'] = BLOCK + css, files['gtk.css'][1] if files['gtk.css'] else 0o644
+        result['status'] = 'enabled'
+    elif state:
+        if blocks:
+            remaining = css.replace(BLOCK, b'', 1)
+            changes['gtk.css'] = ((remaining, files['gtk.css'][1])
+                                  if remaining or not state.get('created_import_file', not state['original_exists']) else None)
+        for name in NAMES[1:]:
+            changes[name] = None
+        result['status'] = 'disabled'
+    changes = {name: value for name, value in changes.items() if files[name] != value}
+    for name in changes:
+        old = files[name]
+        if old is not None and not old[1] & 0o222:
+            raise ValueError(f'Refusing to replace a read-only file: {directory/name}')
+    if changes and directory.exists():
+        if not directory.stat().st_mode & 0o222 or not os.access(directory, os.W_OK):
+            raise ValueError(f'Configuration directory is not writable: {directory}')
+    result['changes'] = list(changes)
+    if not dry_run and changes:
+        directory.mkdir(parents=True, exist_ok=True)
+        transaction(directory, files, changes)
+    return result
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('action', choices=('enable', 'disable', 'status'))
+    parser.add_argument('--dry-run', action='store_true', help='describe changes without writing files')
+    parser.add_argument('--json', action='store_true', help='machine-readable result')
+    parser.add_argument('--config-home', type=Path, help='explicit configuration home (default: XDG_CONFIG_HOME)')
+    source_profile = Path(__file__).resolve().parent.parent / 'libadwaita/vapor.css'
+    parser.add_argument('--profile', type=Path, default=source_profile if source_profile.is_file()
+                        else Path('/usr/share/steamos-vapor/libadwaita/vapor.css'))
+    args = parser.parse_args()
+    config_home = args.config_home or Path(os.environ.get('XDG_CONFIG_HOME', str(Path.home()/'.config')))
+    if not config_home.is_absolute():
+        parser.error('Configuration home must be an absolute path.')
+    directory = config_home / 'gtk-4.0'
+    try:
+        if args.action == 'enable':
+            check_runtime()
+        # A directory lock avoids adding/removing a lock file and serializes
+        # cooperating operations. Re-read after taking it. No directory creation
+        # for dry-run/status; create only for actual enable.
+        if args.action == 'enable' and not args.dry_run:
+            if directory.is_symlink():
+                raise ValueError(f'Refusing a linked gtk-4.0 directory: {directory}')
+            directory.mkdir(parents=True, exist_ok=True)
+        with contextlib.ExitStack() as stack:
+            if directory.exists() and directory.is_dir() and not directory.is_symlink():
+                descriptor = os.open(directory, os.O_RDONLY | os.O_DIRECTORY)
+                stack.callback(os.close, descriptor)
+                fcntl.flock(descriptor, fcntl.LOCK_EX)
+            result = manage(directory, args.profile, args.action, args.dry_run)
+    except (OSError, ValueError) as error:
+        print(f'Vapor libadwaita: {error}', file=sys.stderr)
+        return 2
+    if args.json:
+        print(json.dumps(result))
+    else:
+        print(f"Vapor libadwaita: {result['status']} ({directory})")
+        if args.dry_run:
+            print('Dry run; files that would change: ' + (', '.join(result['changes']) or 'none'))
+        elif result['changes']:
+            print('Restart GTK 4 applications to pick up the change.')
+        if result['status'].startswith('inactive'):
+            print('Managed import/profile is missing; enable again to reapply without replacing other CSS.')
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

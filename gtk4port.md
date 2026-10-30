@@ -587,3 +587,146 @@ widget geometry is a later decision with a larger maintenance/test scope.
 No theme CSS/images, existing tools, installed settings, release or AUR metadata
 changed. Existing software suites were not repeated for documentation-only edits.
 The scratch feasibility assertions are the only new runtime checks this turn.
+
+
+## 15. Implement the initial native libadwaita profile — 2026-10-30
+
+User authorized engaging the port. Starting tree was clean at 4694f03. Saved
+tracked-file hashes under /tmp/vapor-libadwaita-port-3fzbtni2/before.json.
+Implemented the native color-profile milestone; Flatpak and broader live
+validation remain explicit later work. The actual desktop overlay stays disabled.
+
+### Profile and activation
+
+- Added libadwaita/vapor.css with 27 documented color-role variables under
+  dark/normal-contrast guards. Retained upstream derived foreground accents,
+  semantic colors, geometry, opacity helpers, fonts and motion. No import of
+  the complete old GTK theme and no shared PNG/CSS/palette changes.
+- Added tools/vapor-libadwaita: enable/disable/status/dry-run/JSON; default
+  XDG_CONFIG_HOME or explicit test configuration/profile; GTK/libadwaita
+  version inspection through stdlib ctypes without initializing GTK/display.
+- Managed relative import and sibling profile keep KDE colors.css and unrelated
+  contents intact. Backup/state checksums, ownership/regular-file checks,
+  symlink/read-only/collision refusal, directory locking and transactional
+  rollback support safe ordinary operation. Original bytes/modes and later
+  user edits are preserved. Status detects externally removed imports and
+  modified owned copies rather than overwriting them silently.
+- Added tools/test-libadwaita-activation.py. Initial 13 scenarios passed; review
+  added deleted-config/reapply and read-only-directory cases. Fixed reapply
+  bookkeeping to remove only a newly created empty gtk.css on disable, even
+  after an older config had been deleted externally. All 15 pass, including
+  one deliberately injected write failure with exact file/mode restoration.
+
+### Native fixture and transport
+
+- Added tools/check-libadwaita.py. Real Adw windows/toolbar, preference/action/
+  entry/password/switch/combo/expander/spin/button rows, native buttons/checks,
+  list/text selection, banner/status/toast container and NavigationSplitView.
+  Actual dialogs, popovers and PopoverMenu custom content exercise popup trees.
+- Loads the actual profile through the activation helper into private user
+  CSS beside an existing KDE-style import. A separate parser observes errors;
+  query-label CSS consumes real inherited variables without installing the
+  profile provider through a different mechanism. Baseline comparisons use
+  the same controls, system accent and software display environment.
+- Checks computed and rendered accent/text, selected-row contrast, effective
+  visible focus/ring contrast, disabled guards, mapped surfaces, allocations,
+  upstream semantic colors and unchanged light/high-contrast image pixels.
+  Captures render over the real window background, with explicit scaled export
+  and recorded native widget scale. Runtime dark/light/dark transitions run
+  within one process rather than being inferred from fresh launches.
+- First baseline contrast gate failed because upstream white/#3584e4 is 3.77:1.
+  Kept baseline unchanged; the >=4.5:1 suggested-text requirement applies to
+  the recolored profile, measured at 5.64:1. Selected row measured 7.84:1 in
+  the focus case; its visible ring measured 3.50:1. Disabled text is distinct.
+- The first dialog capture at 650 ms found an actual mapped Dialog with its
+  floating-sheet content still hidden. Public allocation/frame requests did
+  not complete it. Matching GTK/Adw source explains no-client Broadway frame
+  throttling and Adw's two-tick opening sequence; no theme change was needed.
+- Added tools/broadway-test-client.py, an original small stdlib implementation
+  of the GTK 4.24.1 Unix-socket/WebSocket transport replies. Handles surface
+  configuration and roundtrip acknowledgments, discards renderer payloads and
+  fails on unknown operations; no keyboard/mouse/application actions are sent.
+  Transport-only timestamps follow the upstream client's zero last-input time.
+- Cairo as the native display renderer plus acknowledgments initially produced
+  backend timing errors/connection loss. Switched native display rendering to
+  GSK Broadway while retaining a dedicated Cairo renderer for PNG exports.
+  Actual dialog/menu content now maps normally. No browser dependency was added.
+- Two exact frame-timing diagnostics occur with unmodified baselines. Retain
+  and count them, reject every other stderr line; --strict rejects them too.
+  Do not claim warning-free strict-mode passes. A full 22-case run retained
+  26 such messages; counts are timing-dependent, not a theme acceptance target.
+- Initially setting backdrop immediately before paint invalidated its cached
+  content: computed colors were correct but the pixel check saw the bare window
+  background. Set synthetic state early and allow native redraw before capture;
+  pixel assertions then pass. Popup/dialog assertions are retained, not skipped.
+
+### Integration and regression proof
+
+- Standard tools/check-gtk4.py runs native fixtures/behavior/Widget Factory,
+  repeats those plain GTK stages with the overlay activated in temporary user
+  CSS, then runs all 22 Adw cases, activation tests and six profile mutations.
+  New --user-css staging options in Widget Factory/behavior runners exercise
+  that same path. The behavior worker explicitly requests dark appearance in
+  overlay mode, so it tests the active guard rather than an inert light state.
+- Added tools/test-libadwaita-regressions.py. Wrong blue/foreground, missing
+  activation, either missing appearance guard and invalid CSS all fail their
+  intended ADW assertions. Disposable copies only. Existing six R1/R2 controls
+  still reject their intended GTK 3/4 regressions.
+- Complete standard GTK 4 run passes, with all ten original native captures
+  pixel-identical to their overlay-enabled equivalents. Twenty Widget Factory
+  cases run in total (ten bare, ten overlay). Complete GTK 3 suite passes.
+- Integer scale-2 cases report native widget scale 2 and doubled capture sizes.
+  Focus case verifies actual FOCUS_VISIBLE; it remains a synthetic public-API
+  focus test rather than desktop keyboard-input/Wayland certification.
+
+### Independent applications and performance observations
+
+- Downloaded official libadwaita 1.10.0 and GNOME Font Viewer 49.0 source archives
+  to the scratch directory. Built the matching demo's public-API sources and
+  resources against the installed library, avoiding a new runtime/Sass build.
+  Built Font Viewer with Meson/Ninja; existing development dependencies suffice.
+  The initially considered Calculator needs absent GtkSourceView development
+  files, so used this independent libadwaita app instead of changing the system.
+- Added tools/check-libadwaita-app.py and tools/libadwaita-app-probe.c for optional
+  repeatable startup checks of a selected actual binary/app ID. The temporary
+  helper loads only into that private child, queries inherited color roles via
+  temporary public CSS, removes the query styling, captures content and quits.
+  No font installation, app actions or system application installation occurs.
+- Baseline/profile pairs pass for both apps, with 196 mapped widgets for the
+  demo and 76 for Font Viewer. Startup evidence does not cover every demo page,
+  application menu or custom drawing operation.
+- Added optional bounded idle sampling after capture/settling using process
+  CPU and monotonic wall clocks. Over ~2 seconds: demo baseline/profile
+  0.548/0.558 ms CPU; Font Viewer 0.591/0.609 ms. These are small isolated
+  observations, not GPU, whole-desktop or statistical performance guarantees.
+
+### Packaging, documentation and remaining scope
+
+- Added tools/stage-package.py to prepare an empty payload directory with all
+  existing theme/terminal data, separate profile, executable helper and support
+  docs. Tested staging without installing/activating anything. The existing
+  AUR recipe still references v1.0.3; editing it to require files absent from
+  that old source tarball would be incorrect. A new release must update the
+  recipe/version/checksum and use the staged new payload in the normal way.
+- Added LIBADWAITA.md with opt-in/rollback/test/staging commands, version limits
+  and known API/custom-drawing behavior. Updated README, CHANGES, audit and
+  the plan's status table to distinguish the implemented native milestone from
+  remaining roadmap criteria. No Flatpak runtime is installed/validated here.
+- Broader tabs/overview/toast/secondary-sidebar interaction, screen readers,
+  reduced-motion interaction, live Wayland/GPU, physical 175%/mixed-monitor
+  checks and wider runtime versions remain. The user's earlier 4K/175% pass
+  is plain GTK coverage, not a newly claimed Adw application result.
+- Actual user overlay status is disabled, with no managed changes. Existing
+  GTK CSS/artwork, terminal schemes, published package recipe/assets and user
+  settings are preserved. Final scope/whitespace/staging checks accompany the
+  commit review; runtime evidence remains in the scratch directory above.
+
+Completion verification: final standard run passes all 22 Adw cases, 20 Widget
+Factory cases, native/behavior stages, 15 recovery tests and six profile
+mutations. Final scale/backdrop assertions pass; all ten plain GTK comparison
+images remain identical. GTK 3 and the older six mutation controls pass too.
+The staged payload contains 175 files; its executable/profile hashes and an
+isolated installed-helper enable/status/disable round trip pass. Python syntax,
+whitespace, local Markdown links and baseline scope checks pass. Private test
+processes are closed; a real-config dry-run leaves status disabled. Existing
+GTK/artwork/terminal assets and published AUR files match their starting hashes.

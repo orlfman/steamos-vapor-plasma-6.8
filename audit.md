@@ -1,3 +1,133 @@
+# Initial native libadwaita implementation — 2026-10-30
+
+Agent: Codex (GPT-6). Base: `4694f03`. User authorized engaging the port.
+**An initial native color compatibility profile is implemented and tested.**
+It is opt-in and unreleased. The existing full GTK stylesheets and artwork are
+unchanged; actual user activation remains disabled. Instructions:
+[LIBADWAITA.md](LIBADWAITA.md). Updated roadmap: [libadwaita-plan.md](libadwaita-plan.md).
+
+## Implemented behavior
+
+- `libadwaita/vapor.css` defines 27 accent/neutral roles under a dark-appearance,
+  normal-contrast guard. The solid accent pair is #569fcc/#1f1f26. Standalone
+  accents and semantic/error colors remain derived/upstream. No global geometry,
+  opacity, motion, font or image rules replace Adwaita's own styling.
+- `tools/vapor-libadwaita` supports enable/disable/status/dry-run/JSON and
+  explicit test config/profile paths. It reads library versions without GTK
+  initialization and requires GTK 4.24+/libadwaita 1.10+. Adds a managed relative
+  user-CSS import and sibling profile, preserving KDE colors and unrelated text.
+  Original bytes/mode, later edits and external rewrites are accounted for;
+  sidecar ownership/checksums, symlinks and read-only/collision checks prevent
+  ambiguous replacement. Ordinary write failures roll back file contents/modes.
+  Backups do not constitute a guarantee against power loss/concurrent editors.
+- `tools/stage-package.py` creates an inert complete payload in an empty staging
+  directory, including the helper, separate profile and docs. The published
+  version/tag/checksum and AUR recipe remain 1.0.3; releasing this new payload
+  requires a normal new-version recipe update. No install hook activates CSS.
+
+## Runtime verification
+
+The standard `tools/check-gtk4.py` now requires/runs the new checks automatically.
+Missing dependencies and all unexpected diagnostics fail; no silent skip.
+It checks the normal theme, then repeats native GTK widgets, R1/R2 behavior
+and all ten Widget Factory cases with the overlay staged as actual user CSS.
+Every original native GTK capture is pixel-identical in this comparison.
+
+`tools/check-libadwaita.py` passes **22 cases** on GTK 4.24.1/libadwaita 1.10.0:
+
+- Baseline/profile dark, light, dark high contrast and light high contrast.
+  Guarded fallback images are byte-equivalent in rendered RGB pixels.
+- Baseline/profile NavigationSplitView sidebar, actual open Adw.Dialog,
+  Gtk.Popover and Gtk.PopoverMenu, with queries inside the actual popup tree.
+- Synthetic backdrop/RTL/visible focus; the focused widget actually has
+  FOCUS_VISIBLE. Measured focus-ring contrast is **3.50:1**; the solid suggested
+  button is **5.64:1**, and a selected row is **7.84:1** in the focused sample.
+  These are fixture measurements, not universal contrast claims.
+- Baseline/profile at integer scale 2: widget scale factor is 2, and exported
+  pixel dimensions are doubled. Dark -> light -> dark changes work within one
+  process. Tested widget allocations and upstream semantic foregrounds match
+  baseline. The ordinary upstream blue/white suggested-button baseline is
+  3.77:1; the Vapor 4.5:1 acceptance gate applies to the recolored profile,
+  while light/high-contrast fallbacks are preserved rather than redesigned.
+
+Fifteen activation tests pass: exact KDE-import/mode round-trip, absent config,
+idempotence, no-write dry-run, later edits, external rewrites/reapply, deleted
+config/reapply, profile updates/local edits, symlinks/dangling links, read-only
+files/directories, name/marker collisions, bad backup and injected write failure.
+Six disposable mutations fail for the intended assertions: wrong blue, wrong
+foreground, missing import, missing dark guard, missing contrast guard and bad
+CSS. The earlier six GTK R1/R2 mutations and complete GTK 3 suite also pass.
+
+Independent application smoke checks use `tools/check-libadwaita-app.py` and a
+temporary C helper against the actual binaries, with private config/display/bus.
+Built upstream Adwaita demo **1.10.0** against the installed library and GNOME
+Font Viewer **49.0** in temporary directories; neither was system-installed.
+Baseline and profile startup captures/real computed colors pass for both
+(196 and 76 mapped internal widgets respectively). These tests do not invoke
+application actions or constitute comprehensive interaction coverage.
+
+Short, isolated process-CPU samples after capture/settling:
+
+| Application | Baseline CPU / ~2 seconds | Vapor CPU / ~2 seconds |
+| --- | --- | --- |
+| Adwaita demo 1.10.0 | 0.548 ms | 0.558 ms |
+| GNOME Font Viewer 49.0 | 0.591 ms | 0.609 ms |
+
+Both stay below 1 ms of process CPU in this small observation. The test client
+and display server run separately; this does not measure total desktop/GPU
+cost, interaction latency or statistical performance equivalence.
+
+## Test-display corrections and limitations
+
+Without a connected client, GTK Broadway throttles frames to roughly one per
+second. Adw.Dialog opens its floating content after two ticks, so the first
+650 ms capture correctly failed its mapping assertion. Manual allocation and
+frame requests did not establish that sequence. A small stdlib-only
+`tools/broadway-test-client.py`, verified against GTK 4.24.1's protocol, now
+acknowledges actual surface/configuration/frame messages on the private Unix
+socket. Unknown protocol operations fail explicitly. No browser or desktop
+keyboard/mouse actions are involved. This is transport assistance, not a live
+compositor/GPU rendering test. [Matching GTK source](https://github.com/GNOME/gtk/blob/4.24.1/gdk/broadway/gdksurface-broadway.c).
+
+Native frames use GSK's Broadway renderer; exported content snapshots use Cairo
+over the actual window CSS background. Synthetic state is set before capture
+and given time to redraw: changing backdrop flags at snapshot time initially
+invalidated the paint cache and produced only the background. That failed pixel
+assertion was corrected in the harness, with no theme workaround.
+
+Two exact GDK frame-timing diagnostics reproduce without the overlay:
+`gdk_frame_timings_submitted() called on submitted frame.` and
+`Duplicate call to gdk_frame_timings_submitted() with different values.`
+They are retained/countable; all other stderr fails. One complete native run
+retained 26 such messages across 22 cases. `--strict` rejects them, so this is
+not warning-free strict-mode certification. Compile deprecation warnings in the
+unmodified third-party Font Viewer source are separate from runtime CSS checks.
+
+The earlier accent API/legacy named-color mismatch remains: CSS is recolored,
+while custom drawing that reads system accent APIs may remain stock. No claim
+of full Vapor widget geometry, every libadwaita widget, all custom application
+styles, screen-reader accessibility or reduced-motion interaction is made.
+Expanded tabs/overview/toast/secondary-sidebar interaction, live Wayland/GPU,
+physical 175%/mixed-monitor checks and wider version coverage remain. Flatpak
+was unavailable and is explicitly outside this first native milestone.
+
+Evidence: `/tmp/vapor-libadwaita-port-3fzbtni2` contains starting hashes,
+source archives/builds, individual experiments, standard-suite captures/logs,
+activation/mutation results, app captures/idle samples and the staged payload.
+Reproduce the default tests with:
+
+```sh
+python3 -I tools/check-gtk3.py
+python3 -I tools/check-gtk4.py --output /tmp/vapor-all-gtk4
+```
+
+Implementation details and failed experiments are recorded in gtk4port.md
+section 15. Published assets, existing GTK CSS/images, terminal themes and the
+user's installed GTK config were not modified. A read-only status check reports
+the actual optional overlay as disabled.
+
+---
+
 # Libadwaita feasibility investigation — 2026-10-30
 
 Agent: Codex (GPT-6). Audited base: `5dcae96`. Request: investigate adding

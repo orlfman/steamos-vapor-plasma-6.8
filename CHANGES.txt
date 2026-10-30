@@ -1,3 +1,23 @@
+Unreleased — 2026-10-30, Codex (GPT-6): initial native libadwaita color profile
+
+- Added a separate guarded dark color profile: Vapor #569fcc / #1f1f26 accent
+  pair and neutral surfaces; preserves Adwaita geometry, semantics, light and
+  high-contrast appearances. No full GTK theme import or patched runtime.
+- Added reversible, opt-in activation with KDE/import preservation, backups,
+  drift/status detection, symlink/collision/read-only refusal and write rollback.
+  Fifteen disposable preservation/recovery tests pass. User settings remain unchanged.
+- Standard GTK 4 suite now covers 22 native Adw cases, actual open dialogs and
+  popovers/menus, visible-focus contrast, 2x rendering, appearance transitions,
+  six negative controls and plain GTK/Widget Factory coexistence. All ten prior
+  native GTK captures are pixel-identical with the overlay; GTK 3 still passes.
+- Real Adwaita demo 1.10.0 and GNOME Font Viewer 49.0 baseline/profile startup
+  checks pass. Two-second idle process-CPU observations stay below 1ms in both
+  cases; these are small headless observations, not a desktop benchmark.
+- Added a working-tree package staging tool and LIBADWAITA.md. This feature is
+  not in AUR release 1.0.3; the published recipe/tag/checksum are unchanged.
+  Flatpak, live fractional/GPU and broader application/accessibility coverage
+  remain open. audit.md/gtk4port.md record implementation, tests and limits.
+
 Unreleased — 2026-10-30, Codex (GPT-6): installed GTK Widget Factory checks
 
 - Investigated libadwaita 1.10.0 / GTK 4.24.1 compatibility in seven isolated

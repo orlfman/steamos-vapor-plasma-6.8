@@ -1,8 +1,24 @@
 # Vapor libadwaita compatibility plan
 
 Date: 2026-10-30 (America/Phoenix). Agent: Codex (GPT-6).
-Status: investigation complete; production implementation has not started.
+Status: initial native color profile implemented and tested; broader validation
+and Flatpak remain open. This feature is not yet in a published package release.
 Base: `5dcae96`. Evidence and detailed findings: [audit.md](audit.md).
+
+## Implementation status — 2026-10-30
+
+| Stage | Current result |
+| --- | --- |
+| 1: separate profile | Implemented in libadwaita/vapor.css; 27 role definitions, guarded dark/normal contrast |
+| 2: standard tests | 22 native Adw cases, six negative controls, native GTK/Widget Factory coexistence; broader widget inventory/accessibility remains |
+| 3: activation | Implemented helper; 15 preservation/recovery tests pass; actual user overlay remains disabled |
+| 4: applications/displays/performance | Upstream Adwaita demo 1.10.0 and GNOME Font Viewer 49.0 startup comparisons pass; short idle observations recorded; live fractional/GPU and broader interaction remain |
+| 5: Flatpak | Deferred: no local Flatpak executable/runtime; no support claim |
+| 6: packaging | Working-tree staging tool includes profile/helper/docs; published 1.0.3 recipe/tag/checksum unchanged pending a new release |
+
+[LIBADWAITA.md](LIBADWAITA.md) contains current usage/support instructions.
+The stages below retain the full roadmap and acceptance criteria; the table
+distinguishes the implemented native milestone from remaining validation.
 
 ## Recommended target
 
@@ -48,7 +64,7 @@ evidence may disappear on reboot; the audit preserves the measured findings.
 
 ## Stage 1 — Maintain a separate color profile
 
-Proposed file: `libadwaita/vapor.css`, kept outside `usr/share/themes/Vapor/gtk-4.0`.
+Implemented file: `libadwaita/vapor.css`, kept outside `usr/share/themes/Vapor/gtk-4.0`.
 Start with `:root` custom properties inside the tested dark/normal-contrast media
 guard. Keep the normal GTK 3/4 stylesheets independent.
 
@@ -76,7 +92,7 @@ cannot be reached with documented variables instead of concealing gaps.
 
 ## Stage 2 — Add libadwaita coverage to the standard suite
 
-Proposed tool: `tools/check-libadwaita.py`, using real Adw widgets on private
+Implemented core tool: `tools/check-libadwaita.py`, using real Adw widgets on private
 displays and loading the profile through temporary **user CSS**, matching the
 intended activation mechanism. Compile-only or parser-only checks are insufficient.
 
@@ -121,9 +137,9 @@ reports distinguish tested widgets/states from untested surfaces and app behavio
 
 ## Stage 3 — Implement reversible native activation
 
-Proposed installed asset:
+Staged installed asset:
 `/usr/share/steamos-vapor/libadwaita/vapor.css`.
-Proposed helper source: `tools/vapor-libadwaita` with enable/disable/status and
+Implemented helper source: `tools/vapor-libadwaita` with enable/disable/status and
 dry-run operations. Installation copies assets; activation is a user action.
 
 - Honor `XDG_CONFIG_HOME`. Add one identifiable managed import in

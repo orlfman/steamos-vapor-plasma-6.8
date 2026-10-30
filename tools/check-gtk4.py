@@ -3,7 +3,8 @@
 
 Requires gtk4 >= 4.24 (gtk4-broadwayd and development/pkg-config files),
 gtk4-demos, pkgconf, a C compiler, dbus-run-session, python-gobject,
-python-pillow and fonts. Includes the installed Widget Factory application test.
+python-pillow, libadwaita >= 1.10 (Adw GI data) and fonts. Includes Widget Factory,
+libadwaita fixtures, coexistence, activation and negative-control tests.
 Creates a private Unix-socket display and temporary HOME/XDG settings. Captures
 can be retained with --output DIR. Tested on GTK 4.24.1 with the Cairo renderer.
 """
@@ -244,6 +245,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path)
     parser.add_argument('--theme', type=Path, default=ROOT/'usr/share/themes/Vapor')
+    parser.add_argument('--libadwaita-profile', type=Path, default=ROOT/'libadwaita/vapor.css')
+    parser.add_argument('--overlay', type=Path, help=argparse.SUPPRESS)
     parser.add_argument('--worker', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('--state', default='normal', choices=('normal','hover','backdrop','rtl','disabled'), help=argparse.SUPPRESS)
     parser.add_argument('--dark', action='store_true', help=argparse.SUPPRESS)
@@ -267,6 +270,10 @@ def main():
         config = scratch/'config/gtk-4.0'
         config.mkdir()
         (config/'settings.ini').write_text('[Settings]\ngtk-theme-name=Vapor\ngtk-font-name=DejaVu Sans 10\n')
+        if args.overlay:
+            subprocess.run([sys.executable,'-I',str(ROOT/'tools/vapor-libadwaita'),'enable',
+                            '--config-home',str(scratch/'config'),'--profile',str(args.overlay.resolve()),'--json'],
+                           capture_output=True,text=True,check=True)
         staged = scratch/'data/themes/Vapor'
         shutil.copytree(theme, staged)
         css = staged/'gtk-4.0/gtk.css'
@@ -301,7 +308,7 @@ def main():
                     result = subprocess.run(command,env=env,capture_output=True,text=True,timeout=15)
                     if result.returncode or result.stderr:
                         raise RuntimeError(result.stdout+result.stderr)
-                    print(result.stdout.strip())
+                    print(result.stdout.strip(),flush=True)
         finally:
             server.terminate()
             server.communicate(timeout=5)
@@ -309,13 +316,30 @@ def main():
                '--gtk', '4.0', '--theme', str(theme)]
     if args.output:
         command += ['--output', str(args.output.resolve()/'behavior')]
+    if args.overlay:
+        command += ['--user-css', str(args.overlay.resolve())]
     subprocess.run(command, check=True)
     command = [sys.executable, '-I', str(ROOT/'tools/check-widget-factory.py'),
                '--theme', str(theme)]
     if args.output:
         command += ['--output', str(args.output.resolve()/'widget-factory')]
+    if args.overlay:
+        command += ['--user-css', str(args.overlay.resolve())]
     subprocess.run(command, check=True)
-    print('GTK 4 CSS, assets, native widgets, behavior and installed Widget Factory: PASS')
+    if args.overlay:
+        print('Plain GTK 4 widgets, behavior and Widget Factory with libadwaita overlay: PASS',flush=True)
+        return
+    command=[sys.executable,'-I',str(Path(__file__).resolve()),'--theme',str(theme),
+             '--overlay',str(args.libadwaita_profile.resolve())]
+    if args.output:command += ['--output',str(args.output.resolve()/'coexistence')]
+    subprocess.run(command,check=True)
+    command=[sys.executable,'-I',str(ROOT/'tools/check-libadwaita.py'),
+             '--profile',str(args.libadwaita_profile.resolve())]
+    if args.output:command += ['--output',str(args.output.resolve()/'libadwaita')]
+    subprocess.run(command,check=True)
+    subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-libadwaita-activation.py')],check=True)
+    subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-libadwaita-regressions.py')],check=True)
+    print('GTK 4 native/Widget Factory, libadwaita, coexistence, activation and negative controls: PASS',flush=True)
 
 
 if __name__ == '__main__':

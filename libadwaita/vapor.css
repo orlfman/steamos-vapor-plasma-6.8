@@ -1,0 +1,41 @@
+/* Vapor color compatibility for libadwaita 1.10 / GTK 4.24.
+ * Optional user-CSS overlay; retains Adwaita's structure and semantic colors.
+ * Light and high-contrast appearances retain upstream styling.
+ * See LIBADWAITA.md for activation, tested scope and limitations.
+ */
+@media (prefers-color-scheme: dark) and (prefers-contrast: no-preference) {
+  :root {
+    --accent-bg-color: #569fcc;
+    --accent-fg-color: #1f1f26;
+
+    --window-bg-color: #24272c;
+    --window-fg-color: #eff0f1;
+    --view-bg-color: #151c23;
+    --view-fg-color: #eff0f1;
+
+    --headerbar-bg-color: #24272c;
+    --headerbar-fg-color: #eff0f1;
+    --headerbar-backdrop-color: #24272c;
+
+    --sidebar-bg-color: #151c23;
+    --sidebar-fg-color: #eff0f1;
+    --sidebar-backdrop-color: #1a212a;
+    --secondary-sidebar-bg-color: #1a212a;
+    --secondary-sidebar-fg-color: #eff0f1;
+    --secondary-sidebar-backdrop-color: #24272c;
+
+    --card-bg-color: #2d3136;
+    --card-fg-color: #eff0f1;
+    --dialog-bg-color: #24272c;
+    --dialog-fg-color: #eff0f1;
+    --popover-bg-color: #24272c;
+    --popover-fg-color: #eff0f1;
+    --thumbnail-bg-color: #2d3136;
+    --thumbnail-fg-color: #eff0f1;
+    --overview-bg-color: #151c23;
+    --overview-fg-color: #eff0f1;
+
+    --active-toggle-bg-color: #569fcc;
+    --active-toggle-fg-color: #1f1f26;
+  }
+}

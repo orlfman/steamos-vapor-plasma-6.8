@@ -17,6 +17,7 @@ import shlex
 import shutil
 import signal
 import subprocess
+import sys
 import tempfile
 import time
 
@@ -89,6 +90,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, help='retain screenshots/logs; otherwise discard temporary output')
     parser.add_argument('--theme', type=Path, default=ROOT / 'usr/share/themes/Vapor')
+    parser.add_argument('--user-css', type=Path, help='stage a libadwaita overlay to check plain GTK coexistence')
     parser.add_argument('--quick', action='store_true', help='one normal capture per page')
     parser.add_argument('--strict', action='store_true', help='also reject the known Broadway timing warning')
     args = parser.parse_args()
@@ -130,6 +132,10 @@ def main():
         settings.mkdir()
         (settings / 'settings.ini').write_text(
             '[Settings]\ngtk-theme-name=Vapor\ngtk-font-name=DejaVu Sans 10\n')
+        if args.user_css:
+            subprocess.run([sys.executable, '-I', str(ROOT/'tools/vapor-libadwaita'), 'enable',
+                            '--config-home', str(scratch/'config'), '--profile', str(args.user_css.resolve()),
+                            '--json'], capture_output=True, text=True, check=True)
         env.update({
             'XDG_CONFIG_DIRS': str(scratch / 'config'), 'XDG_DATA_DIRS': '/usr/share',
             'GDK_BACKEND': 'broadway', 'BROADWAY_DISPLAY': ':1', 'GSK_RENDERER': 'cairo',
@@ -192,6 +198,7 @@ def main():
             'application': binary,
             'binary_sha256': hashlib.sha256(Path(binary).read_bytes()).hexdigest(),
             'theme_css_sha256': hashlib.sha256(source_css.read_bytes()).hexdigest(),
+            'user_css_sha256': hashlib.sha256(args.user_css.read_bytes()).hexdigest() if args.user_css else None,
             'renderer': 'Cairo', 'display_scale': 1, 'strict': args.strict,
             'cases': results}
         (output / 'results.json').write_text(json.dumps(report, indent=2) + '\n')
