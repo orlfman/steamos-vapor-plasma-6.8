@@ -1,3 +1,6 @@
+/* SteamOS Vapor, maintained for GTK 3.24.
+ * Theme colors/artwork remain Valve's. See GTK3.md for compatibility notes.
+ */
 /* GTK NAMED COLORS
    ----------------
    use responsibly! */
@@ -240,7 +243,7 @@ entry selection, row:selected, .sidebar:selected {
   textview text:backdrop:selected:focus, .view text:backdrop:selected,
   textview text:backdrop:selected,
   .view:backdrop:selected, .view text selection:backdrop,
-  textview text selection:backdrop, flowbox flowboxchild:backdrop:selected, label:backdrop selction, spinbutton:not(.vertical) selection:backdrop,
+  textview text selection:backdrop, flowbox flowboxchild:backdrop:selected, label:backdrop selection, spinbutton:not(.vertical) selection:backdrop,
   entry selection:backdrop, row:backdrop:selected, .sidebar:backdrop:selected {
     background-color: rgba(61, 174, 233, 0.5);
     color: #151c23; }
@@ -275,13 +278,13 @@ entry selection, row:selected, .sidebar:selected {
     textview text:backdrop:selected:focus, .view text:backdrop:selected,
     textview text:backdrop:selected,
     .view:backdrop:selected, .view text selection:backdrop,
-    textview text selection:backdrop, flowbox flowboxchild:backdrop:selected, label:backdrop selction, spinbutton:not(.vertical) selection:backdrop,
+    textview text selection:backdrop, flowbox flowboxchild:backdrop:selected, label:backdrop selection, spinbutton:not(.vertical) selection:backdrop,
     entry selection:backdrop, row:backdrop:selected, .sidebar:backdrop:selected {
       color: #eff0f1; }
       .view text:backdrop:disabled:selected,
       textview text:backdrop:disabled:selected,
       .view:backdrop:disabled:selected, .view text selection:backdrop:disabled,
-      textview text selection:backdrop:disabled, flowbox flowboxchild:backdrop:disabled:selected, label:disabled selection:backdrop, label:backdrop selction:disabled, spinbutton:not(.vertical) selection:backdrop:disabled,
+      textview text selection:backdrop:disabled, flowbox flowboxchild:backdrop:disabled:selected, label:disabled selection:backdrop, label:backdrop selection:disabled, spinbutton:not(.vertical) selection:backdrop:disabled,
       entry selection:backdrop:disabled, row:backdrop:disabled:selected, .sidebar:backdrop:disabled:selected {
         color: rgba(216, 218, 221, 0.35); }
 
@@ -3090,11 +3093,11 @@ scale trough {
   border-radius: 3px;
   background-color: #6a6e72;
   box-shadow: none; }
-  scale trough:disabled, scale trough.vertical:disabled {
+  scale trough:disabled, scale.vertical trough:disabled {
     border-color: rgba(96, 100, 104, 0.35);
     background-color: rgba(96, 100, 104, 0.35);
     box-shadow: none; }
-    scale trough:disabled:backdrop, scale trough.vertical:disabled:backdrop {
+    scale trough:disabled:backdrop, scale.vertical trough:disabled:backdrop {
       background-color: rgba(96, 100, 104, 0.35);
       border-color: rgba(96, 100, 104, 0.35); }
   scale trough:backdrop {
@@ -3105,7 +3108,7 @@ scale highlight {
   border-radius: 3px;
   background-color: #3daee9;
   border-color: #3daee9; }
-  scale highlight.vertical {
+  scale.vertical highlight {
     background-color: #3daee9;
     border-color: #3daee9; }
   scale highlight:disabled {

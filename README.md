@@ -15,7 +15,7 @@ shortcuts) are left out.
 | Global themes: Vapor, Vapor (Steam Deck), VGUI2 Classic | `usr/share/plasma/look-and-feel/com.valve.*` |
 | Vapor Plasma style | `usr/share/plasma/desktoptheme/Vapor` |
 | Vapor and VGUI color schemes, plus Union versions | `usr/share/color-schemes` |
-| Vapor GTK 3 theme | `usr/share/themes/Vapor` |
+| Vapor GTK 3.24 theme | `usr/share/themes/Vapor` |
 | Vapor Konsole profile and colors | `usr/share/konsole` |
 | Steam Deck wallpapers (`SteamDeckLogo` is the themes' default) | `usr/share/wallpapers` |
 | Steam Deck start menu icon | `usr/share/icons/hicolor` |
@@ -32,8 +32,9 @@ The short version (details in [CHANGES.txt](CHANGES.txt)):
 - VGUI: readable error/warning/success colors, and toolbars no longer turn
   Breeze grey when a window loses focus.
 - Plain Vapor gets the Steam Deck splash.
-- GTK 3: no startup warnings, no blank hovered partly-checked checkboxes.
-  GTK 2 support dropped.
+- GTK 3.24: maintained stylesheet and standard theme-chooser entry, fixed
+  inactive text selections, unused images removed, no startup warnings or blank
+  hovered partly-checked checkboxes. GTK 2 support dropped.
 - Konsole and Alacritty: black is a visible dark grey instead of the background color.
 
 ## Install
@@ -73,6 +74,24 @@ Alacritty: add the theme under `[general]` in `~/.config/alacritty/alacritty.tom
 ```toml
 import = ["/usr/share/alacritty/themes/steamos-vapor.toml"]
 ```
+
+## GTK 3.24 compatibility
+
+The working tree targets GTK **3.24** explicitly. Its maintained stylesheet lives
+in `usr/share/themes/Vapor/gtk-3.24/gtk.css`; `gtk-3.0/gtk.css` imports it for
+standard theme choosers and direct CSS consumers. The obsolete GTK 3.18/3.20
+copies are removed. GTK 2 and GTK 4 are not supported.
+
+Vapor keeps its own styling and artwork. It does not import Breeze GTK.
+The previous gtk-3.20 stylesheet already worked under GTK 3.24; this update
+makes the supported target explicit and fixes selectors that missed their
+intended nodes. See [GTK3.md](GTK3.md) for validation, limits and check commands.
+
+These changes are **unreleased**. The AUR recipe still points to v1.0.1; building
+that recipe will use the published source until a new release is made. To test
+this working tree manually, use the theme directory described above. When
+replacing an existing manual installation, replace the entire `Vapor` theme
+folder rather than merging it, so obsolete versioned styles do not remain.
 
 ## License
 

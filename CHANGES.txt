@@ -1,3 +1,33 @@
+Unreleased — 2026-10-29, Codex (GPT-6): explicit GTK 3.24 support
+
+- Moved the maintained Vapor stylesheet from gtk-3.20 to gtk-3.24, with a
+  gtk-3.0 import entry for standard theme choosers/direct consumers. Removed the
+  unused gtk-3.18 fallback (including its 12 missing scrollbar image references).
+  The previous gtk-3.20 file already parsed on GTK 3.24; this is a target/layout
+  cleanup plus the specific selector fixes below, not a rewrite of the look.
+- Corrected three misspelled label backdrop selection selectors; inactive
+  selections now match the existing half-strength blue intended by the theme.
+- Moved vertical scale orientation tests onto the scale ancestor, preserving
+  existing color values (no visible change). scale.fine-tune.trough stays as
+  upstream Breeze has it: making its 8px margin apply would shrink sliders
+  2px during a fine-tune drag (reverted in Claude Code's review).
+- Removed 56 GTK images the stylesheet no longer references (16 used only by
+  gtk-3.18, 40 already unused); 110 remain. Theme colors unchanged. No Breeze imports,
+  GTK 2/4 support, desktop/session changes, installed-file updates or publication.
+- Added tools/check-gtk3.py: parser/import/assets checks, isolated named theme
+  discovery (including dark fallback), actual offscreen widgets, regression
+  checks for the two corrected states, and scale-1/2 GTK indicator rendering.
+- Tested GTK 3.24.52 using private Broadway/Unix sockets and temporary XDG paths.
+  Six widget states render without GTK warnings. Normal/hover/disabled/RTL are
+  pixel-identical to baseline; backdrop selection changes 1,126 pixels. Eight checkbox/radio
+  indicator renders (checked/mixed-hover, both scales) are pixel-identical.
+  Full-window scale-2/live Wayland and application-specific testing remain open.
+- GTK3.md records rationale, tests and limits. README marks the working-tree
+  changes unreleased; the AUR recipe still pins the unchanged v1.0.1 release.
+  All changes are local and uncommitted.
+
+Previous changes (historical paths below refer to their original versions):
+
 SteamOS Vapor/VGUI KDE theme, fixed for Plasma 6.8
 Based on steamdeck-kde-presets 3.9.4-2 (original package in ../steamos), theme files only.
 Made 2026-10-29, audited against Plasma 6.8.2 / Qt 6.12 / GTK 3.24.

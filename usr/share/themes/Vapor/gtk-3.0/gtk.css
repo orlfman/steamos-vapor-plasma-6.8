@@ -1,0 +1,4 @@
+/* Standard GTK 3 entry point for theme choosers and direct CSS consumers.
+ * Supported runtime: GTK 3.24. The maintained styles live in gtk-3.24.
+ */
+@import url("../gtk-3.24/gtk.css");
