@@ -12,7 +12,7 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parent.parent
-HELPER = ROOT/'tools/vapor-libadwaita'
+HELPER = Path(os.environ.get('VAPOR_TEST_HELPER',str(ROOT/'tools/vapor-libadwaita')))
 PROFILE = ROOT/'libadwaita/vapor.css'
 MODULE = runpy.run_path(str(HELPER))
 BLOCK = MODULE['BLOCK']
@@ -51,6 +51,119 @@ class Activation(unittest.TestCase):
 
     def snapshot(self):
         return {name:MODULE['inspect'](self.directory/name) for name in ALL_NAMES}
+
+    def selected_helper(self, action, *extra, ok=True):
+        result=subprocess.run([sys.executable,'-I',str(HELPER),action,'--json',
+                               '--config-home',str(self.config),*extra],capture_output=True,text=True,timeout=10)
+        if not ok:
+            self.assertNotEqual(result.returncode,0);return result
+        self.assertEqual(result.returncode,0,result.stderr);self.assertEqual(result.stderr,'')
+        return json.loads(result.stdout)
+
+    def test_family_round_trip_preserves_backup_and_css(self):
+        for original in (None,b'',b"@import 'colors.css';\n"):
+            with self.subTest(original=original):
+                if self.config.exists():
+                    import shutil
+                    shutil.rmtree(self.config)
+                if original is not None:self.original(original)
+                self.theme('Vapor');self.selected_helper('auto')
+                backup=MODULE['inspect'](self.directory/NAMES[3])
+                for theme,profile_id in (('VGUI2Classic','vgui2'),('Vapor-dark','vapor'),('VGUI2Classic','vgui2')):
+                    self.theme(theme);result=self.selected_helper('auto')
+                    self.assertEqual(result['profile_id'],profile_id)
+                    self.assertEqual((self.directory/NAMES[1]).read_bytes(),(ROOT/'libadwaita'/(profile_id+'.css')).read_bytes())
+                    self.assertEqual(MODULE['inspect'](self.directory/NAMES[3]),backup)
+                    self.assertEqual((self.directory/'gtk.css').read_bytes().count(BLOCK),1)
+                    self.assertEqual(self.selected_helper('auto')['changes'],[])
+                self.theme('Breeze');self.selected_helper('auto')
+                self.assertEqual((self.directory/'gtk.css').exists(),original is not None)
+                if original is not None:self.assertEqual((self.directory/'gtk.css').read_bytes(),original)
+                self.assertFalse((self.directory/DISABLED_NAME).exists())
+
+    def test_explicit_selection_and_legacy_enable_default(self):
+        self.assertEqual(self.selected_helper('enable')['profile_id'],'vapor')
+        self.assertEqual(self.selected_helper('enable','--theme','vgui2')['profile_id'],'vgui2')
+        self.assertEqual(self.selected_helper('status')['profile_id'],'vgui2')
+        self.theme('VGUI2Classic')
+        self.assertEqual(self.selected_helper('enable')['profile_id'],'vgui2')
+        self.theme('Breeze')
+        self.assertEqual(self.selected_helper('enable')['profile_id'],'vapor')
+
+    def test_shared_disable_survives_family_changes(self):
+        self.theme('Vapor');self.selected_helper('auto');self.selected_helper('disable')
+        for theme in ('VGUI2Classic','Vapor','VGUI2Classic'):
+            self.theme(theme);before=self.snapshot()
+            result=self.selected_helper('auto')
+            self.assertFalse(result['automatic_enabled']);self.assertEqual(result['changes'],[])
+            self.assertEqual(before,self.snapshot())
+        self.selected_helper('enable')
+        self.assertFalse((self.directory/DISABLED_NAME).exists())
+        self.assertEqual(self.selected_helper('status')['profile_id'],'vgui2')
+
+    def test_legacy_vapor_state_migrates_without_new_backup(self):
+        self.original();self.selected_helper('enable')
+        path=self.directory/NAMES[2];state=json.loads(path.read_text());state.pop('profile_id')
+        path.write_text(json.dumps(state));backup=MODULE['inspect'](self.directory/NAMES[3])
+        self.assertEqual(self.selected_helper('status')['profile_id'],'vapor')
+        self.theme('VGUI2Classic');self.selected_helper('auto')
+        self.assertEqual(json.loads(path.read_text())['profile_id'],'vgui2')
+        self.assertEqual(MODULE['inspect'](self.directory/NAMES[3]),backup)
+
+    def test_invalid_profile_id_refused_without_writes(self):
+        self.selected_helper('enable');path=self.directory/NAMES[2]
+        original=json.loads(path.read_text())
+        for invalid in ('unknown','../vapor',None,[],{}):
+            state=dict(original,profile_id=invalid);path.write_text(json.dumps(state));before=self.snapshot()
+            for action in ('enable','disable','auto','status'):
+                self.selected_helper(action,ok=False);self.assertEqual(before,self.snapshot())
+
+    def test_missing_and_edited_profile_switches(self):
+        path=self.original();self.theme('Vapor');self.selected_helper('auto')
+        (self.directory/NAMES[1]).unlink();self.theme('VGUI2Classic');self.selected_helper('auto')
+        self.assertEqual(self.selected_helper('status')['profile_id'],'vgui2')
+        (self.directory/NAMES[1]).write_bytes(b'personal profile edits');self.theme('Vapor')
+        before=self.snapshot();self.selected_helper('auto',ok=False);self.assertEqual(before,self.snapshot())
+        path.write_bytes(b"@import 'colors.css';\n/* regenerated */\n")
+        before=self.snapshot();self.selected_helper('auto',ok=False);self.assertEqual(before,self.snapshot())
+
+    def test_family_switch_dry_run_and_runtime_failure(self):
+        self.original();self.theme('Vapor');self.selected_helper('auto');self.theme('VGUI2Classic')
+        before=self.snapshot();result=self.selected_helper('auto','--dry-run')
+        self.assertEqual(result['profile_id'],'vgui2');self.assertEqual(before,self.snapshot())
+        function=MODULE['manage']
+        with patch.dict(function.__globals__,{'check_runtime':lambda:(_ for _ in ()).throw(ValueError('runtime unavailable'))}):
+            with self.assertRaisesRegex(ValueError,'runtime unavailable'):
+                function(self.directory,None,'auto',False)
+        self.assertEqual(before,self.snapshot())
+
+    def test_failed_family_switch_rolls_back_everything(self):
+        self.original();self.theme('Vapor');self.selected_helper('auto');self.theme('VGUI2Classic')
+        before=self.snapshot();function=MODULE['manage'];real=MODULE['atomic_write'];calls=0
+        def fail_once(*args):
+            nonlocal calls
+            calls+=1
+            if calls==2:raise OSError('intentional profile switch failure')
+            return real(*args)
+        with patch.dict(function.__globals__,{'atomic_write':fail_once}):
+            with self.assertRaisesRegex(OSError,'intentional profile switch failure'):
+                function(self.directory,None,'auto',False)
+        self.assertEqual(before,self.snapshot())
+
+    def test_status_uses_active_family_and_reports_pending_switch(self):
+        self.theme('VGUI2Classic');self.selected_helper('auto')
+        result=self.selected_helper('status')
+        self.assertEqual(result['profile_id'],'vgui2');self.assertFalse(result['profile_update_available'])
+        self.theme('Vapor');result=self.selected_helper('status')
+        self.assertTrue(result['profile_switch_available']);self.assertFalse(result['profile_update_available'])
+
+    def test_gtk_selection_precedence_and_diagnostic_override_for_vgui(self):
+        self.theme('VGUI2Classic','gtk-3.0');self.assertEqual(self.selected_helper('auto')['profile_id'],'vgui2')
+        self.theme('Vapor');self.assertEqual(self.selected_helper('auto')['profile_id'],'vapor')
+        self.theme('VGUI2Classic')
+        custom=self.root/'custom.css';custom.write_bytes((ROOT/'libadwaita/vgui2.css').read_bytes()+b'\n/* custom */\n')
+        self.selected_helper('auto','--profile',str(custom))
+        self.assertEqual((self.directory/NAMES[1]).read_bytes(),custom.read_bytes())
 
     def test_kde_import_and_mode_round_trip(self):
         path = self.original()

@@ -1,9 +1,12 @@
 # VGUI2 Classic for GTK 3.24
 
-Status: **initial implementation audited and corrected, unreleased**, 2026-10-30. The published
-1.0.4 AUR package does not include this theme. Initial plain GTK 4 support is
+Released in **1.1.0**: installed by default with matching automatic libadwaita
+selection. See [LIBADWAITA.md](LIBADWAITA.md) for upgrades, disable and switching.
+
+Status: **initial implementation audited and corrected, released in 1.1.0**, 2026-10-30. The published
+Packages before 1.1.0 do not include this theme. Plain GTK 4 support is
 now documented in [VGUI2-GTK4.md](VGUI2-GTK4.md); the VGUI2 libadwaita profile
-and shared activation remain planned in [vgui2-plan.md](vgui2-plan.md).
+and shared activation are included in 1.1.0; see [vgui2-plan.md](vgui2-plan.md).
 
 The independent **VGUI2Classic** theme matches the olive/gold KDE palette with
 square raised/sunken controls. It keeps system fonts and normal GTK control
@@ -83,8 +86,8 @@ For source-only, per-user experimentation, the theme folder can be copied to
 `GTK_THEME=VGUI2Classic` can preview it without changing the global theme.
 The automated commands above do not require that copy or change live settings.
 The [matching libadwaita color profile](VGUI2-LIBADWAITA.md) is implemented and
-tested separately. The current automatic manager still selects Vapor only;
-shared VGUI2 profile activation belongs to stage 6.
+tested separately. The automatic manager now selects the matching Vapor or
+VGUI2 profile from the actual GTK setting, while respecting explicit disable.
 
 ## Recorded results and limits
 
@@ -120,7 +123,8 @@ The 2x checks exercise scaled indicator contexts; whole-window HiDPI,
 fractional scaling, live Wayland/X11, full keyboard navigation, accessibility
 tools and performance need further validation. The successful Vapor 4K/175%
 result does not establish VGUI2 coverage. Libadwaita VGUI2 switching and
-Flatpak support are separate work. No release or live activation is included.
+Flatpak support remain separate work. Version 1.1.0 includes shared activation;
+installation does not change your GTK selection or write user configuration.
 
 Portable results: [vgui2-gtk3-validation.json](docs/audits/vgui2-gtk3-validation.json).
 Source investigation: [vgui2-audit.md](vgui2-audit.md). Work sequence and corrected

@@ -1,8 +1,11 @@
 # VGUI2 Classic colors for libadwaita
 
-Status: **initial color profile audited and corrected, unreleased**, 2026-10-30.
+Released in **1.1.0**: installed by default with matching automatic libadwaita
+selection. See [LIBADWAITA.md](LIBADWAITA.md) for upgrades, disable and switching.
+
+Status: **initial color profile audited and corrected, released in 1.1.0**, 2026-10-30.
 Tested with libadwaita **1.10.0**, GTK **4.24.1** and Plasma **6.8.2**.
-The published AUR 1.0.4 package does not include this profile.
+Packages before 1.1.0 do not include this profile.
 
 `libadwaita/vgui2.css` matches the VGUI2 Classic olive/gold palette while
 retaining Adwaita's widget shapes, spacing and responsive layouts. It applies
@@ -94,18 +97,17 @@ actions. These startup checks are additional evidence, not default dependencies.
 
 ## Packaging and activation boundary
 
-The working stager includes the profile at
-`/usr/share/steamos-vapor/libadwaita/vgui2.css`, together with this guide and
-evidence. **Automatic VGUI2 activation is not implemented yet.** The existing
-Vapor helper/login selection behavior remains as documented in
-[LIBADWAITA.md](LIBADWAITA.md). Selecting VGUI2 alone does not activate this
-profile. Do not use the Vapor-only automatic decision as a VGUI2 switcher.
+The standard package includes `/usr/share/steamos-vapor/libadwaita/vgui2.css`,
+this guide and evidence. At Plasma login, `vapor-libadwaita auto` chooses the
+profile for **VGUI2Classic**, or Vapor for **Vapor/Vapor-dark**. Other GTK themes
+remove only the managed overlay. Choose the GTK theme in System Settings; the
+helper does not change it or force dark appearance.
 
-Tests supply the new profile explicitly to the existing helper inside private
-configuration directories. Shared profile selection, backup-preserving
-migration and persistent disable tests are [stage 6](vgui2-plan.md) and must
-precede a default-installation release. This milestone changes no live settings,
-published version or AUR package.
+After upgrading, run `vapor-libadwaita auto` to apply the current GTK selection
+immediately, then restart GTK 4 apps, or log out and back in. Existing backups,
+KDE imports and persistent disable preferences are retained. Explicit selection
+is available through `vapor-libadwaita enable --theme vgui2`; `disable` remains
+persistent across both families. See [LIBADWAITA.md](LIBADWAITA.md).
 
 ## Evidence and remaining validation
 

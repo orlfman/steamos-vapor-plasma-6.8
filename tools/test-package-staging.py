@@ -29,6 +29,7 @@ class Staging(unittest.TestCase):
                      'docs/screenshots/vgui2-libadwaita-ffmpeg-converter.png',
                      'docs/audits/vgui2-libadwaita-validation.json',
                      'docs/audits/vgui2-libadwaita-audit.json',
+                     'docs/audits/release-1.1.0-validation.json',
                      'docs/screenshots/vgui2-libadwaita-demo.png',
                      'docs/screenshots/vgui2-gtk3-preview.png','docs/screenshots/vgui2-gtk3-meld.png',
                      'docs/screenshots/vgui2-gtk3-states.png','docs/screenshots/vgui2-gtk3-notebooks.png',
@@ -89,6 +90,7 @@ class Staging(unittest.TestCase):
         self.assertEqual((destination/'usr/share/doc/plasma6-themes-steamos-vapor-fixed/VGUI2-GTK3.md').read_bytes(),
                          (self.source/'VGUI2-GTK3.md').read_bytes())
         for source in ('VGUI2-LIBADWAITA.md','docs/audits/vgui2-libadwaita-validation.json',
+                       'docs/audits/release-1.1.0-validation.json',
                        'docs/audits/vgui2-libadwaita-audit.json','docs/screenshots/vgui2-libadwaita-demo.png',
                        'docs/screenshots/vgui2-libadwaita-preview.png',
                        'docs/screenshots/vgui2-libadwaita-ffmpeg-converter.png'):

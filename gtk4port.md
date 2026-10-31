@@ -1637,3 +1637,47 @@ The final 213-file staged payload matches source bytes and linked documentation.
 The lowest tested ordinary focus is 3.1763:1 and ordinary text 4.5511:1. Final
 demo startup passes; the converter's final retest remains blocked by its stock
 Broadway assertion. Live Vapor status remains enabled with no pending update.
+
+## 28. Release GTK/VGUI2 libadwaita as standard components — 2026-10-30
+
+User requested publishing the GTK/libadwaita work, activating support by default
+and updating AUR. Prepare **1.1.0 / 1.1.0-1** from `f7a4310`; working evidence
+is under `/tmp/vapor-release-1.1.0-pliu11f1`.
+
+- Complete shared automatic selection for Vapor/Vapor-dark -> vapor and
+  VGUI2Classic -> vgui2, using actual GTK 4 selection with GTK 3 fallback.
+  Keep one import/copied CSS file, backup, helper and Plasma login entry.
+  Explicit `enable/status --theme vapor|vgui2` is supported; auto always follows
+  GTK selection. Legacy enable without a recognized theme still chooses Vapor.
+- Retain schema 1 and recognize omitted profile_id as legacy Vapor; validate
+  added IDs, preserve backups/later CSS edits, use transactional swaps and
+  share persistent disable across both families. Status compares updates to
+  the active family and reports pending family changes separately. Profile
+  file overrides remain diagnostic. Runtime validation uses the actual
+  enable decision, including auto. No watcher or appearance/GTK choice forcing.
+- Resolve profiles relative to both checkout and installed helper locations,
+  making staged/package tests use their own bundled assets. Keep old managed
+  filenames and markers, with no destructive migration.
+- Extend recovery tests from 28 to 38; run against source and the packaged
+  helper. Real legacy-helper upgrades cover missing/empty/KDE import CSS,
+  later edits, Vapor/VGUI2 swaps and persistent disable. One initial test setup
+  created its settings directory before a helper expecting an absent directory;
+  fix setup order and rerun. Existing 28 checks also pass independently.
+- Include audited GTK 3/4 profiles, Adw profiles, guides, screenshots and all
+  release evidence in normal staging. Update release-facing documentation and
+  mark stage 6 complete; earlier audits remain historical. Package installation
+  itself does not write user homes or change selected themes. Matching support
+  is active at the next Plasma login or `vapor-libadwaita auto`.
+- Run complete GTK 3/4 checks for both families; inspect the actual Arch
+  package, run packaged activation checks and verify copied bytes and links.
+  Native GPU/fractional/accessibility/performance and Flatpak limits remain.
+  The known optional converter Broadway baseline issue does not change the
+  mandatory suite or claim a new desktop/runtime failure.
+- Publish a tested immutable source tag and GitHub release, then update the
+  AUR recipe/checksum/.SRCINFO from that exact archive and publish it. As in
+  previous releases, main's AUR metadata follows the payload tag so its archive
+  checksum does not recursively include itself. Root package transactions do
+  not automatically edit running users' homes; upgrade users can run auto or
+  log in again, then restart GTK 4 applications.
+
+Exact results: [release-1.1.0-validation.json](docs/audits/release-1.1.0-validation.json).

@@ -1,9 +1,11 @@
 # VGUI2 Classic for plain GTK 4
 
-Status: **initial implementation audited and corrected, unreleased**, 2026-10-30. Tested with
-GTK **4.24.1** on Plasma **6.8.2**. The published AUR **1.0.4** package does
-not include this family. The matching [native libadwaita color profile](VGUI2-LIBADWAITA.md)
-is now implemented and tested; shared activation remains stage 6 in
+Released in **1.1.0**: installed by default with matching automatic libadwaita
+selection. See [LIBADWAITA.md](LIBADWAITA.md) for upgrades, disable and switching.
+
+Status: **initial implementation audited and corrected, released in 1.1.0**, 2026-10-30. Tested with
+GTK **4.24.1** on Plasma **6.8.2**. Packages before **1.1.0** do not include this family. The matching [native libadwaita color profile](VGUI2-LIBADWAITA.md)
+is implemented and tested; shared activation ships in 1.1.0, as recorded in
 [vgui2-plan.md](vgui2-plan.md).
 
 The standalone `VGUI2Classic/gtk-4.0` stylesheet matches the audited
@@ -140,12 +142,12 @@ and do not change the active desktop theme.
 
 This guide covers plain GTK 4 support. VGUI2 libadwaita colors are now covered
 by [their separate guide](VGUI2-LIBADWAITA.md). Shared profile switching
-is not implemented; the current automatic manager still selects Vapor. Widget Factory
+ships in 1.1.0 and follows the actual GTK theme. Widget Factory
 provides actual application evidence, while broader app workflows, live Wayland/
 X11, fractional scaling, full keyboard/screen-reader testing, Flatpak and
 comparative performance measurements remain open. Integer scale-2 coverage
-does not establish fractional scaling. No release, AUR update or live activation
-is part of this source milestone. CSS and glyphs remain GPL-2.0-or-later.
+does not establish fractional scaling. Package installation does not change the
+GTK selection or write user configuration. CSS and glyphs remain GPL-2.0-or-later.
 
 The Adw follow-up audit adds local `--vgui2-classic-focus-color` values beside
 the existing focus colors. These variables preserve the original dotted focus

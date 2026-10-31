@@ -1,0 +1,77 @@
+{
+  "version": "1.1.0",
+  "date": "2026-10-30",
+  "base_commit": "f7a431047e4c02a88f0744a026d394a1aecc0d9f",
+  "status": "PASS: complete source suites and installed-layout checks; archive/package checks precede public release",
+  "environment": {
+    "plasma": "6.8.2",
+    "gtk3": "3.24.52",
+    "gtk4": "4.24.1",
+    "libadwaita": "1.10.0"
+  },
+  "full_gtk3": "PASS (both families)",
+  "full_gtk4": "PASS (both families)",
+  "activation_source": {
+    "tests": 38,
+    "status": "PASS"
+  },
+  "activation_installed_layout": {
+    "tests": 38,
+    "status": "PASS"
+  },
+  "actual_legacy_upgrades": [
+    {
+      "original_css": "missing",
+      "status": "PASS",
+      "backup_preserved": true,
+      "later_edits_preserved": true,
+      "disable_persistent": true
+    },
+    {
+      "original_css": "empty",
+      "status": "PASS",
+      "backup_preserved": true,
+      "later_edits_preserved": true,
+      "disable_persistent": true
+    },
+    {
+      "original_css": "KDE import",
+      "status": "PASS",
+      "backup_preserved": true,
+      "later_edits_preserved": true,
+      "disable_persistent": true
+    }
+  ],
+  "vgui2": {
+    "gtk3_mutations": 23,
+    "gtk4_mutations": 32,
+    "adwaita_surface_cases": 34,
+    "adwaita_control_cases": 12,
+    "controls_per_case": 50,
+    "adwaita_mutations": 25
+  },
+  "vapor": {
+    "adwaita_cases": 22,
+    "adwaita_mutations": 15
+  },
+  "staging_tests": 8,
+  "unchanged_theme_payload_files": 181,
+  "helper_sha256": "826b6a3c143090a3e65d022a92cda5273935db11f8da44290c76744b148058f5",
+  "profile_sha256": {
+    "vapor": "2df224de82e58d767cfa2f69f13db75df8dac9db6436ddd543d00378ecc9fd70",
+    "vgui2": "f4b482d56ef9f91384821c839eed836af42ea9af42387cf9b1a5f867ce064608"
+  },
+  "activation_policy": {
+    "Vapor": "vapor",
+    "Vapor-dark": "vapor",
+    "VGUI2Classic": "vgui2",
+    "other": "remove only owned overlay",
+    "disable": "persistent across both families"
+  },
+  "limits": [
+    "source/archive publication bookkeeping is recorded on main after tagging",
+    "no forced GTK selection, forced dark appearance or package-time edits to user homes",
+    "live GPU/fractional scaling/accessibility/performance and Flatpak remain separate validation",
+    "optional converter automation has a stock Broadway baseline assertion, documented in prior audit"
+  ]
+}

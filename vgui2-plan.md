@@ -1,8 +1,8 @@
 # VGUI2 Classic port plan: GTK 3, GTK 4 and libadwaita
 
 Date: **2026-10-30**, America/Phoenix. Agent: Codex (GPT-6).
-Status: **GTK 3/4 audited and native libadwaita color profile implemented/tested, unreleased**.
-Shared profile activation remains planned.
+Status: **GTK 3/4 audited and native libadwaita color profile implemented/tested, released in 1.1.0**.
+Shared profile activation is implemented and released in **1.1.0**.
 Findings and measured feasibility: [vgui2-audit.md](vgui2-audit.md).
 Baseline: Vapor 1.0.4 / repository `e626869` on Plasma 6.8.2.
 
@@ -13,9 +13,9 @@ Baseline: Vapor 1.0.4 / repository `e626869` on Plasma 6.8.2.
 | 3: GTK 3.24 | Independent stylesheet, six SVG glyphs, normal/dark entries; follow-up message/selection/focus/arrow fixes verified; standard checks and Meld 3.24.1 pass |
 | 4: plain GTK 4 | Independent GTK 4 entries/style audited; frame/field/separator/expander fixes, actual variants, selection, native/Widget Factory and scale-2 tests pass |
 | 5: native Adw profile | Audited 28-role palette; readable checked ink/input focus and native semantic outlines; 34 surface cases, 12×50 control checks, 25 mutations and deeper plain-GTK coexistence pass |
-| 6: shared activation | Planned; current Vapor helper/login behavior unchanged |
+| 6: shared activation | Implemented; schema-1 compatibility, transactional swaps, persistent disable and 38 recovery/migration checks |
 | 7: real apps/displays/performance | Private Meld/GTK Widget Factory, Adw demo and FFmpeg Converter startup pass; integer GTK 4 scale 2 covered; live fractional scaling/keyboard/accessibility/performance pending |
-| 8: packaging/release | Working stager includes GTK 3/4 and Adw assets/docs; no new published release or AUR update |
+| 8: packaging/release | Standard installation and 1.1.0 / AUR 1.1.0-1 |
 
 Implementation details/results: [VGUI2-GTK3.md](VGUI2-GTK3.md), [VGUI2-GTK4.md](VGUI2-GTK4.md),
 [VGUI2-LIBADWAITA.md](VGUI2-LIBADWAITA.md),
@@ -164,7 +164,7 @@ checks; real-app screenshots show the agreed classic GTK treatment.
 found 2.95:1 native focus on cards; guarded 65% button focus coverage raises the
 lowest tested suggested-button surface to 3.84:1 while retaining native geometry. VGUI2 now has
 34 cases; Vapor retains its original 22. The requirements below remain the
-design record, with shared automatic activation still in stage 6.
+design record; shared automatic activation is completed in stage 6 below.
 
 The follow-up audit extends coverage to native controls and corrects checked
 text/focus, input rings, compound semantic inheritance and a plain-GTK focus
@@ -197,6 +197,8 @@ for supported switching paths. Test the new profile's mutations independently.
 the palette while retaining native shapes. No claim of full classic Adw skinning.
 
 ## Stage 6 — Extend activation and migrate existing installations safely
+
+**Implemented in 1.1.0.** The requirements below are retained as the design record.
 
 Retain `vapor-libadwaita` and the current autostart entry as compatible entry
 points. Extend the manager with explicit profile selection, for example
@@ -274,6 +276,6 @@ migration carry most of the work. The audit's passing private profile reduces
 feasibility uncertainty without replacing those tasks.
 
 The GTK 3/4 and native Adw milestones now cover stages 1–5, including relevant
-test work. Next implement **stage 6**, with shared profile selection and safe
-migration tests. Broader live validation and release follow; the current
-milestone leaves the user's Vapor settings unchanged.
+test work. Stage 6 and release packaging are now complete in **1.1.0**, including
+shared selection and safe migration tests. Broader live display, accessibility
+and performance validation remain open; existing GTK theme choices are preserved.

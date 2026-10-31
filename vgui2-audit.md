@@ -1,5 +1,10 @@
 # VGUI2 Classic: GTK 3, GTK 4 and libadwaita port audit
 
+**Release update:** VGUI2 GTK 3/4 and libadwaita ship in **1.1.0** with automatic
+matching profile selection. Shared activation/migration is completed with 38
+recovery tests; see [release validation](docs/audits/release-1.1.0-validation.json).
+Earlier milestone notes below are historical.
+
 **Implementation follow-up:** the user subsequently requested starting GTK 3.
 An initial VGUI2Classic GTK 3.24 theme and its tests are now implemented.
 The subsequent audit corrected inactive messages, selected-container labels,

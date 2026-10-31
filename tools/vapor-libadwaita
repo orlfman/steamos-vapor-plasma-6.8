@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Enable, disable or inspect the Vapor libadwaita color overlay.
+"""Manage matching Vapor/VGUI2 libadwaita colors for the selected GTK theme.
 
 Edits only an explicitly managed import and sibling profile/state/backup files.
 Uses XDG_CONFIG_HOME by default. No desktop settings or Flatpak permissions change.
@@ -26,6 +26,17 @@ NAMES = ('gtk.css', 'vapor-libadwaita.css', '.vapor-libadwaita.json',
          '.vapor-libadwaita.gtk.css.backup')
 DISABLED_NAME = '.vapor-libadwaita-disabled'
 DISABLED_CONTENT = b'Disabled by vapor-libadwaita; run vapor-libadwaita enable to restore automatic activation.\n'
+PROFILE_IDS = ('vapor', 'vgui2')
+THEME_PROFILES = {'Vapor': 'vapor', 'Vapor-dark': 'vapor', 'VGUI2Classic': 'vgui2'}
+
+
+def bundled_profile(profile_id):
+    root = Path(__file__).resolve().parent.parent
+    for directory in (root/'libadwaita', root/'share/steamos-vapor/libadwaita'):
+        path = directory/(profile_id+'.css')
+        if path.is_file():
+            return path
+    return Path('/usr/share/steamos-vapor/libadwaita')/(profile_id+'.css')
 
 
 def automatic_allowed(directory):
@@ -129,6 +140,10 @@ def load_state(files):
         state = json.loads(value[0])
         if state['schema'] != 1 or not isinstance(state['original_exists'], bool):
             raise ValueError('Invalid state schema')
+        profile_id = state.get('profile_id', 'vapor')
+        if profile_id not in PROFILE_IDS:
+            raise ValueError('Invalid profile ID')
+        state['profile_id'] = profile_id
         if 'created_import_file' in state and not isinstance(state['created_import_file'], bool):
             raise ValueError('Invalid created-import flag')
         for key in ('original_sha256', 'profile_sha256'):
@@ -143,7 +158,7 @@ def load_state(files):
     return state
 
 
-def manage(directory, profile, action, dry_run):
+def manage(directory, profile, action, dry_run, theme_id=None):
     if directory.is_symlink():
         raise ValueError(f'Refusing a linked gtk-4.0 directory: {directory}')
     if directory.exists() and not directory.is_dir():
@@ -152,14 +167,20 @@ def manage(directory, profile, action, dry_run):
     files[DISABLED_NAME] = inspect(directory / DISABLED_NAME)
     automatic = automatic_allowed(directory)
     requested = action
-    theme = selected_theme(directory.parent) if action == 'auto' else None
-    if action == 'auto':
-        action = 'enable' if automatic and theme in ('Vapor', 'Vapor-dark') else 'disable'
     state = load_state(files)
+    theme = selected_theme(directory.parent) if action in ('auto','enable','status') else None
+    selected = THEME_PROFILES.get(theme)
+    if action == 'auto':
+        action = 'enable' if automatic and selected else 'disable'
+    profile_id = (theme_id or selected or 'vapor') if action == 'enable' else (
+                  theme_id or (state['profile_id'] if state else selected) or 'vapor')
+    profile = profile or bundled_profile(profile_id)
     css = files['gtk.css'][0] if files['gtk.css'] else b''
     blocks = css.count(BLOCK)
     if css.count(START) != blocks or css.count(END) != blocks or blocks > 1:
         raise ValueError('Managed import was edited or duplicated; preserve gtk.css for manual recovery.')
+    if action == 'enable':
+        check_runtime()
     profile_bytes = profile.read_bytes() if action == 'enable' else None
     status = 'disabled'
     if state:
@@ -170,10 +191,13 @@ def manage(directory, profile, action, dry_run):
     elif blocks or any(files[name] for name in NAMES[1:]):
         raise ValueError('Unowned managed-name files/import exist; refusing to replace them.')
     result = {'action': requested, 'status': status, 'config_directory': str(directory),
-              'dry_run': dry_run, 'changes': [], 'automatic_enabled': automatic}
+              'dry_run': dry_run, 'changes': [], 'automatic_enabled': automatic,
+              'profile_id': state['profile_id'] if state else None,
+              'selected_profile': selected}
     if requested == 'auto':
         result['selected_theme'] = theme
     if action == 'status':
+        result['profile_switch_available'] = bool(state and selected and selected != state['profile_id'])
         if state and profile.is_file():
             result['profile_update_available'] = digest(profile.read_bytes()) != state['profile_sha256']
         return result
@@ -191,6 +215,7 @@ def manage(directory, profile, action, dry_run):
                      'original_sha256': digest(original), 'profile_sha256': digest(profile_bytes)}
             changes[NAMES[3]] = original, 0o600
         state['profile_sha256'] = digest(profile_bytes)
+        state['profile_id'] = profile_id
         if not blocks:
             state['created_import_file'] = files['gtk.css'] is None
         changes[NAMES[1]] = profile_bytes, 0o644
@@ -198,6 +223,7 @@ def manage(directory, profile, action, dry_run):
         if not blocks:
             changes['gtk.css'] = BLOCK + css, files['gtk.css'][1] if files['gtk.css'] else 0o644
         result['status'] = 'enabled'
+        result['profile_id'] = profile_id
     elif state:
         if blocks:
             remaining = css.replace(BLOCK, b'', 1)
@@ -206,6 +232,7 @@ def manage(directory, profile, action, dry_run):
         for name in NAMES[1:]:
             changes[name] = None
         result['status'] = 'disabled'
+        result['profile_id'] = None
     changes = {name: value for name, value in changes.items() if files[name] != value}
     for name in changes:
         old = files[name]
@@ -227,19 +254,18 @@ def main():
     parser.add_argument('--dry-run', action='store_true', help='describe changes without writing files')
     parser.add_argument('--json', action='store_true', help='machine-readable result')
     parser.add_argument('--config-home', type=Path, help='explicit configuration home (default: XDG_CONFIG_HOME)')
-    source_profile = Path(__file__).resolve().parent.parent / 'libadwaita/vapor.css'
-    parser.add_argument('--profile', type=Path, default=source_profile if source_profile.is_file()
-                        else Path('/usr/share/steamos-vapor/libadwaita/vapor.css'))
+    parser.add_argument('--theme', choices=PROFILE_IDS, help='explicit profile for enable/status; default follows GTK selection')
+    parser.add_argument('--profile', type=Path, help='diagnostic CSS file override')
     args = parser.parse_args()
+    if args.theme and args.action not in ('enable','status'):
+        parser.error('--theme is supported with enable or status; auto follows the GTK selection.')
     config_home = args.config_home or Path(os.environ.get('XDG_CONFIG_HOME', str(Path.home()/'.config')))
     if not config_home.is_absolute():
         parser.error('Configuration home must be an absolute path.')
     directory = config_home / 'gtk-4.0'
     try:
         auto_enable = (args.action == 'auto' and automatic_allowed(directory)
-                       and selected_theme(config_home) in ('Vapor', 'Vapor-dark'))
-        if args.action == 'enable' or auto_enable:
-            check_runtime()
+                       and selected_theme(config_home) in THEME_PROFILES)
         # A directory lock avoids adding/removing a lock file and serializes
         # cooperating operations. Re-read after taking it. No directory creation
         # for dry-run/status or an automatic check of an unrelated theme.
@@ -252,7 +278,7 @@ def main():
                 descriptor = os.open(directory, os.O_RDONLY | os.O_DIRECTORY)
                 stack.callback(os.close, descriptor)
                 fcntl.flock(descriptor, fcntl.LOCK_EX)
-            result = manage(directory, args.profile, args.action, args.dry_run)
+            result = manage(directory, args.profile, args.action, args.dry_run, args.theme)
     except (OSError, ValueError) as error:
         print(f'Vapor libadwaita: {error}', file=sys.stderr)
         return 2

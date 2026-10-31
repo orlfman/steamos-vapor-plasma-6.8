@@ -48,6 +48,7 @@ def main():
                   'docs/screenshots/vgui2-libadwaita-ffmpeg-converter.png',
                   'docs/audits/vgui2-libadwaita-validation.json',
                   'docs/audits/vgui2-libadwaita-audit.json',
+                  'docs/audits/release-1.1.0-validation.json',
                   'docs/screenshots/vgui2-libadwaita-demo.png',
                   'docs/screenshots/vgui2-qt-windows-reference.png','docs/audits/vgui2-feasibility.json',
                   'docs/audits/vgui2-gtk3-validation.json'):

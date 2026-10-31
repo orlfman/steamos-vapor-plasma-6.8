@@ -1,4 +1,17 @@
-Unreleased — 2026-10-30, Codex (GPT-6): audit and fix VGUI2 libadwaita
+1.1.0 — 2026-10-30: VGUI2 Classic GTK and automatic matching libadwaita
+
+- Ship audited VGUI2Classic GTK 3.24, plain GTK 4 and native libadwaita colors
+  in the standard installation, alongside the existing Vapor themes.
+- Follow Vapor/Vapor-dark or VGUI2Classic GTK selection at Plasma login; switch
+  one managed profile transactionally and retain the original KDE CSS backup.
+- Accept legacy Vapor state; preserve persistent disable, user CSS and local
+  edit protections. Add explicit enable/status --theme vapor|vgui2.
+- Include the complete contrast/coexistence fixes, documentation and evidence.
+  No GTK 2, forced widget style, background watcher or Flatpak support is added.
+
+Development entries below describe the work accumulated into this release.
+
+Included in 1.1.0: audit and fix VGUI2 libadwaita
 
 - Use readable dark checked/activated labels and inset focus, retaining native
   gray fills and semantic variants; cover hover, pressed and nested labels.
@@ -11,7 +24,7 @@ Unreleased — 2026-10-30, Codex (GPT-6): audit and fix VGUI2 libadwaita
   evidence. Retain optional display diagnostics for failed app/control checks.
 - No live theme, runtime helper, activation migration, release or AUR change.
 
-Unreleased — 2026-10-30, Codex (GPT-6): initial VGUI2 Classic libadwaita profile
+Included in 1.1.0: initial VGUI2 Classic libadwaita profile
 
 - Add a dark/normal-contrast olive/gold profile with 28 color roles and native
   Adwaita shapes. Strengthen button focus color coverage to 65% after the card
@@ -24,7 +37,7 @@ Unreleased — 2026-10-30, Codex (GPT-6): initial VGUI2 Classic libadwaita profi
   Shared automatic activation is stage 6. Live settings, helper/login behavior,
   published release and AUR metadata are unchanged.
 
-Unreleased — 2026-10-30, Codex (GPT-6): audit VGUI2 Classic GTK 4
+Included in 1.1.0: audit VGUI2 Classic GTK 4
 
 - Restore GTK 4 frame/optional scroll-frame borders, inset vertical spin fields
   with dimmed disabled text, and requested column separators on the correct
@@ -37,7 +50,7 @@ Unreleased — 2026-10-30, Codex (GPT-6): audit VGUI2 Classic GTK 4
   from 19 to 32. Record before/after evidence, updated native screenshots and
   test-harness corrections. Production Vapor/GTK 3/helper/AUR files are unchanged.
 
-Unreleased — 2026-10-30, Codex (GPT-6): initial VGUI2 Classic GTK 4
+Included in 1.1.0: initial VGUI2 Classic GTK 4
 
 - Add independent normal/dark GTK 4 entries with classic olive/gold controls,
   GTK 4 text/selection/popover/calendar nodes and shared scalable SVG glyphs.
@@ -50,7 +63,7 @@ Unreleased — 2026-10-30, Codex (GPT-6): initial VGUI2 Classic GTK 4
   update the audit, plan and work log. VGUI2 Adw/activation are later stages.
   Published release/AUR metadata and the user's active theme are unchanged.
 
-Unreleased — 2026-10-30, Codex (GPT-6): audit and fix VGUI2 Classic GTK 3
+Included in 1.1.0: audit and fix VGUI2 Classic GTK 3
 
 - Keep warning/error InfoBar text readable when inactive; selected-row labels
   inherit through their immediate parents so nested button text stays readable.
@@ -64,7 +77,7 @@ Unreleased — 2026-10-30, Codex (GPT-6): audit and fix VGUI2 Classic GTK 3
 - Record reproducible findings, measurements and native state/notebook images.
   Existing runtime helpers, live settings, release and AUR metadata are unchanged.
 
-Unreleased — 2026-10-30, Codex (GPT-6): start VGUI2 Classic with GTK 3.24
+Included in 1.1.0: start VGUI2 Classic with GTK 3.24
 
 - Added independent VGUI2Classic normal/dark GTK 3 entries and standalone
   olive/gold CSS with classic beveled controls and six new SVG indicator glyphs.

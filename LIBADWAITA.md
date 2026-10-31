@@ -4,9 +4,8 @@ Status: a standard installed component since 1.0.4. Tested with libadwaita
 1.10.0 and GTK 4.24.1, plus successful user visual checks in Mission Center and
 FFmpeg Converter GTK. Packages before 1.0.4 do not contain this feature.
 
-The working tree also has an unreleased [VGUI2 Classic color profile](VGUI2-LIBADWAITA.md).
-Its automatic profile switching is still planned; the Vapor activation behavior
-below is unchanged.
+Since **1.1.0**, the package also ships the [VGUI2 Classic profile](VGUI2-LIBADWAITA.md)
+and automatically selects the matching family from the GTK theme.
 
 The profile matches Vapor's dark surfaces and #569fcc accent with dark
 #1f1f26 text. Adwaita keeps its widget shapes, spacing, responsive layouts and
@@ -19,7 +18,7 @@ It does not force an application's appearance preference.
 The package installs the profile, helper and a Plasma XDG autostart entry.
 At each Plasma login, `vapor-libadwaita auto` reads the selected GTK theme from
 the user's `gtk-4.0/settings.ini`, falling back to `gtk-3.0/settings.ini`. It
-enables or refreshes the overlay for **Vapor** or **Vapor-dark**, and removes
+enables or refreshes the overlay for **Vapor** or **Vapor-dark**, chooses VGUI2 for **VGUI2Classic**, and removes
 only its managed overlay if another theme is selected. Other users' existing
 themes are left alone. The process exits after checking; there is no watcher.
 
@@ -71,7 +70,7 @@ editing the same files concurrently.
 
 If KDE or another tool rewrites `gtk.css`, `status` reports the missing import.
 Run enable again to reapply it while preserving the new file. There is no
-background watcher. The next automatic login check also reapplies it when Vapor
+background watcher. The next automatic login check also reapplies it when a supported GTK theme
 is still selected and automatic activation has not been disabled.
 `--config-home /absolute/test/config` and `--profile FILE`
 allow isolated testing; `--json` produces machine-readable operation details.
@@ -102,7 +101,7 @@ separate testing; this native helper changes no Flatpak permissions.
 ## Tests
 
 Standard GTK 4 checks include native fixtures, Widget Factory, the same plain
-GTK tests with the overlay, 22 libadwaita cases, 28 activation/recovery tests,
+GTK tests with the overlay, 22 libadwaita cases, 38 activation/recovery tests,
 15 deliberately broken-profile checks and eight package-staging tests:
 
 ```sh
@@ -169,3 +168,20 @@ tool for its full payload and requires Python, GTK 4.24+ and libadwaita 1.10+.
 The installed login entry performs activation in the logged-in user's session.
 Flatpak integration remains a separate milestone in
 [libadwaita-plan.md](libadwaita-plan.md).
+
+## Profile selection and upgrades since 1.1.0
+
+`enable` follows the recognized GTK theme, falling back to legacy Vapor when no
+supported GTK theme is selected. `enable --theme vgui2` or `--theme vapor` chooses
+explicitly without changing the GTK setting; the next `auto` follows the actual
+selection again. `status --json` reports active/selected profile IDs, pending
+switches and updates relative to the active family. `--profile FILE` remains a
+diagnostic override, including with auto.
+
+Legacy schema-1 state is recognized as Vapor. New state adds a validated
+`profile_id` while keeping the original import, filenames and backup. A family
+swap updates the owned CSS/state together, leaving original and later user CSS
+intact. Unknown IDs and local edits are refused. Explicit disable remains shared
+across both families until enable clears it. Package installation does not write
+user homes; existing users get the selection at login or via `vapor-libadwaita
+auto`, then restart GTK 4 apps. Neither the GTK theme nor app appearance is forced.

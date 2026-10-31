@@ -1,3 +1,21 @@
+# 1.1.0 release and shared activation verification — 2026-10-30
+
+VGUI2 GTK 3/4 and native libadwaita are standard installed components in 1.1.0.
+Shared selection is implemented: Vapor/Vapor-dark selects Vapor;
+VGUI2Classic selects VGUI2; another GTK theme removes only the owned overlay.
+Schema-1 state without a profile ID is legacy Vapor. Validated IDs, one shared
+import/backup, transactional swaps and persistent disable preserve upgrades.
+Explicit enable/status selection is available through `--theme vapor|vgui2`.
+
+All 38 activation/recovery tests are run against source and the packaged
+helper. Actual legacy-helper upgrades cover originally missing/empty/KDE CSS,
+later user edits, family swaps and persistent disable. Release checks include
+both complete GTK 3/4 suites, package staging and final Arch archive inspection.
+Results: [release-1.1.0-validation.json](docs/audits/release-1.1.0-validation.json).
+The earlier audits below retain their original milestone boundaries.
+
+---
+
 # VGUI2 Classic libadwaita follow-up audit and fixes — 2026-10-30
 
 Audited base: `f508f4b4f37fae2e2ea1fea1ba98f60ff31dddbc`. Target: GTK

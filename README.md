@@ -16,10 +16,10 @@ shortcuts) are left out.
 | Vapor Plasma style | `usr/share/plasma/desktoptheme/Vapor` |
 | Vapor and VGUI color schemes, plus Union versions | `usr/share/color-schemes` |
 | Vapor GTK 3.24 theme | `usr/share/themes/Vapor/gtk-3.0`, `gtk-3.24` |
-| VGUI2 Classic GTK 3.24, unreleased | `usr/share/themes/VGUI2Classic` |
-| VGUI2 Classic plain GTK 4, initial/unreleased | `usr/share/themes/VGUI2Classic/gtk-4.0` |
+| VGUI2 Classic GTK 3.24, since 1.1.0 | `usr/share/themes/VGUI2Classic` |
+| VGUI2 Classic plain GTK 4, since 1.1.0 | `usr/share/themes/VGUI2Classic/gtk-4.0` |
 | Vapor GTK 4 theme, initial (plain GTK 4 apps; libadwaita apps ignore themes) | `usr/share/themes/Vapor/gtk-4.0` |
-| Native libadwaita colors, installed by default since 1.0.4 | `libadwaita/vapor.css` |
+| Native libadwaita colors, installed by default since 1.0.4 | `libadwaita/vapor.css`, `libadwaita/vgui2.css` |
 | Vapor Konsole profile and colors | `usr/share/konsole` |
 | Steam Deck wallpapers (`SteamDeckLogo` is the themes' default) | `usr/share/wallpapers` |
 | Steam Deck start menu icon | `usr/share/icons/hicolor` |
@@ -56,7 +56,9 @@ Then pick a global theme in System Settings > Colors & Themes > Global Theme.
 
 Since **1.0.4**, the package includes native libadwaita colors, the
 `vapor-libadwaita` helper and Plasma login integration. When the GTK application
-theme is **Vapor**, the colors activate at the next Plasma login. Run
+theme is **Vapor/Vapor-dark** or **VGUI2Classic**, matching colors activate at
+the next Plasma login (VGUI2 since **1.1.0**). Choose the matching GTK theme in
+System Settings as well as the Plasma appearance. Run
 `vapor-libadwaita auto` to apply the current selection immediately, then restart
 GTK 4 apps. `vapor-libadwaita disable` turns it off and remembers that choice;
 `vapor-libadwaita enable` restores it. See [LIBADWAITA.md](LIBADWAITA.md).
@@ -144,8 +146,8 @@ VGUI2 adds real state/focus/glyph/popup checks and 32 plain GTK regressions;
 see [VGUI2-GTK4.md](VGUI2-GTK4.md). Its initial [libadwaita profile](VGUI2-LIBADWAITA.md)
 passes 34 surface cases, 12 cases of 50 real controls and 25 negative controls.
 The audit fixes checked-label/input focus contrast, compound semantic focus
-and focus coexistence with the plain GTK theme. Automatic VGUI2 profile
-switching remains stage 6; the live theme and released package are unchanged.
+and focus coexistence with the plain GTK theme. Automatic matching profile selection is included in **1.1.0**; explicit disable
+remains persistent across theme changes and upgrades.
 Failures and missing dependencies fail the standard suite; no automatic skip.
 The GTK 3 checker runs both Vapor and VGUI2 Classic, including mapped popup and
 dialog checks. It needs `python-cairo`, `python-pillow`, SVG support and
@@ -208,7 +210,7 @@ login action applies the current GTK theme choice once per session; it does not
 run a background watcher. Selecting another GTK theme removes the managed
 overlay at the next login or `vapor-libadwaita auto` run.
 
-The standard suite includes 22 native Adw cases, 28 activation/recovery tests,
+The Vapor suite includes 22 native Adw cases, 38 shared activation/recovery tests,
 15 deliberately broken-profile tests and eight package-staging tests. Surface
 checks read rasterized widget backgrounds; focus contrast uses the adjacent
 background in the captured image. Matching Adwaita demo and independent
@@ -223,7 +225,7 @@ good. This screenshot records the live appearance during testing.
 
 ![Vapor manual testing: FFmpeg Converter GTK and Mission Center](docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png)
 
-## VGUI2 Classic GTK port (unreleased)
+## VGUI2 Classic GTK themes (since 1.1.0)
 
 The working tree now includes independent **VGUI2Classic GTK 3.24 and GTK 4 themes**:
 olive/gold colors, classic beveled controls and vector indicators. Both theme
@@ -238,8 +240,8 @@ indicators, list/column/grid views, popovers and a tested 2x rendering matrix.
 Its follow-up audit corrected frame borders, vertical fields, column separators,
 expander glyphs/focus and dark-entry verification; fixes are in the standard tests.
 The [VGUI2 libadwaita color profile](VGUI2-LIBADWAITA.md) is implemented and
-tested; shared automatic activation remains planned. The current AUR 1.0.4 release
-and live Vapor settings are unchanged. [vgui2-audit.md](vgui2-audit.md) records
+tested and shipped in **1.1.0**, including shared automatic activation. Existing
+Vapor users keep their selected theme and original CSS backup. [vgui2-audit.md](vgui2-audit.md) records
 the investigation; [vgui2-plan.md](vgui2-plan.md) tracks the remaining work.
 
 ## License

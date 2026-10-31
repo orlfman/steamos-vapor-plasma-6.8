@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name=Vapor libadwaita colors
-Comment=Apply Vapor colors when the Vapor GTK theme is selected
+Name=Vapor and VGUI2 libadwaita colors
+Comment=Apply matching colors for the selected Vapor or VGUI2 Classic GTK theme
 Exec=vapor-libadwaita auto
 TryExec=vapor-libadwaita
 OnlyShowIn=KDE;
