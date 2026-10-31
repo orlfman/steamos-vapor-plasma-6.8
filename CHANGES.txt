@@ -1,3 +1,13 @@
+1.1.0-3 (AUR packaging) — 2026-10-30: explain setup for new users
+
+- Replace the installation/upgrade notice with numbered steps through KDE's
+  settings, selecting the matching app theme, saving work and logging out/back
+  in. Explain why those steps are needed and where to resume after an update.
+- Remove terminal commands and enable/disable terminology from the notice.
+  Rewrite the README setup around the same steps; put the terminal shortcut
+  in a separate optional section and keep extra controls in the detailed guide.
+- Keep the existing source archive, theme files and app-color behavior.
+
 1.1.0-2 (AUR packaging) — 2026-10-30: GTK/libadwaita activation notice
 
 - Print setup guidance after both installation and upgrades: select Vapor,

@@ -1,3 +1,22 @@
+# Installation instructions for new users — 2026-10-30
+
+Package **1.1.0-3** replaces the technical notice with five numbered steps.
+Explain where to find the separate app-theme settings, which option matches
+Vapor/VGUI2, how to save work and log out/back in, and why logout matters.
+Users keeping their selected theme can resume at the save/logout steps.
+Remove terminal commands and enable/disable terminology from the notice.
+README setup follows the same approach, with a separately labeled optional
+terminal shortcut. The detailed guide points everyday users to those steps.
+
+The actual Arch package contains the revised notice. Fresh-install and upgrade
+hooks produce identical output under sh/bash without input. Syntax, metadata
+and the build pass. All 276 payload entries outside package metadata/the notice
+match 1.1.0-2. Namcap reports zero errors and its four existing dependency
+warnings. No theme/runtime change or live package installation was performed.
+[Validation evidence](docs/audits/aur-1.1.0-3-validation.json).
+
+---
+
 # AUR installation notice — 2026-10-30
 
 Package **1.1.0-2** adds a terminal notice after fresh installs and upgrades.

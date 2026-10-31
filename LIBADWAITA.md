@@ -15,6 +15,11 @@ It does not force an application's appearance preference.
 
 ## Activation
 
+For everyday setup, follow the [numbered steps in the README](README.md#install).
+You can select the theme in System Settings, save your work, then log out and
+back in. The commands below are for optional controls, manual installation and
+troubleshooting.
+
 The package installs the profile, helper and a Plasma XDG autostart entry.
 At each Plasma login, `vapor-libadwaita auto` reads the selected GTK theme from
 the user's `gtk-4.0/settings.ini`, falling back to `gtk-3.0/settings.ini`. It

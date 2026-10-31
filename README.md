@@ -44,29 +44,53 @@ The short version (details in [CHANGES.txt](CHANGES.txt)):
 
 ## Install
 
-Arch: AUR package `plasma6-themes-steamos-vapor-fixed`, or build it from
-[aur/PKGBUILD](https://github.com/orlfman/steamos-vapor-plasma-6.8/blob/main/aur/PKGBUILD) with `makepkg -si`.
+On Arch Linux, install
+[`plasma6-themes-steamos-vapor-fixed` from the AUR](https://aur.archlinux.org/packages/plasma6-themes-steamos-vapor-fixed).
+
+After installation:
+
+1. Open **System Settings > Colors & Themes > Global Theme**. Choose the Vapor
+   or VGUI2 theme you want, then click **Apply**.
+2. Go to **Application Style > GNOME/GTK Application Style**. Some applications
+   use this separate setting for their appearance.
+3. Choose **Vapor** to match Vapor, or **VGUI2Classic** to match VGUI2, then
+   click **Apply**. **Vapor-dark** also works with Vapor.
+4. Save your work and close your applications.
+5. Open the application menu, choose **Log Out**, then log back in.
+
+Logging out lets supported applications load the matching theme colors. Do
+this again whenever you switch between Vapor and VGUI2. If your preferred
+theme is already selected after an update, start at step 4.
+
+Since **1.1.0-3**, AUR installs and upgrades print these setup instructions
+without requiring any terminal commands. Matching colors for libadwaita apps
+are included with the package (Vapor since 1.0.4; VGUI2 since 1.1.0).
+
+### Optional: apply app colors without logging out
+
+Open **Konsole** (the terminal application), paste this command, then press
+**Enter**:
+
+```sh
+vapor-libadwaita auto
+```
+
+Fully close and reopen the applications you want to use with the theme.
+For additional controls and troubleshooting, see [LIBADWAITA.md](LIBADWAITA.md).
+
+### Manual installation
+
+To build the Arch package yourself, use [aur/PKGBUILD](aur/PKGBUILD) with
+`makepkg -si`.
 
 Manually, for your user only: copy the folders under `usr/share` into
 `~/.local/share` (for example `usr/share/plasma/look-and-feel/*` into
 `~/.local/share/plasma/look-and-feel/`). For the whole system, copy `usr/share`
 into `/usr/share`.
 
-Then pick a global theme in System Settings > Colors & Themes > Global Theme.
-
-Since **1.0.4**, the package includes native libadwaita colors, the
-`vapor-libadwaita` helper and Plasma login integration. When the GTK application
-theme is **Vapor/Vapor-dark** or **VGUI2Classic**, matching colors activate at
-the next Plasma login (VGUI2 since **1.1.0**). Choose the matching GTK theme in
-System Settings as well as the Plasma appearance. Run
-`vapor-libadwaita auto` to apply the current selection immediately, then restart
-GTK 4 apps. `vapor-libadwaita disable` turns it off and remembers that choice;
-`vapor-libadwaita enable` restores it. See [LIBADWAITA.md](LIBADWAITA.md).
-Since **1.1.0-2**, AUR installs and upgrades also print a reminder to save your
-work, log out of KDE Plasma and log back in after selecting the GTK theme.
-The notice includes the immediate command above as an alternative.
-For a per-user manual installation from this checkout, also run
-`python3 -I tools/vapor-libadwaita enable`.
+Follow the theme-selection steps above. For a per-user manual installation
+from this checkout, also run `python3 -I tools/vapor-libadwaita enable` to add
+the matching colors for libadwaita apps.
 
 ### Using Union
 

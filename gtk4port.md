@@ -1729,3 +1729,24 @@ and checksum; no upstream source tag is replaced.
   GitHub main and AUR packaging; 1.1.0 remains the upstream theme release.
 
 Results: [aur-1.1.0-2-validation.json](docs/audits/aur-1.1.0-2-validation.json).
+
+## 30. Explain installation for users without technical knowledge — 2026-10-30
+
+User found the notice's terminal commands and enable/disable wording confusing.
+Treat installation guidance as first-use instructions for someone unfamiliar
+with KDE themes and terminals. Revise the AUR package to **1.1.0-3**.
+
+- Replace the notice with five numbered steps through System Settings, matching
+  the GTK choice, applying, saving work and logging out/back in. Explain the
+  separate app-theme setting and why logout is needed. No commands in the notice.
+- Rewrite README setup as menu-based steps, clearly separate the optional
+  terminal shortcut, and keep extra controls in the detailed guide. Explain
+  where users keeping their selected theme should resume after an update.
+- Regenerate .SRCINFO and build. Check the actual package's fresh-install and
+  upgrade output under sh/bash with no input; syntax and metadata checks pass.
+  All 276 non-metadata payload entries match 1.1.0-2. Namcap has zero errors
+  and the same four dependency warnings. No theme/runtime files change.
+- Commit and push matching GitHub/AUR packaging, retaining the v1.1.0 archive
+  and source checksum. No live package installation or theme change is needed.
+
+Results: [aur-1.1.0-3-validation.json](docs/audits/aur-1.1.0-3-validation.json).

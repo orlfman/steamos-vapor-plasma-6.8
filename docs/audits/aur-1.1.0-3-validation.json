@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-30",
+  "package": "plasma6-themes-steamos-vapor-fixed",
+  "version": "1.1.0-3",
+  "scope": "Rewrite installation and upgrade notice for users without technical knowledge; upstream v1.1.0 archive retained.",
+  "source_archive_sha256": "3af8dee4ac4f768fbd7045c407396a5874e562a1f17808c7ef40b72e42c98c22",
+  "build": "makepkg --cleanbuild --force --noconfirm: PASS",
+  "syntax": "bash -n PKGBUILD/install; sh -n install: PASS",
+  "srcinfo_matches_makepkg": true,
+  "arch_package_contains_exact_install_script": true,
+  "notice_hook_checks": {
+    "sh:post_install": "PASS",
+    "sh:post_upgrade": "PASS",
+    "bash:post_install": "PASS",
+    "bash:post_upgrade": "PASS"
+  },
+  "notice": "\nFinish setting up your Vapor or VGUI2 theme:\n\n  1. Open System Settings > Colors & Themes > Application Style.\n  2. Open GNOME/GTK Application Style. This controls the appearance\n     of applications that use a separate theme setting.\n  3. Choose Vapor to match Vapor, or VGUI2Classic to match VGUI2,\n     then click Apply.\n  4. Save your work and close your applications.\n  5. Open the application menu, choose Log Out, then log back in.\n\n  Logging out lets supported applications load the matching colors.\n  Do this again whenever you switch between Vapor and VGUI2.\n  If your preferred theme is already selected, start at step 4.\n\n",
+  "payload_comparison": {
+    "baseline": "1.1.0-2",
+    "result": "PASS",
+    "identical_entries": 276,
+    "regular_files": 214,
+    "exclusions": [
+      ".BUILDINFO",
+      ".INSTALL",
+      ".MTREE",
+      ".PKGINFO"
+    ],
+    "checked": "paths, file bytes, modes, symlink targets"
+  },
+  "live_package_installed": false,
+  "scratch_evidence": "/tmp/vapor-aur-1.1.0-3-0pcf944k"
+}
