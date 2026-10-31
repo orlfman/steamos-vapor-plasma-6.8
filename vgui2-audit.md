@@ -12,11 +12,14 @@ records the separate stylesheet, actual application checks and limitations.
 Its follow-up audit fixes GTK 4 frame/field/separator/expander paths and proves
 actual dark-entry loading; see the latest [audit.md](audit.md) entry and work-log
 section 25.
-The matching [native Adw profile](VGUI2-LIBADWAITA.md) now passes 34 cases and
-17 mutations, including broader focus surfaces and two real-app startup pairs.
+The matching [native Adw profile](VGUI2-LIBADWAITA.md) now passes 34 surface
+cases, 12 cases of 50 real controls and 25 mutations, plus real-app startup pairs.
 The card focus trial failed at 2.95:1 and was corrected with guarded 65% color
 coverage; native geometry remains intact. See work-log section 26 and
 [portable results](docs/audits/vgui2-libadwaita-validation.json).
+The follow-up audit corrects checked label/focus contrast, input focus,
+compound semantic focus inheritance and plain-GTK focus coexistence; see
+[audit evidence](docs/audits/vgui2-libadwaita-audit.json) and work-log section 27.
 The findings below preserve the pre-port investigation. Shared automatic
 profile switching remains future work.
 

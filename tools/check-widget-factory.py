@@ -49,7 +49,7 @@ def terminate(process):
 
 
 @contextmanager
-def private_display(scratch, env):
+def private_display(scratch, env, diagnostics=None):
     socket = scratch / 'http.socket'
     socket.unlink(missing_ok=True)
     server = subprocess.Popen(
@@ -66,7 +66,11 @@ def private_display(scratch, env):
             raise RuntimeError('Private display failed to start')
         yield
     finally:
-        terminate(server)
+        stdout,stderr=terminate(server)
+        if diagnostics is not None:
+            diagnostics.mkdir(parents=True,exist_ok=True)
+            (diagnostics/'display.stdout').write_bytes(stdout)
+            (diagnostics/'display.stderr').write_bytes(stderr)
 
 
 def run_application(launch, env, output, case):

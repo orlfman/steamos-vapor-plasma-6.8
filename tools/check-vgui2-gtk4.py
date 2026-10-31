@@ -429,6 +429,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--theme',type=Path,default=ROOT/'usr/share/themes/VGUI2Classic')
     parser.add_argument('--output',type=Path)
+    parser.add_argument('--user-css',type=Path,help='test a libadwaita profile alongside the plain GTK theme')
     parser.add_argument('--worker',action='store_true',help=argparse.SUPPRESS)
     parser.add_argument('--state',choices=('normal','backdrop','rtl'),default='normal',help=argparse.SUPPRESS)
     parser.add_argument('--dark',action='store_true',help=argparse.SUPPRESS)
@@ -454,6 +455,10 @@ def main():
         dark_css.write_text(dark_css.read_text()+'\n@define-color vgui4_dark_fixture_marker #1d1711;\n')
         settings=scratch/'config/gtk-4.0';settings.mkdir()
         (settings/'settings.ini').write_text('[Settings]\ngtk-theme-name='+FAMILY['name']+'\ngtk-font-name=DejaVu Sans 10\n')
+        if args.user_css:
+            subprocess.run([sys.executable,'-I',str(ROOT/'tools/vapor-libadwaita'),'enable','--json',
+                            '--config-home',str(scratch/'config'),'--profile',str(args.user_css.resolve())],
+                           capture_output=True,text=True,check=True)
         env.update({'XDG_CONFIG_DIRS':str(scratch/'config'),'XDG_DATA_DIRS':'/usr/share',
                     'GDK_BACKEND':'broadway','BROADWAY_DISPLAY':':1','GSK_RENDERER':'broadway',
                     'GDK_DISABLE':'gl:vulkan:offload','VK_LOADER_DRIVERS_DISABLE':'*',

@@ -1,3 +1,16 @@
+Unreleased — 2026-10-30, Codex (GPT-6): audit and fix VGUI2 libadwaita
+
+- Use readable dark checked/activated labels and inset focus, retaining native
+  gray fills and semantic variants; cover hover, pressed and nested labels.
+- Strengthen native check/switch/entry/spin focus and preserve compound
+  destructive button outlines through inherited private coverage values.
+- Preserve the plain GTK theme's dotted focus through local color values;
+  repeat deeper state/focus coexistence checks in the standard suite.
+- Add 12 cases of 50 native controls and increase Adw negative controls to 25.
+  Record original failures, current measurements, native/app images and audit
+  evidence. Retain optional display diagnostics for failed app/control checks.
+- No live theme, runtime helper, activation migration, release or AUR change.
+
 Unreleased — 2026-10-30, Codex (GPT-6): initial VGUI2 Classic libadwaita profile
 
 - Add a dark/normal-contrast olive/gold profile with 28 color roles and native

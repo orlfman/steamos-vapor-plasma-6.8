@@ -174,6 +174,8 @@ notebook > header > tabs > tab:focus {
   outline-width: 2px;
   outline-offset: -4px;
   outline-color: @vgui_focus;
+  /* Local values take precedence over inherited libadwaita profile fallbacks. */
+  --vgui2-classic-focus-color: @vgui_focus;
 }
 /* Pale dotted edges lose contrast when antialiased onto the opaque gold fill. */
 button:focus:checked:not(:disabled), button:focus:active:not(:disabled),
@@ -184,9 +186,13 @@ row:focus:selected:not(:disabled), flowboxchild:focus:selected:not(:disabled),
 iconview:focus:selected:not(:disabled), switch:focus:checked:not(:disabled),
 calendar:focus:selected:not(:disabled) {
   outline-color: @theme_selected_fg_color;
+  --vgui2-classic-focus-color: @theme_selected_fg_color;
 }
 /* Destructive actions keep their red surface even when pressed. */
-button.destructive-action:focus:not(:disabled) { outline-color: @vgui_focus; }
+button.destructive-action:focus:not(:disabled) {
+  outline-color: @vgui_focus;
+  --vgui2-classic-focus-color: @vgui_focus;
+}
 button:backdrop:checked:not(:disabled) label,
 button:backdrop:active:not(:disabled) label {
   color: inherit;
@@ -522,6 +528,7 @@ calendar > grid > label:focus-visible {
   outline-width: 2px;
   outline-offset: -4px;
   outline-color: @vgui_focus;
+  --vgui2-classic-focus-color: @vgui_focus;
 }
 calendar > grid > label.day-number:selected:focus-visible { outline-color: @theme_selected_fg_color; }
 listview, columnview, gridview { background-color: @theme_base_color; color: @theme_text_color; }

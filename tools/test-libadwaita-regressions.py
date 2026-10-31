@@ -3,6 +3,7 @@
 from pathlib import Path
 import argparse
 import runpy
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -39,7 +40,7 @@ def main():
         ('weak-local-focus',None,guarded('.vapor-fixture-actions { background-color: #'+('888888' if args.family=='vgui2' else '555555')+'; }'),['--state','focus'],'ADW-FOCUS: weak ring')]
     if args.family=='vgui2':
         cases += [
-            ('weak-card-focus','var(--accent-color) 65%','var(--accent-color) 50%',['--state','focus-card'],'ADW-FOCUS: weak ring'),
+            ('weak-card-focus','--vgui2-button-focus-coverage: 65%;','--vgui2-button-focus-coverage: 50%;',['--state','focus-card'],'ADW-FOCUS: weak ring'),
             ('wrong-standalone','--accent-color: #ffffe0;','--accent-color: #958831;',['--quick'],'ADW-COLOR: accent-color'),
         ]
     with tempfile.TemporaryDirectory(prefix='vapor-adw-mutations-') as folder:
@@ -55,6 +56,37 @@ def main():
                                    '--family',args.family,'--profile',str(profile),*options],capture_output=True,text=True,timeout=35)
             assert result.returncode!=0 and ('AssertionError: '+expected) in result.stderr,(name,result.stdout,result.stderr)
             print(f'Libadwaita: rejected {name} ({expected})',flush=True)
+        if args.family=='vgui2':
+            controls=[
+                ('weak-checked-focus',None,guarded('button.toggle:checked:focus:focus-visible:not(.suggested-action):not(.opaque):not(.arrow-button):not(.osd):not(.link):not(:disabled) { outline-color: color-mix(in srgb, var(--accent-color) 65%, transparent); }'),['--quick'],'ADW-CONTROL-FOCUS:'),
+                ('unreadable-checked-text',None,guarded('button.toggle:checked:not(.suggested-action):not(.opaque):not(.arrow-button):not(.osd):not(.link):not(:disabled) label:not(.error):not(.warning):not(.success):not(.accent) { color: var(--window-fg-color); }'),['--quick'],'ADW-CONTROL-TEXT:'),
+                ('unreadable-ordinary-activation',None,guarded('button:active:not(.suggested-action):not(.opaque):not(.arrow-button):not(.osd):not(.link):not(:disabled) label:not(.error):not(.warning):not(.success):not(.accent) { color: var(--window-fg-color); }'),['--quick'],'ADW-CONTROL-TEXT:'),
+                ('weak-input-focus','--vgui2-control-focus-coverage: 80%;','--vgui2-control-focus-coverage: 50%;',['--quick'],'ADW-CONTROL-FOCUS:'),
+                ('semantic-parent-focus','.destructive-action, .error, .warning, .success','.error, .warning, .success',['--quick'],'ADW-CONTROL-SEMANTIC:'),
+                ('changed-check-geometry',None,guarded('checkbutton { min-height: 80px; }'),['--quick'],'ADW-CONTROL-GEOMETRY:'),
+                ('unguarded-light-focus',None,'\n@media (prefers-color-scheme: light) { button:focus:focus-visible { outline-color: red; } }\n',['--light'],'ADW-CONTROL-GUARD:'),
+            ]
+            for name,old,new,options,expected in controls:
+                assert old is None or original.count(old)==1,(name,old)
+                text=original.replace(old,new) if old else original+new
+                profile=scratch/(name+'.css');profile.write_text(text)
+                result=subprocess.run([sys.executable,'-I',str(ROOT/'tools/check-vgui2-libadwaita.py'),
+                                       '--profile',str(profile),*options],capture_output=True,text=True,timeout=35)
+                assert result.returncode!=0 and ('AssertionError: '+expected) in result.stderr,(name,result.stdout,result.stderr)
+                print(f'Libadwaita: rejected {name} ({expected})',flush=True)
+            cases += controls
+            theme=scratch/'VGUI2Classic'
+            shutil.copytree(ROOT/'usr/share/themes/VGUI2Classic',theme)
+            css=theme/'gtk-4.0/gtk.css'
+            text=css.read_text();assert '--vgui2-classic-focus-color:' in text
+            css.write_text(''.join(line for line in text.splitlines(keepends=True)
+                                   if '--vgui2-classic-focus-color:' not in line))
+            result=subprocess.run([sys.executable,'-I',str(ROOT/'tools/check-vgui2-gtk4.py'),
+                                   '--theme',str(theme),'--user-css',str(family['profile']),
+                                   '--quick','--dark'],capture_output=True,text=True,timeout=35)
+            assert result.returncode!=0 and 'AssertionError: GTK4-FOCUS:' in result.stderr,('missing-classic-focus-bridge',result.stdout,result.stderr)
+            print('Libadwaita: rejected missing-classic-focus-bridge (GTK4-FOCUS:)',flush=True)
+            cases.append(('missing-classic-focus-bridge',))
     print(f'All {len(cases)} deliberate libadwaita regressions rejected; source profile unchanged.')
 
 

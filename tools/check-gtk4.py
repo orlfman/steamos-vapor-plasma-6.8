@@ -345,6 +345,11 @@ def main():
         command += ['--user-css', str(args.overlay.resolve())]
     subprocess.run(command, check=True)
     if args.overlay:
+        if family['classic']:
+            command=[sys.executable,'-I',str(ROOT/'tools/check-vgui2-gtk4.py'),'--theme',str(theme),
+                     '--user-css',str(args.overlay.resolve())]
+            if args.output:command += ['--output',str(args.output.resolve()/'classic')]
+            subprocess.run(command,check=True)
         print('Plain GTK 4 widgets, behavior and Widget Factory with libadwaita overlay: PASS',flush=True)
         return
     if family['classic']:
@@ -361,6 +366,11 @@ def main():
              '--family',args.family,'--profile',str(args.libadwaita_profile.resolve())]
     if args.output:command += ['--output',str(args.output.resolve()/'libadwaita')]
     subprocess.run(command,check=True)
+    if family['classic']:
+        command=[sys.executable,'-I',str(ROOT/'tools/check-vgui2-libadwaita.py'),
+                 '--profile',str(args.libadwaita_profile.resolve())]
+        if args.output:command += ['--output',str(args.output.resolve()/'libadwaita-controls')]
+        subprocess.run(command,check=True)
     if not family['classic']:
         subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-libadwaita-activation.py')],check=True)
     subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-libadwaita-regressions.py'),

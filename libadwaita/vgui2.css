@@ -40,12 +40,51 @@
 
     --active-toggle-bg-color: #958831;
     --active-toggle-fg-color: #181810;
+
+    /* Private focus color coverage; never change Adwaita helper opacities. */
+    --vgui2-button-focus-coverage: 65%;
+    --vgui2-active-ink-native: 0%;
+    --vgui2-control-focus-coverage: 80%;
   }
 
-  /* Native 50% focus falls below 3:1 on raised olive cards. Change only
-   * ring color/coverage, retaining native outline width, offset and geometry.
-   * Keep semantic action focus under upstream control. */
-  button:focus:focus-visible:not(:disabled):not(.destructive-action):not(.error):not(.warning):not(.success) {
-    outline-color: color-mix(in srgb, var(--accent-color) 65%, transparent);
+  /* Semantic classes also live on compound-button parents. Inherit native
+   * coverage through their descendants, retaining each node's accent color. */
+  .destructive-action, .error, .warning, .success {
+    --vgui2-button-focus-coverage: 50%;
+    --vgui2-active-ink-native: 100%;
+    --vgui2-control-focus-coverage: 50%;
+  }
+
+  /* Preserve native outline widths, offsets and geometry. The bundled plain
+   * GTK theme supplies a local color so its dotted focus remains unchanged. */
+  button:focus:focus-visible:not(:disabled) {
+    outline-color: var(--vgui2-classic-focus-color,
+      color-mix(in srgb, var(--accent-color) var(--vgui2-button-focus-coverage), transparent));
+  }
+  button:hover:focus:focus-visible:not(:disabled) {
+    outline-color: var(--vgui2-classic-focus-color,
+      color-mix(in srgb, var(--accent-color) var(--vgui2-control-focus-coverage), transparent));
+  }
+  /* Native active/checked fills use the button's currentColor. Darken labels
+   * and inset focus without changing that fill; semantic parents keep native
+   * ink. Arrow/opaque/suggested controls have a separate native treatment. */
+  button.toggle:checked:not(.suggested-action):not(.opaque):not(.arrow-button):not(.osd):not(.link):not(:disabled) label:not(.error):not(.warning):not(.success):not(.accent),
+  button:active:not(.suggested-action):not(.opaque):not(.arrow-button):not(.osd):not(.link):not(:disabled) label:not(.error):not(.warning):not(.success):not(.accent),
+  button.keyboard-activating:not(.suggested-action):not(.opaque):not(.arrow-button):not(.osd):not(.link):not(:disabled) label:not(.error):not(.warning):not(.success):not(.accent) {
+    color: color-mix(in srgb, currentColor var(--vgui2-active-ink-native), var(--accent-fg-color));
+  }
+  button.toggle:checked:focus:focus-visible:not(.suggested-action):not(.opaque):not(.arrow-button):not(.osd):not(.link):not(:disabled),
+  button:active:focus:focus-visible:not(.suggested-action):not(.opaque):not(.arrow-button):not(.osd):not(.link):not(:disabled),
+  button.keyboard-activating:focus:focus-visible:not(.suggested-action):not(.opaque):not(.arrow-button):not(.osd):not(.link):not(:disabled) {
+    outline-color: var(--vgui2-classic-focus-color, color-mix(in srgb,
+      color-mix(in srgb, var(--accent-color) var(--vgui2-button-focus-coverage), transparent)
+      var(--vgui2-active-ink-native), var(--accent-fg-color)));
+  }
+  checkbutton:focus:focus-visible:not(:disabled),
+  switch:focus:focus-visible:not(:disabled),
+  entry:focus-within:not(:disabled),
+  spinbutton:focus-within:not(:disabled) {
+    outline-color: var(--vgui2-classic-focus-color,
+      color-mix(in srgb, var(--accent-color) var(--vgui2-control-focus-coverage), transparent));
   }
 }

@@ -52,7 +52,7 @@ The default command validates **both families**. Vapor retains its native,
 Widget Factory, overlay coexistence, libadwaita, activation/recovery and mutation
 stages. VGUI2 adds its own native, shared behavior, Widget Factory, real-widget
 state matrix and **32** deliberate regression controls, plus matching-profile
-coexistence, 34 Adw cases and 17 Adw regressions. A missing application,
+coexistence, 34 Adw surface cases, 12 real-control cases and 25 Adw regressions. A missing application,
 parser error or failed assertion fails the suite.
 
 To target VGUI2 alone:
@@ -146,3 +146,9 @@ X11, fractional scaling, full keyboard/screen-reader testing, Flatpak and
 comparative performance measurements remain open. Integer scale-2 coverage
 does not establish fractional scaling. No release, AUR update or live activation
 is part of this source milestone. CSS and glyphs remain GPL-2.0-or-later.
+
+The Adw follow-up audit adds local `--vgui2-classic-focus-color` values beside
+the existing focus colors. These variables preserve the original dotted focus
+when the user profile is loaded; they do not alter standalone theme rendering.
+The standard suite now repeats the five deeper state/focus cases with that
+profile present and rejects a private copy with the bridge removed.

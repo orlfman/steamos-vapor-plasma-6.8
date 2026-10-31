@@ -1488,3 +1488,152 @@ the existing Vapor helper and live user configuration are unchanged.
   comparative performance remain open. No speed improvement is claimed.
 
 Commit and push the completed source milestone per the standing instruction.
+
+## 27. Audit and correct the VGUI2 libadwaita port — 2026-10-30
+
+User requested auditing the port and fixing findings. Started from clean
+`f508f4b4f37fae2e2ea1fea1ba98f60ff31dddbc`. Baseline hashes and a frozen
+checkout, failed probes, logs and native captures are retained under
+`/tmp/vgui2-adwaita-audit-vvfis832`. The newest audit entry and portable audit
+JSON distinguish current measurements from the historical stage-5 record.
+
+### Four confirmed findings and corrections
+
+1. **Checked text:** real ordinary GtkToggleButton labels retain `#fcfcfc`
+   over native gray fills. Normal window/card text measures 3.53/3.29:1;
+   pressed card text falls to 2.64:1. Set only enabled ordinary toggle label
+   ink to `#181810`, including nested labels. Keep the button's currentColor,
+   background blends, hover/pressed fills, geometry and disabled treatment.
+   A private inherited mix keeps semantic variants native. Normal/hover/
+   pressed checked text now measures 4.93–6.58:1 on both surfaces.
+2. **Focus beyond suggested buttons:** old cases miss weak checked/input
+   outlines. Card normal checked focus is 2.32:1, card entry/spin 2.53:1 and
+   card check/switch about 2.95/2.97:1. Use dark inset focus for ordinary
+   checked toggles and 80% pale coverage for checks/switches/entries/spins.
+   Keep ordinary button focus at 65%; preserve widths, offsets and shapes.
+   The wider matrix checks hover/pressed checked controls too, since merely
+   making their pale ring opaque still fails against brighter pressed fills.
+3. **Compound semantic focus:** exclusions on a button's own class miss
+   destructive classes on menu/split parents. Native child outlines change
+   from 50% to 65%. Three private inherited coverage/ink controls retain
+   native semantic coverage and ink across direct, menu, split-main,
+   split-arrow and checked destructive controls. Compare actual transparent
+   native outline layers and semantic foregrounds to stock baselines.
+4. **Plain-GTK contamination:** broader coexistence reveals a pressed gold
+   button focus at 2.28:1. The earlier normal/backdrop/RTL captures did not
+   exercise real focus, so color-only global button declarations leaked.
+   Add local `--vgui2-classic-focus-color` beside the plain theme's existing
+   focus roles; use those local values as profile fallbacks. Native Adw has
+   no bridge value and gets its intended profile colors. Standalone plain
+   theme appearance/geometry remains unchanged. Five deeper state/scaling
+   cases pass with the profile, and bridge removal must reproduce failure.
+
+The profile still maps 28 color roles. Its private percentages do not change
+Adwaita's global helper opacities. Semantic variables and the original native
+shapes, appearance preference, light/high-contrast styling and system-accent
+API remain intact. The plain-theme bridge covers the bundled VGUI2Classic
+theme; no universal compatibility promise is made for arbitrary GTK themes.
+
+### Test fixture and failed experiments
+
+- Add `tools/check-vgui2-libadwaita.py`: 50 real controls across window/card
+  surfaces, including ordinary/flat/suggested/checked buttons, nested labels,
+  check/switch/entry/spin controls, Adw action/entry/spin rows and semantic
+  compound controls. Run six baseline/profile pairs: dark, light, dark HC,
+  light HC, RTL and scale 2. This gives 12 cases and 600 focused/unfocused
+  checks, with geometry/semantic/fallback comparisons against stock.
+- Compare actual edge pixels against the same unfocused pixels. Include
+  inset and outside rings while excluding caret/text regions. Enabled
+  ordinary text uses the real label foreground and painted button fill.
+  Gates use unrounded ratios; rounding is only for reports. Clip out-of-gamut
+  foreground components to sRGB for report calculations, preserving native
+  rendering. Semantic controls are compared to upstream, not given a claim
+  of universal 3:1/4.5:1 conformance.
+- Assert effective requested appearance, contrast, direction, native scale
+  and Adwaita providers. Require target focus to be absent from each baseline
+  and visibly established in each focused capture. Exact light/HC focused
+  image equality and paired allocations guard the color-only boundary.
+- Combined widgets/early focus changes initially trigger native Broadway
+  render-node reuse assertions even on the stock baseline. Forcing native
+  Cairo did not resolve it; revert that experiment. Serial mapped control
+  views, a separate focus-parking widget and the existing transport yield
+  valid comparisons. An intermediate baseline still had automatic entry
+  focus; parking focus elsewhere corrects it. No retry or lowered gate.
+- GTK rejects complex ancestor exclusions inside `:not()` on this version;
+  use inherited private values rather than unsupported selectors. Upstream
+  GTK CSS-node/focus and Adw role/appearance references informed the changes.
+- Add optional native display-log retention to the shared test helper and
+  use it in app/control checks. Native Cairo snapshots and Broadway transport
+  remain separate; known timing warnings are retained narrowly and unrelated
+  diagnostics still fail. No change to the runtime activation helper.
+
+### Standard integration and regression proof
+
+- Keep the 34 surface/appearance cases and original Vapor checks. The default
+  GTK 4 suite now adds all 12 control cases for VGUI2 and repeats the five
+  deeper plain-GTK state/focus cases during matching-profile coexistence.
+- Increase Adw regressions from 17 to 25: weak checked focus, unreadable
+  checked text, weak input focus, missing semantic-parent handling, altered
+  check geometry, unguarded focused light appearance and a missing plain
+  focus bridge. Existing invalid CSS, palette, surface and appearance/import
+  tests remain. Match real selector specificity so mutations actually apply.
+- The original plain-theme/profile pair fails checked focus at 2.30:1 in
+  dark mode; the intermediate fixes reveal pressed focus at 2.28:1. The
+  light/normal original case correctly passes with the guard inactive. An
+  initial bridge-removal negative control omitted `--dark` and therefore
+  passed; correct its requested appearance and rerun the complete VGUI2 suite.
+- The final state review reproduces the same low text contrast on ordinary
+  mouse-pressed/keyboard-activating buttons, plus weak ordinary hover focus.
+  Extend dark ink/focus to those activation states and 80% focus to hover,
+  retaining native fills and semantic inheritance. Exclude native link/OSD
+  treatments and test them explicitly. Coverage grows from 40 to 50 controls;
+  add an ordinary-activation text mutation, giving 25 negative controls.
+  The complete 40-control standard suite passed before this extension;
+  rerun every affected native/control/coexistence/regression stage afterward.
+- The frozen original profile fails the final checker for checked text and
+  retains before-fix focus/semantic data. The intermediate fixes expose the
+  separate plain-GTK failure rather than hiding it under the earlier suite.
+  Final results are in the audit and validation JSON files.
+- Matching Adwaita demo 1.10.0 and installed FFmpeg Converter GTK pass final
+  baseline/profile startup checks. Earlier converter attempts hit an EOF on
+  the unstyled baseline, reproduced by the frozen original runner too. A
+  later diagnostic run passes; retain the failures as an intermittent
+  private-display limitation, without adding automatic retries or filtering.
+  No app media/action or live desktop input was used.
+- After the activation-state follow-up, the exact final-profile demo pair
+  passes. The converter's new retest again fails on its unstyled baseline,
+  now retaining the Broadway append_node_ops render-node reuse assertion.
+  Keep the earlier converter pair labeled with its tested profile digest;
+  do not count it as a clean final-profile converter retest.
+
+### Evidence, packaging and boundary
+
+- Refresh native/converter previews from unmodified final captures and add
+  a matching demo image. Update the validation report and add
+  `docs/audits/vgui2-libadwaita-audit.json` with original/corrected controls,
+  coexistence failure, regression proof and application limitations.
+- Update the profile guide, plain-GTK guide, README, audit, plan and changelog.
+  Extend stager assets and all fixture seeds/assertions for audit/demo files.
+  Verify final staged profiles, `usr` assets, document/image links and helper
+  executable mode; retain the eight path-containment/payload tests.
+- The only existing production GTK change is the local focus-color bridge
+  in VGUI2Classic GTK 4; GTK 3, SVGs, Vapor, terminals, runtime helper/login
+  behavior and release/AUR metadata retain their baseline hashes. The live
+  Vapor profile is not replaced. Shared activation remains stage 6.
+- Live keyboard/GPU/fractional scaling, full accessibility/semantic contrast,
+  Flatpak and comparative performance remain unvalidated. These fixes add
+  static color rules, with no runtime watcher or performance claim.
+
+Commit and push the completed audit per the standing instruction. Final
+standard-suite, preservation and package verification results are retained in
+the linked portable audit report.
+
+Final verification: 34 surface cases, 12×50 focused/unfocused control checks,
+25 deliberate Adw regressions, five deeper coexistence cases and eight staging
+tests pass. All 22 plain-GTK native/behavior/Factory PNGs match with/without the
+profile; all 128 original Vapor Adw PNGs remain byte-identical. Preserve 183
+protected production files; only the local VGUI2 GTK 4 bridge changes in `usr`.
+The final 213-file staged payload matches source bytes and linked documentation.
+The lowest tested ordinary focus is 3.1763:1 and ordinary text 4.5511:1. Final
+demo startup passes; the converter's final retest remains blocked by its stock
+Broadway assertion. Live Vapor status remains enabled with no pending update.

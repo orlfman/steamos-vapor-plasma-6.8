@@ -51,7 +51,7 @@ def main():
                      'VAPOR_APP_FOREGROUND=#'+family['colors']['accent-fg-color'],
                      'VAPOR_APP_BACKGROUND=#'+family['colors']['window-bg-color'],
                      'VAPOR_APP_IMAGE='+str(output/(case+'.png')),str(args.application.resolve())]
-            with helpers['private_display'](directory,env),client(directory/'http.socket'):
+            with helpers['private_display'](directory,env,output/(case+'-display')),client(directory/'http.socket'):
                 code,stdout,stderr=helpers['run_application'](command,env,output,case)
             lines=[line for line in stderr.splitlines() if line.strip()]
             known=[line for line in lines if native['BROADWAY_WARNING'].fullmatch(line)]

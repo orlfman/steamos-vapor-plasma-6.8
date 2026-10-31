@@ -142,7 +142,9 @@ family. Both run matching-profile coexistence, native libadwaita, broken-profile
 and package-staging stages. Vapor also retains reversible-activation tests.
 VGUI2 adds real state/focus/glyph/popup checks and 32 plain GTK regressions;
 see [VGUI2-GTK4.md](VGUI2-GTK4.md). Its initial [libadwaita profile](VGUI2-LIBADWAITA.md)
-passes 34 native cases and 17 negative controls. Automatic VGUI2 profile
+passes 34 surface cases, 12 cases of 50 real controls and 25 negative controls.
+The audit fixes checked-label/input focus contrast, compound semantic focus
+and focus coexistence with the plain GTK theme. Automatic VGUI2 profile
 switching remains stage 6; the live theme and released package are unchanged.
 Failures and missing dependencies fail the standard suite; no automatic skip.
 The GTK 3 checker runs both Vapor and VGUI2 Classic, including mapped popup and

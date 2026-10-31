@@ -9,10 +9,10 @@ Baseline: Vapor 1.0.4 / repository `e626869` on Plasma 6.8.2.
 | Stage | Current status |
 | --- | --- |
 | 1: identity/palette/reference | VGUI2Classic identity, audited palette and fresh Qt Windows reference implemented |
-| 2: harness | Family-aware GTK 3/4, Widget Factory and Adw checks; 23 GTK 3/32 GTK 4/17 Adw VGUI mutations; actual variant markers and audit controls |
+| 2: harness | Family-aware GTK 3/4, Widget Factory and Adw checks; 23 GTK 3/32 GTK 4/25 Adw VGUI mutations; actual variant markers and audit controls |
 | 3: GTK 3.24 | Independent stylesheet, six SVG glyphs, normal/dark entries; follow-up message/selection/focus/arrow fixes verified; standard checks and Meld 3.24.1 pass |
 | 4: plain GTK 4 | Independent GTK 4 entries/style audited; frame/field/separator/expander fixes, actual variants, selection, native/Widget Factory and scale-2 tests pass |
-| 5: native Adw profile | Guarded 28-role olive/gold profile, native geometry and 65% button focus; 34 native cases, 17 mutations and plain-GTK coexistence pass |
+| 5: native Adw profile | Audited 28-role palette; readable checked ink/input focus and native semantic outlines; 34 surface cases, 12×50 control checks, 25 mutations and deeper plain-GTK coexistence pass |
 | 6: shared activation | Planned; current Vapor helper/login behavior unchanged |
 | 7: real apps/displays/performance | Private Meld/GTK Widget Factory, Adw demo and FFmpeg Converter startup pass; integer GTK 4 scale 2 covered; live fractional scaling/keyboard/accessibility/performance pending |
 | 8: packaging/release | Working stager includes GTK 3/4 and Adw assets/docs; no new published release or AUR update |
@@ -20,7 +20,7 @@ Baseline: Vapor 1.0.4 / repository `e626869` on Plasma 6.8.2.
 Implementation details/results: [VGUI2-GTK3.md](VGUI2-GTK3.md), [VGUI2-GTK4.md](VGUI2-GTK4.md),
 [VGUI2-LIBADWAITA.md](VGUI2-LIBADWAITA.md),
 [portable evidence](docs/audits/vgui2-gtk3-validation.json), and
-[gtk4port.md](gtk4port.md), sections 22–26. The roadmap below retains the full scope.
+[gtk4port.md](gtk4port.md), sections 22–27. The roadmap below retains the full scope.
 
 ## Intended result
 
@@ -162,9 +162,14 @@ checks; real-app screenshots show the agreed classic GTK treatment.
 **Implemented and tested:** [guide and boundary](VGUI2-LIBADWAITA.md),
 [portable results](docs/audits/vgui2-libadwaita-validation.json). The wider matrix
 found 2.95:1 native focus on cards; guarded 65% button focus coverage raises the
-lowest tested surface to 3.84:1 while retaining native geometry. VGUI2 now has
+lowest tested suggested-button surface to 3.84:1 while retaining native geometry. VGUI2 now has
 34 cases; Vapor retains its original 22. The requirements below remain the
 design record, with shared automatic activation still in stage 6.
+
+The follow-up audit extends coverage to native controls and corrects checked
+text/focus, input rings, compound semantic inheritance and a plain-GTK focus
+leak. Three private coverage/ink controls and a local plain-theme focus bridge
+retain native fills/shapes and semantic roles. See [audit evidence](docs/audits/vgui2-libadwaita-audit.json).
 
 Add `libadwaita/vgui2.css` under the existing dark/normal-contrast guard. Start
 with the audit's 27 mapped surface/foreground roles and the separate pale

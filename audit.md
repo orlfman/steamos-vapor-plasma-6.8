@@ -1,3 +1,59 @@
+# VGUI2 Classic libadwaita follow-up audit and fixes — 2026-10-30
+
+Audited base: `f508f4b4f37fae2e2ea1fea1ba98f60ff31dddbc`. Target: GTK
+**4.24.1**, libadwaita **1.10.0**, Plasma **6.8.2**. Four confirmed findings
+are corrected. [Portable audit evidence](docs/audits/vgui2-libadwaita-audit.json)
+retains the original failures and corrected measurements; the older entries
+below describe earlier implementation states.
+
+| Finding | Reproduction | Correction |
+| --- | --- | --- |
+| VGUI-ADW-R1, P2: checked/activated text is weak | Native checked gray fill retains light text: 3.29–3.53:1 normally, falling to 2.64:1 when pressed on a card; ordinary activation has the same problem | Give ordinary checked/activated labels dark ink, including nested labels, while retaining the button's currentColor and native fills. Checked/pressed states now measure 4.93–6.58:1 |
+| VGUI-ADW-R2, P2: native focus coverage is incomplete | Suggested-only tests miss 2.32:1 checked focus, 2.53:1 card input focus, and 2.95/2.97:1 card checkbox/switch rings | Use dark inset focus for ordinary checked toggles and 80% pale coverage for checks/switches/entries/spins. Keep ordinary button coverage 65%, native widths/offsets/shapes and the unrounded 3:1 gate |
+| VGUI-ADW-R3, P2: semantic exclusion misses compound parents | Destructive menu/split buttons put their class on a parent; child buttons get 65% coverage instead of upstream 50% | Inherit private coverage/ink controls through semantic classes. Compare actual native outline layers and semantic ink against stock baselines, including both split-button targets and checked destructive toggles |
+| VGUI-ADW-R4, P2: profile weakens plain-GTK focus | Deeper coexistence catches a pressed gold button at 2.28:1; earlier coexistence did not exercise real focus | Supply local classic focus-color values in the bundled plain GTK theme and honor them in profile fallbacks. Preserve existing standalone styling; run all five deeper state/scaling cases with the profile present |
+
+The new `check-vgui2-libadwaita.py` uses real mapped GTK/Adw widgets with
+unfocused/focused snapshots. Twelve appearance/state/scale cases each exercise
+50 controls. Pair stock/profile allocations, semantic outline layers and
+semantic foregrounds; require exact light/high-contrast focused images. Check
+actual requested appearance, contrast, direction, scale and native providers.
+Text uses actual foreground and sampled fill; focus compares changed edge
+pixels against the corresponding unfocused pixels, including inset/outside
+rings. Enabled ordinary text/focus use unrounded 4.5:1/3:1 gates.
+
+The original profile fails the final checker for its intended text/focus
+defects. The standard suite now rejects **25** Adw-related regressions and keeps
+the original 34 surface cases, 32 plain-GTK mutations and Vapor's checks. A
+private plain-theme copy with its focus bridge removed must also fail.
+Current results and all original/corrected evidence are linked from
+[VGUI2-LIBADWAITA.md](VGUI2-LIBADWAITA.md).
+
+The broader fixture initially exposed test setup problems: combined native
+controls/early focus updates triggered Broadway render-node assertions, and
+automatic entry focus made some apparent baselines already focused. Serial
+mapped control views and a separate focus-parking widget produce valid pairs;
+assertions ensure the baseline has no visible target focus. Cairo-only native
+renderer selection did not resolve the transport failure, and was reverted.
+Known timing warnings stay narrowly recorded; no retry/exception suppression
+was added. Optional server diagnostics are retained for audit/application runs.
+
+The final demo baseline/profile startup pair passes. A converter pair passed
+after the main fixes, before the activation-state follow-up. Earlier
+converter runs also hit private-display EOF on the unstyled baseline, including
+the frozen original runner. Its final retest captures a Broadway render-node
+assertion on the unstyled baseline, so that retest is blocked. Screenshots/results
+are startup evidence, not full workflow tests.
+
+Semantic role variables and native semantic treatments remain upstream. The
+extra contrast gates apply to ordinary controls, and do not certify every
+native semantic state. Live keyboard/GPU/fractional scaling, accessibility,
+Flatpak and measured performance remain open. Automatic shared activation is
+still stage 6; live settings, release/AUR metadata and runtime helper behavior
+are unchanged. No performance improvement is claimed.
+
+---
+
 # VGUI2 Classic native libadwaita implementation — 2026-10-30
 
 Base: `8935129da5e15fcd9d16d8fb64367498fcc86e1e`. Target: GTK **4.24.1**,

@@ -1,8 +1,8 @@
 {
   "date": "2026-10-30",
   "timezone": "America/Phoenix",
-  "base_commit": "8935129da5e15fcd9d16d8fb64367498fcc86e1e",
-  "status": "Initial VGUI2 native libadwaita color profile; unreleased. Shared automatic activation is stage 6.",
+  "base_commit": "f508f4b4f37fae2e2ea1fea1ba98f60ff31dddbc",
+  "status": "Initial VGUI2 Adw profile audited and corrected; unreleased. Shared automatic activation remains stage 6.",
   "environment": {
     "plasma": "6.8.2",
     "gtk": "4.24.1",
@@ -10,7 +10,7 @@
     "transport": "Broadway",
     "snapshot_renderer": "Cairo"
   },
-  "profile_sha256": "b805c636f9f9a6bda33c12610450a05c128d00618357c45ab1f33966b9ab1cdb",
+  "profile_sha256": "f4b482d56ef9f91384821c839eed836af42ea9af42387cf9b1a5f867ce064608",
   "native_cases": [
     {
       "case": "00-main-normal-dark-s1-base",
@@ -611,7 +611,7 @@
               ]
             ]
           },
-          "image_sha256": "5b221bb137ebf07b6de2a2447e01de29930f172dbf0080e4afea289cbd45d592",
+          "image_sha256": "adf9cc85f601a6f269e4aed6d19e536dd9675576f9e9588e8424a1b1b87219d9",
           "image_size": [
             984,
             682
@@ -3109,7 +3109,7 @@
               ]
             ]
           },
-          "image_sha256": "0c4d6d63d3834976621ab01773e686e0d626e4d8f21ad3c9315c9c11211b3606",
+          "image_sha256": "b340a794b31bec9086fca40353864e3487a58e31b8fdf58d4d59fd07f65b5fb9",
           "image_size": [
             1024,
             722
@@ -3759,7 +3759,7 @@
               ]
             ]
           },
-          "image_sha256": "ff834eb9494cb29eddae8af0e7004f91f3ae1e520e4ea295cbbaef014b854dbf",
+          "image_sha256": "31e5dd3f9a3504b000026a0af007e38f1dd184dfd1a35c500fa83be8e7d08b1e",
           "image_size": [
             848,
             676
@@ -5323,7 +5323,7 @@
               ]
             ]
           },
-          "image_sha256": "1dbb08c08ac3b49cc0c3c38bf289262b916b702014360fc9d7fe4587c0c11217",
+          "image_sha256": "de13d6d2ffb01363137fa336cf2b7dd0c96734a123ecf66b00a001fa5613f304",
           "image_size": [
             984,
             682
@@ -5631,7 +5631,7 @@
               ]
             ]
           },
-          "image_sha256": "5b221bb137ebf07b6de2a2447e01de29930f172dbf0080e4afea289cbd45d592",
+          "image_sha256": "adf9cc85f601a6f269e4aed6d19e536dd9675576f9e9588e8424a1b1b87219d9",
           "image_size": [
             984,
             682
@@ -5944,7 +5944,7 @@
               ]
             ]
           },
-          "image_sha256": "45f849a2528cbba729ed43df51f6a6d6f15177559d6e1f8397d812a7e11c4704",
+          "image_sha256": "c06337327869575262fbc5940e95a712f0ddf58229fd6d4086afb7024ebb2880",
           "image_size": [
             984,
             682
@@ -6560,7 +6560,7 @@
               ]
             ]
           },
-          "image_sha256": "6fba1a085cd3f374807fb4aece1ac3339e7a3a531e809049eee4c75cd6f978c2",
+          "image_sha256": "23534f04688870df748a78db3e284581191c73dbb5fe53c5735dd01c8449d723",
           "image_size": [
             1968,
             1364
@@ -6868,7 +6868,7 @@
               ]
             ]
           },
-          "image_sha256": "5b221bb137ebf07b6de2a2447e01de29930f172dbf0080e4afea289cbd45d592",
+          "image_sha256": "adf9cc85f601a6f269e4aed6d19e536dd9675576f9e9588e8424a1b1b87219d9",
           "image_size": [
             984,
             682
@@ -7458,7 +7458,7 @@
               ]
             ]
           },
-          "image_sha256": "5b221bb137ebf07b6de2a2447e01de29930f172dbf0080e4afea289cbd45d592",
+          "image_sha256": "adf9cc85f601a6f269e4aed6d19e536dd9675576f9e9588e8424a1b1b87219d9",
           "image_size": [
             984,
             682
@@ -8084,7 +8084,7 @@
               ]
             ]
           },
-          "image_sha256": "9069fb05b9471dc9184b969c6fac0e5dd5b10e5492b1edf5db073b75f41524e2",
+          "image_sha256": "7ea0a2951e20441884e0642dcd9d0c8aeddf0620bfb7dc275f769d504bc1c601",
           "image_size": [
             984,
             682
@@ -8710,7 +8710,7 @@
               ]
             ]
           },
-          "image_sha256": "b105ecd4cb146be220ea30291dd1d33216c2939c51eda25acf765bc1d8c5b604",
+          "image_sha256": "7e9cd2739b682327cff30710dcbac904bc67bb4bf5a93c672f3ead27221254ce",
           "image_size": [
             984,
             682
@@ -9370,7 +9370,7 @@
               ]
             ]
           },
-          "image_sha256": "133bc7d3c563c1a664a221c0e496fc8c8e781688c6d5442051528ca24fe90e87",
+          "image_sha256": "bf5b31c93a0729ec5d2a0aece984919a37cd00fb1b1dfca36f880537e7751398",
           "image_size": [
             1024,
             722
@@ -10030,7 +10030,7 @@
               ]
             ]
           },
-          "image_sha256": "ef3d0b350e418d248227d7862d2b9afc1f87b5433ca3502c83f5cf5cfc48c71b",
+          "image_sha256": "954b18b89af48432f93dcb8dac218fa3f472361f02ffa5f41ee22a3f71f1ad62",
           "image_size": [
             848,
             676
@@ -11333,7 +11333,7 @@
       "family": "vgui2",
       "application_id": "org.gnome.Adwaita1.Demo",
       "binary_sha256": "11e7bbb04844cb4f471291878448a955b6e0c38c3aa65778d4baf84c5ce38ae5",
-      "profile_sha256": "b805c636f9f9a6bda33c12610450a05c128d00618357c45ab1f33966b9ab1cdb",
+      "profile_sha256": "f4b482d56ef9f91384821c839eed836af42ea9af42387cf9b1a5f867ce064608",
       "cases": [
         {
           "width": 1000,
@@ -11361,13 +11361,13 @@
         }
       ],
       "limits": "startup rendering only; no menu, keyboard or application-action coverage",
-      "description": "libadwaita demo 1.10.0 (matching upstream build)"
+      "status": "PASS with exact final profile"
     },
     {
       "family": "vgui2",
       "application_id": "com.github.pieman.FFmpegConverterGTK",
       "binary_sha256": "c87e13dbd0a14f293ff08526895a2b97a5bb2510f083deccb1c437778c1cfe92",
-      "profile_sha256": "b805c636f9f9a6bda33c12610450a05c128d00618357c45ab1f33966b9ab1cdb",
+      "profile_sha256": "576854eb43aa2dea4294e664c27c96ba890e5f1aff9f931d7031b67f003ccce8",
       "cases": [
         {
           "width": 1024,
@@ -11395,51 +11395,43 @@
         }
       ],
       "limits": "startup rendering only; no menu, keyboard or application-action coverage",
-      "description": "FFmpeg Converter GTK 2.0.1-1 (installed native application)"
+      "status": "Historical PASS after main fixes; final profile retest blocked by stock Broadway assertion before overlay"
     }
   ],
   "negative_controls": {
-    "vgui2": 17,
+    "vgui2": 25,
     "vapor": 15,
     "status": "PASS"
   },
   "preservation": {
-    "original_vapor_adw_pngs": 128,
-    "byte_identical": true,
-    "vapor_adw_native_cases": 22,
-    "status": "PASS",
-    "protected_files": 184,
-    "unchanged": true,
-    "staged_payload_verified": true,
-    "original_vapor_app_startup_pair": "PASS",
-    "original_vapor_app_id": "org.gnome.Adwaita1.Demo",
-    "original_vapor_app_binary_sha256": "11e7bbb04844cb4f471291878448a955b6e0c38c3aa65778d4baf84c5ce38ae5"
+    "unchanged_protected_files": 183,
+    "only_changed_usr_asset": "usr/share/themes/VGUI2Classic/gtk-4.0/gtk.css",
+    "baseline_tracked_files": 238,
+    "vapor_adw_pngs": {
+      "baseline": 128,
+      "current": 128,
+      "identical": 128,
+      "changed": []
+    },
+    "status": "PASS"
   },
   "standard_suite": {
-    "command": "python3 -I tools/check-gtk4.py",
-    "status": "PASS",
-    "families": {
-      "vapor": {
-        "native_cases": 10,
-        "widget_factory_cases": 10,
-        "adwaita_cases": 22,
-        "plain_gtk_overlay_png_pairs": 22,
-        "plain_gtk_overlay_byte_identical": true,
-        "adwaita_negative_controls": 15,
-        "plain_vgui_negative_controls": 0
-      },
-      "vgui2": {
-        "native_cases": 10,
-        "widget_factory_cases": 10,
-        "adwaita_cases": 34,
-        "plain_gtk_overlay_png_pairs": 22,
-        "plain_gtk_overlay_byte_identical": true,
-        "adwaita_negative_controls": 17,
-        "plain_vgui_negative_controls": 32
-      }
+    "status": "PASS: full baseline stages plus all final affected stages",
+    "vapor_full_suite": "PASS",
+    "vgui2_full_suite_before_activation_extension": "PASS (40-control revision)",
+    "final_affected_stages": {
+      "surface_cases": 34,
+      "control_cases": 12,
+      "controls_per_case": 50,
+      "negative_controls": 25,
+      "plain_gtk_coexistence": "PASS",
+      "deep_plain_gtk_cases": 5,
+      "staging_tests": 8
     },
-    "vapor_activation_recovery_cases": 28,
-    "package_staging_cases": 8
+    "notes": [
+      "The bridge-removal negative control initially omitted dark mode; the corrected full VGUI2 suite passes.",
+      "The later ordinary activation extension is verified by rerunning all affected native/control/regression/coexistence stages."
+    ]
   },
   "limits": [
     "synthetic focus/backdrop; no desktop keyboard input",
@@ -11447,10 +11439,20 @@
     "accent API remains system color",
     "automatic VGUI2 profile activation not implemented",
     "no Flatpak or measured performance claim",
-    "real-app coverage is startup only"
+    "real-app coverage is startup only",
+    "Native semantic styles preserved; no universal semantic contrast certification.",
+    "Final converter retest blocked by stock Broadway render-node assertion; earlier passing pair uses its recorded preceding profile digest."
   ],
   "screenshots": {
-    "vgui2-libadwaita-preview.png": "3f7b23638954294a47b259476f98265b79e135dfb6ee8ff36c3330f3f17783d4",
-    "vgui2-libadwaita-ffmpeg-converter.png": "41e37503cc6ac7df6697fd9bdfa5d193ee160f729ae2fc4ea5077c5b47704b13"
+    "vgui2-libadwaita-preview.png": "ac3f443d506304d3881315e29f5c3ba247e477ba94ade61c1bb4a50e12f3b6ac",
+    "vgui2-libadwaita-ffmpeg-converter.png": "0e616bb59ef53ee6a7c23e7bbcc029435422c91b0c9236a817af69d3123ff96a",
+    "vgui2-libadwaita-demo.png": "edc3ae9002072a91190dcd54551280f9427279e9fd62854e4fa382b7a8afd69c"
+  },
+  "control_matrix": {
+    "cases": 12,
+    "controls_per_case": 50,
+    "focus_pairs": 600,
+    "status": "PASS",
+    "details": "vgui2-libadwaita-audit.json"
   }
 }
