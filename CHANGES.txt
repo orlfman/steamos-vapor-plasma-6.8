@@ -1,3 +1,13 @@
+1.1.0-2 (AUR packaging) — 2026-10-30: GTK/libadwaita activation notice
+
+- Print setup guidance after both installation and upgrades: select Vapor,
+  Vapor-dark or VGUI2Classic as the GTK theme in KDE System Settings, apply,
+  save work, then log out of Plasma and back in for matching libadwaita colors.
+- Include the normal-user auto command plus app restart as an alternative;
+  explain that an earlier explicit disable remains respected.
+- The install script only prints instructions. Keep the verified v1.1.0
+  source archive/checksum, theme files and activation behavior unchanged.
+
 1.1.0 — 2026-10-30: VGUI2 Classic GTK and automatic matching libadwaita
 
 - Ship audited VGUI2Classic GTK 3.24, plain GTK 4 and native libadwaita colors

@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-30",
+  "package": "plasma6-themes-steamos-vapor-fixed",
+  "version": "1.1.0-2",
+  "scope": "Packaging-only installation and upgrade notice; upstream v1.1.0 archive and SHA-256 retained.",
+  "source_archive_sha256": "3af8dee4ac4f768fbd7045c407396a5874e562a1f17808c7ef40b72e42c98c22",
+  "build": "makepkg --cleanbuild --force --noconfirm: PASS",
+  "syntax": "bash -n PKGBUILD/install; sh -n install: PASS",
+  "srcinfo_matches_makepkg": true,
+  "arch_package_contains_exact_install_script": true,
+  "notice_hook_checks": {
+    "sh:post_install": "PASS",
+    "sh:post_upgrade": "PASS",
+    "bash:post_install": "PASS",
+    "bash:post_upgrade": "PASS"
+  },
+  "notice": "\nVapor / VGUI2 libadwaita setup:\n  In KDE System Settings > Colors & Themes > Application Style, select\n  Vapor, Vapor-dark or VGUI2Classic as the GNOME/GTK theme and click Apply.\n  Save your work, then log out of KDE Plasma and log back in to activate\n  the matching libadwaita colors. Repeat after changing GTK themes.\n\n  To apply without logging out, run as your normal user:\n    vapor-libadwaita auto\n  Then fully close and reopen GTK 4/libadwaita applications.\n  A previous explicit disable is preserved; use vapor-libadwaita enable\n  if you want to re-enable it.\n\n",
+  "payload_comparison": {
+    "baseline": "1.1.0-1",
+    "result": "PASS",
+    "identical_entries": 276,
+    "regular_files": 214,
+    "exclusions": [
+      ".BUILDINFO",
+      ".INSTALL",
+      ".MTREE",
+      ".PKGINFO"
+    ],
+    "checked": "paths, file bytes, modes, symlink targets"
+  },
+  "package_check": {
+    "errors": 0,
+    "warnings": [
+      "Unused dependency plasma-workspace",
+      "Unused dependency breeze",
+      "Unused dependency gtk4",
+      "Unused dependency libadwaita"
+    ],
+    "explanation": "Same integration/dynamically-loaded runtime dependencies as 1.1.0-1; confirmed against actual namcap output separately."
+  },
+  "live_package_installed": false,
+  "scratch_evidence": "/tmp/vapor-aur-1.1.0-2-etvwc0m2"
+}

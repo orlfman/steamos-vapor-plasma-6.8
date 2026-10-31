@@ -1703,3 +1703,29 @@ AUR master commit d4729f8 is accepted; the public package heading verifies
 cache still returns the preceding version immediately after publication; record
 that cache delay rather than treating an accepted push as unpublished. No live
 package installation or GTK choice change was performed for this release.
+
+## 29. Add an AUR GTK/libadwaita activation notice — 2026-10-30
+
+User requested terminal guidance after installation, following a live Vapor to
+VGUI2 switch that left the previous libadwaita profile active until auto ran.
+Create packaging revision **1.1.0-2** using the existing verified v1.1.0 archive
+and checksum; no upstream source tag is replaced.
+
+- Add the standard PKGBUILD install script, tracked alongside the recipe.
+  Both post_install and post_upgrade print the same non-interactive notice.
+  Explain selecting Vapor/Vapor-dark or VGUI2Classic in KDE's GTK settings,
+  applying, saving work and logging out/back in. Include the normal-user auto
+  command and app restart alternative, plus explicit-disable behavior.
+- Only print text. Do not change homes, invoke the helper as root, restart
+  applications, terminate sessions or perform live package installation.
+- Regenerate .SRCINFO; syntax-check PKGBUILD and the script; run both hooks
+  from the actual package under sh/bash, without input. All checks pass.
+- Build with makepkg --cleanbuild --force --noconfirm. The exact .INSTALL is
+  embedded; generated metadata matches. Compare all 276 non-metadata payload
+  entries against 1.1.0-1: paths, bytes, modes and link targets are identical.
+  Namcap reports zero errors and the four existing integration/runtime
+  dependency warnings. GTK rendering tests are unchanged and not repeated.
+- Update README, changelog, audit and portable evidence. Publish matching
+  GitHub main and AUR packaging; 1.1.0 remains the upstream theme release.
+
+Results: [aur-1.1.0-2-validation.json](docs/audits/aur-1.1.0-2-validation.json).

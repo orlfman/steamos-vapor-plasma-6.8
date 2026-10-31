@@ -1,3 +1,26 @@
+# AUR installation notice — 2026-10-30
+
+Package **1.1.0-2** adds a terminal notice after fresh installs and upgrades.
+It explains selecting Vapor/Vapor-dark or VGUI2Classic under KDE's GNOME/GTK
+settings, applying the choice, saving work and logging out of Plasma and back
+in. The normal-user `vapor-libadwaita auto` command and restarting affected apps
+are provided as the immediate alternative; explicit disable remains respected.
+
+Use the standard [PKGBUILD install field](https://man.archlinux.org/man/PKGBUILD.5.en)
+and [post_install/post_upgrade functions](https://man.archlinux.org/man/alpm-install-scriptlet.5.en).
+The script only prints text and never starts a helper, changes a user's files
+or restarts a session during a root package transaction.
+
+The actual Arch package contains the exact notice. Both hooks produce identical
+output under sh and bash with no input; syntax and generated .SRCINFO checks
+pass. All 276 payload entries outside package metadata/the new .INSTALL retain
+their paths, bytes, modes and link targets from 1.1.0-1. Namcap reports no errors
+and the same four dependency warnings. No theme/runtime code changed, so the
+GTK rendering suites do not need repeating. No live package installation was
+performed. [Validation evidence](docs/audits/aur-1.1.0-2-validation.json).
+
+---
+
 # 1.1.0 release and shared activation verification — 2026-10-30
 
 VGUI2 GTK 3/4 and native libadwaita are standard installed components in 1.1.0.

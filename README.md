@@ -62,6 +62,9 @@ System Settings as well as the Plasma appearance. Run
 `vapor-libadwaita auto` to apply the current selection immediately, then restart
 GTK 4 apps. `vapor-libadwaita disable` turns it off and remembers that choice;
 `vapor-libadwaita enable` restores it. See [LIBADWAITA.md](LIBADWAITA.md).
+Since **1.1.0-2**, AUR installs and upgrades also print a reminder to save your
+work, log out of KDE Plasma and log back in after selecting the GTK theme.
+The notice includes the immediate command above as an alternative.
 For a per-user manual installation from this checkout, also run
 `python3 -I tools/vapor-libadwaita enable`.
 
