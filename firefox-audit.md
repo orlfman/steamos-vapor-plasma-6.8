@@ -1,10 +1,48 @@
 # Firefox theme investigation: Vapor and VGUI2 Classic
 
 Date: **2026-10-30**, America/Phoenix. Repository baseline: `32937d6`.
-Status: **investigation complete; Firefox themes have not been implemented**.
+Status: **Vapor initial implementation added; VGUI2 implementation pending**.
 Next steps: [firefox-plan.md](firefox-plan.md).
 
-## Recommended result
+## Implementation update: Breeze-style appearance is the default
+
+After the investigation, the user requested Vapor first and private-window
+support, then required Breeze-style controls to be part of its default setup.
+The complete installation now combines owned `userChrome.css` and narrowly
+scoped `userContent.css` with a KDE setup/removal window. A normal Firefox
+color-theme XPI alone cannot deliver those shape changes. The earlier
+AMO-first recommendation below is retained as the original investigation.
+
+The default setup styles normal/private browser surfaces, selected tabs,
+3-pixel tab/field/button corners, toolbar hover/pressed states and Firefox-owned
+start pages. It keeps private-browsing indicators visible and matches the
+private search field as well as its background. Ordinary websites keep their
+own styles and system light/dark preference.
+
+The setup enables only Firefox's custom-stylesheet loader, adds owned imports
+without replacing unrelated CSS, and refuses an open profile. File hashes,
+markers, mode/link checks, rollback and removal tests protect prior content.
+Removal handles the preference Firefox persists into prefs.js. The helper runs
+only when invoked; there is no automatic profile edit in AUR installation.
+
+Tests use isolated profiles, native browser snapshots and actual painted colors.
+Private-window regression controls and shape checks are part of the default
+suite. [Current validation](docs/audits/firefox-vapor-validation.json) records
+results, scope, initial test-harness corrections and remaining manual coverage.
+[Plain setup instructions](firefox/INSTALL.md) and [maintainer guide](firefox/README.md)
+explain the default bundle and its separate unsigned color component.
+
+Mozilla's unsupported-customization/version-maintenance boundary still applies.
+Media guards retain forced-color/high-contrast fallbacks, but those modes and
+live Wayland/fractional-scale behavior are not yet verified. The current work
+is an initial tested preview, not the full broader browser audit.
+
+## Original investigation before implementation
+
+The sections below preserve the findings and pre-implementation status of the
+original investigation. The implementation update above is the current scope.
+
+### Original color-theme proposal (superseded for the complete setup)
 
 Create two normal, installable Firefox color themes: **Vapor** and **VGUI2
 Classic**. Users choose the matching theme inside Firefox. This can match much
@@ -17,7 +55,7 @@ separate custom-styling project. Keep that optional and separate from the first
 release. Explain to users that choosing a desktop theme and choosing a Firefox
 theme are separate steps.
 
-## Evidence and boundaries
+### Evidence and boundaries
 
 The installed browser is **Firefox 159.0-1.1**, from `cachyos-extra-v3`, build
 `20261027211755`, source stamp
@@ -45,7 +83,7 @@ source hashes, supported fields and contrast calculations. No proposed theme
 was loaded, signed or published. There are no Firefox rendering, accessibility,
 performance or compatibility test results yet.
 
-## Ways to build it
+### Ways to build it
 
 | Approach | What it provides | Assessment |
 | --- | --- | --- |
@@ -65,7 +103,7 @@ is restricted to development channels with an additional preference enabled.
 Mozilla [does not support custom userChrome/userContent styling](https://support.mozilla.org/en-US/kb/firefox-advanced-customization-and-configuration)
 as a stable customization interface. Browser updates can break those rules.
 
-## What the normal theme can cover
+### What the normal theme can cover
 
 The following fields are present in the **installed Firefox 159 schema and
 theme loader**. Presence in the schema does not prove every visible component
@@ -89,7 +127,7 @@ window decorations and native file dialogs. Website light/dark preferences
 also need checking: theme color-scheme properties can influence them. See the
 [theme property reference](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/theme).
 
-### Firefox 157+ / Nova needs its own verification
+#### Firefox 157+ / Nova needs its own verification
 
 Mozilla's [current static-theme guide](https://extensionworkshop.com/documentation/themes/static-themes/)
 identifies Nova as a change introduced in Firefox 157. Its ordinary themes use
@@ -113,7 +151,7 @@ The first release cannot promise complete removal of every non-palette accent.
 Record the active browser design in test results; no personal preference was
 read to determine which design this user's running profile uses.
 
-## Palette and readability findings
+### Palette and readability findings
 
 Use the maintained project palettes rather than a generic Steam-like blue or
 an unreviewed copy of the original VGUI scheme.
@@ -161,7 +199,7 @@ pressed button with gold while keeping ordinary light icons would repeat the
 readability problem. Start with darker state backgrounds and readable icons;
 reserve solid accent fills for areas with a controllable foreground pair.
 
-## Installation, signing and updates
+### Installation, signing and updates
 
 Ordinary Firefox releases require [Mozilla-signed themes](https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/).
 An unsigned ZIP/XPI placed in an AUR package is not a finished user-installable
@@ -183,7 +221,7 @@ Plasma logout; verify immediate application and persistence with signed files
 before documenting that behavior. Explain switching/removal through Firefox's
 menus using [Mozilla's user instructions](https://support.mozilla.org/en-US/kb/use-themes-change-look-of-firefox).
 
-## Testing, maintenance and effort
+### Testing, maintenance and effort
 
 Firefox is available locally. `web-ext`, Node/npm, geckodriver, Python browser
 automation clients and Xvfb are not currently available on PATH/in the checked

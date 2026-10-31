@@ -129,12 +129,16 @@ redefines kitty's default hint shortcuts (Ctrl+Shift+E and Ctrl+Shift+P
 keys) to draw Vapor-colored labels. Your own maps for those keys go after the
 include. Set `background_opacity 0.9` yourself to match Konsole.
 
-## Firefox themes (planned)
+## Firefox: Vapor preview
 
-Matching Vapor and VGUI2 Classic Firefox themes are being investigated. The
-[findings](firefox-audit.md) and [implementation plan](firefox-plan.md) explain
-what can match, Firefox's styling limits and how installation should work.
-No installable Firefox theme is included yet.
+The first [Vapor Firefox setup](firefox/README.md) includes matching colors and
+Breeze-inspired controls by default, including private windows and their start
+page. Its setup window applies or removes the appearance for a Firefox settings
+folder while Firefox is closed. See the [plain setup instructions](firefox/INSTALL.md).
+
+This preview is separate from the current AUR release. VGUI2 Firefox work is
+still planned. The [audit](firefox-audit.md) and [plan](firefox-plan.md) track
+coverage and the remaining work.
 
 ## GTK 3.24 compatibility
 

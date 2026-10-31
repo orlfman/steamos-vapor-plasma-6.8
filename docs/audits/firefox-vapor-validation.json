@@ -1,0 +1,2395 @@
+{
+  "date": "2026-10-30",
+  "timezone": "America/Phoenix",
+  "baseline_commit": "b4045fdd35a8d887e54058e4cc93589056fe09ed",
+  "milestone": "Initial Vapor Firefox appearance, 0.1.0; Breeze-inspired UI is part of the default complete setup.",
+  "core_status": "PASS",
+  "overall_scope": "PASS_WITH_LIMITATIONS",
+  "default_breeze_appearance": true,
+  "counts": {
+    "browser_configurations": 8,
+    "normal_private_window_observations": 24,
+    "button_hover_pressed_observations": 48,
+    "setup_recovery_tests": 10,
+    "ui_negative_controls": 4
+  },
+  "minimum_measured_text_contrast": 5.636110061337476,
+  "minimum_focus_contrast": 5.1561890004232716,
+  "sources": {
+    "firefox/vapor/manifest.json": "b1c74da38f2cb14d0e505d9a1a55f871c2c6272e0dfd90219e994c4b2268f262",
+    "firefox/vapor/userChrome.css": "0c5f0ec5da0981094c758552d275695d43eb07a818ee7010a94ede003e82ea53",
+    "firefox/vapor/userContent.css": "868a70f5792e8ba45382a17ed8c3062ee338d66975d3c63e0a905a22a0991c34",
+    "firefox/Apply Vapor to Firefox": "ffba9b0522b0332f2d4dc076b763db727b650c9b0c827c6d19ab0f1ba602007d",
+    "firefox/INSTALL.md": "d546859762eed9c10939e874b7166c1eb6f33bbb2cb769c96f04e398a431d3f0",
+    "firefox/COPYING": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6",
+    "tools/vapor-firefox": "ea49ff858fa5e61e3a869120d396592c5d32b68479708919a88c28568b202f1b",
+    "tools/build-firefox-themes.py": "dd65faad42220c0b3b9111a21817ffc59a755b3062d1c1c6f76dca0fe1880db3",
+    "tools/check-firefox.py": "0ebef70a29bfb5098dc2c6449f390e92a092a5e98a69e43e8b1a4e8316907e20",
+    "tools/test-firefox-setup.py": "2322adcf27880bfae3a7b78e29414a039d695cd6fe55f02eb3a2f2c5c5a97265",
+    "firefox/dev-requirements.txt": "9f60d982678883287f0239c40d674fad05e8e3b652b01ad86fcdd3598bf1f22f"
+  },
+  "mozilla_color_component_lint": {
+    "count": 0,
+    "summary": {
+      "errors": 0,
+      "notices": 0,
+      "warnings": 0
+    },
+    "metadata": {
+      "id": "vapor-firefox@orlfman.github.io",
+      "manifestVersion": 2,
+      "name": "Vapor",
+      "type": 1,
+      "version": "0.1.0",
+      "firefoxMinVersion": "159.0",
+      "firefoxStrictMinVersion": 159,
+      "experimentApiPaths": {},
+      "totalScannedFileSize": 3390,
+      "emptyFiles": [],
+      "jsLibs": {},
+      "unknownMinifiedFiles": []
+    },
+    "errors": [],
+    "notices": [],
+    "warnings": []
+  },
+  "bundle_validation": {
+    "status": "PASS",
+    "bundle": {
+      "bundle": "/home/pieman/Files/Archive/themes/steamos-vapor-6-8-3/firefox/build/vapor-firefox-0.1.0.zip",
+      "bundle_sha256": "c108a54a771552f07f68360f0072e2dc4b29be4e58a6c17f869427219009459e",
+      "artifact": "/home/pieman/Files/Archive/themes/steamos-vapor-6-8-3/firefox/build/vapor-firefox-0.1.0-unsigned.xpi",
+      "sha256": "06834bd551c59846857fd414f793fbb0bb8f49aaf676793bb1b49a3a38bdf106",
+      "signed": false,
+      "default_appearance": "Vapor colors and Breeze-inspired UI"
+    },
+    "matches_browser_tested_bundle": true,
+    "extracted_launcher_executable": true,
+    "mocked_kde_dialog_apply_remove": "PASS",
+    "existing_user_css_preserved": true,
+    "copied_assets_match_source": true,
+    "scratch": "/tmp/vapor-firefox-delivery-n8uo2bq1"
+  },
+  "private_window_behavior": "Vapor tab strip, selected tab, toolbar, address field, 3px control shapes, private start-page background and shadow search field; native private badges/messages retained.",
+  "cases": [
+    {
+      "nova": true,
+      "system_dark": false,
+      "scale": 1,
+      "browser_version": "159.0",
+      "status": "PASS",
+      "windows": {
+        "normal": {
+          "private": false,
+          "private_mode": null,
+          "private_indicator_visible": null,
+          "device_pixel_ratio": 1,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1328,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1328,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:newtab",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": false,
+            "widget_coverage": "BLOCKED_BASELINE"
+          }
+        },
+        "private-first": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 1,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1328,
+                "y": 48,
+                "width": 32,
+                "height": 32
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1328,
+                "y": 48,
+                "width": 32,
+                "height": 32
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": false,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 680
+            }
+          }
+        },
+        "private-new": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 1,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1328,
+                "y": 48,
+                "width": 32,
+                "height": 32
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1328,
+                "y": 48,
+                "width": 32,
+                "height": 32
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": false,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 680
+            }
+          }
+        }
+      },
+      "live_profile_refusal": "PASS",
+      "negative_controls": [
+        {
+          "name": "wrong-toolbar",
+          "detected": "toolbar-background",
+          "errors": [
+            "toolbar-background",
+            "painted-toolbar"
+          ]
+        },
+        {
+          "name": "wrong-selected-text",
+          "detected": "contrast:selected_text",
+          "errors": [
+            "selected-tab-text",
+            "contrast:selected_text"
+          ]
+        },
+        {
+          "name": "purple-private-window",
+          "detected": "painted-tab-strip",
+          "errors": [
+            "painted-tab-strip"
+          ]
+        },
+        {
+          "name": "rounded-private-tab",
+          "detected": "breeze-tab-shape",
+          "errors": [
+            "breeze-tab-shape"
+          ]
+        }
+      ],
+      "css_diagnostics": [],
+      "remove": {
+        "status": "removed",
+        "restart_firefox": true
+      }
+    },
+    {
+      "nova": true,
+      "system_dark": false,
+      "scale": 2,
+      "browser_version": "159.0",
+      "status": "PASS",
+      "windows": {
+        "normal": {
+          "private": false,
+          "private_mode": null,
+          "private_indicator_visible": null,
+          "device_pixel_ratio": 2,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 649,
+                "y": 40.5,
+                "width": 28,
+                "height": 28
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 649,
+                "y": 40.5,
+                "width": 28,
+                "height": 28
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:newtab",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": false,
+            "widget_coverage": "BLOCKED_BASELINE"
+          }
+        },
+        "private-first": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 2,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 649,
+                "y": 40,
+                "width": 28,
+                "height": 28
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 649,
+                "y": 40,
+                "width": 28,
+                "height": 28
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": false,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 478.1000061035156
+            }
+          }
+        },
+        "private-new": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 2,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 649,
+                "y": 40,
+                "width": 28,
+                "height": 28
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 649,
+                "y": 40,
+                "width": 28,
+                "height": 28
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": false,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 478.1000061035156
+            }
+          }
+        }
+      },
+      "live_profile_refusal": "PASS",
+      "negative_controls": [],
+      "css_diagnostics": [],
+      "remove": {
+        "status": "removed",
+        "restart_firefox": true
+      }
+    },
+    {
+      "nova": true,
+      "system_dark": true,
+      "scale": 1,
+      "browser_version": "159.0",
+      "status": "PASS",
+      "windows": {
+        "normal": {
+          "private": false,
+          "private_mode": null,
+          "private_indicator_visible": null,
+          "device_pixel_ratio": 1,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1328,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1328,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:newtab",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": true,
+            "widget_coverage": "BLOCKED_BASELINE"
+          }
+        },
+        "private-first": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 1,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1328,
+                "y": 48,
+                "width": 32,
+                "height": 32
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1328,
+                "y": 48,
+                "width": 32,
+                "height": 32
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": true,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 680
+            }
+          }
+        },
+        "private-new": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 1,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1328,
+                "y": 48,
+                "width": 32,
+                "height": 32
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1328,
+                "y": 48,
+                "width": 32,
+                "height": 32
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": true,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 680
+            }
+          }
+        }
+      },
+      "live_profile_refusal": "PASS",
+      "negative_controls": [],
+      "css_diagnostics": [],
+      "remove": {
+        "status": "removed",
+        "restart_firefox": true
+      }
+    },
+    {
+      "nova": true,
+      "system_dark": true,
+      "scale": 2,
+      "browser_version": "159.0",
+      "status": "PASS",
+      "windows": {
+        "normal": {
+          "private": false,
+          "private_mode": null,
+          "private_indicator_visible": null,
+          "device_pixel_ratio": 2,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 649,
+                "y": 40.5,
+                "width": 28,
+                "height": 28
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 649,
+                "y": 40.5,
+                "width": 28,
+                "height": 28
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:newtab",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": true,
+            "widget_coverage": "BLOCKED_BASELINE"
+          }
+        },
+        "private-first": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 2,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 649,
+                "y": 40,
+                "width": 28,
+                "height": 28
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 649,
+                "y": 40,
+                "width": 28,
+                "height": 28
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": true,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 478.1000061035156
+            }
+          }
+        },
+        "private-new": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 2,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 649,
+                "y": 40,
+                "width": 28,
+                "height": 28
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 649,
+                "y": 40,
+                "width": 28,
+                "height": 28
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": true,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 478.1000061035156
+            }
+          }
+        }
+      },
+      "live_profile_refusal": "PASS",
+      "negative_controls": [],
+      "css_diagnostics": [],
+      "remove": {
+        "status": "removed",
+        "restart_firefox": true
+      }
+    },
+    {
+      "nova": false,
+      "system_dark": false,
+      "scale": 1,
+      "browser_version": "159.0",
+      "status": "PASS",
+      "windows": {
+        "normal": {
+          "private": false,
+          "private_mode": null,
+          "private_indicator_visible": null,
+          "device_pixel_ratio": 1,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1326,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1326,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:newtab",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": false,
+            "widget_coverage": "BLOCKED_BASELINE"
+          }
+        },
+        "private-first": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 1,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1326,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1326,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": false,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 680
+            }
+          }
+        },
+        "private-new": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 1,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1326,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1326,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": false,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 680
+            }
+          }
+        }
+      },
+      "live_profile_refusal": "PASS",
+      "negative_controls": [],
+      "css_diagnostics": [],
+      "remove": {
+        "status": "removed",
+        "restart_firefox": true
+      }
+    },
+    {
+      "nova": false,
+      "system_dark": false,
+      "scale": 2,
+      "browser_version": "159.0",
+      "status": "PASS",
+      "windows": {
+        "normal": {
+          "private": false,
+          "private_mode": null,
+          "private_indicator_visible": null,
+          "device_pixel_ratio": 2,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 647,
+                "y": 50.5,
+                "width": 28,
+                "height": 28
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 647,
+                "y": 50.5,
+                "width": 28,
+                "height": 28
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:newtab",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": false,
+            "widget_coverage": "BLOCKED_BASELINE"
+          }
+        },
+        "private-first": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 2,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 647,
+                "y": 50.5,
+                "width": 28,
+                "height": 28
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 647,
+                "y": 50.5,
+                "width": 28,
+                "height": 28
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": false,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 575
+            }
+          }
+        },
+        "private-new": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 2,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 647,
+                "y": 50.5,
+                "width": 28,
+                "height": 28
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 647,
+                "y": 50.5,
+                "width": 28,
+                "height": 28
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": false,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 575
+            }
+          }
+        }
+      },
+      "live_profile_refusal": "PASS",
+      "negative_controls": [],
+      "css_diagnostics": [],
+      "remove": {
+        "status": "removed",
+        "restart_firefox": true
+      }
+    },
+    {
+      "nova": false,
+      "system_dark": true,
+      "scale": 1,
+      "browser_version": "159.0",
+      "status": "PASS",
+      "windows": {
+        "normal": {
+          "private": false,
+          "private_mode": null,
+          "private_indicator_visible": null,
+          "device_pixel_ratio": 1,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1326,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1326,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:newtab",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": true,
+            "widget_coverage": "BLOCKED_BASELINE"
+          }
+        },
+        "private-first": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 1,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1326,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1326,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": true,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 680
+            }
+          }
+        },
+        "private-new": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 1,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1326,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 1326,
+                "y": 49,
+                "width": 32,
+                "height": 32
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": true,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 680
+            }
+          }
+        }
+      },
+      "live_profile_refusal": "PASS",
+      "negative_controls": [],
+      "css_diagnostics": [],
+      "remove": {
+        "status": "removed",
+        "restart_firefox": true
+      }
+    },
+    {
+      "nova": false,
+      "system_dark": true,
+      "scale": 2,
+      "browser_version": "159.0",
+      "status": "PASS",
+      "windows": {
+        "normal": {
+          "private": false,
+          "private_mode": null,
+          "private_indicator_visible": null,
+          "device_pixel_ratio": 2,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 647,
+                "y": 50.5,
+                "width": 28,
+                "height": 28
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 647,
+                "y": 50.5,
+                "width": 28,
+                "height": 28
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:newtab",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": true,
+            "widget_coverage": "BLOCKED_BASELINE"
+          }
+        },
+        "private-first": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 2,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 647,
+                "y": 50.5,
+                "width": 28,
+                "height": 28
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 647,
+                "y": 50.5,
+                "width": 28,
+                "height": 28
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": true,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 575
+            }
+          }
+        },
+        "private-new": {
+          "private": true,
+          "private_mode": "temporary",
+          "private_indicator_visible": true,
+          "device_pixel_ratio": 2,
+          "pixels": {
+            "tab": [
+              86,
+              159,
+              204
+            ],
+            "strip": [
+              36,
+              39,
+              44
+            ],
+            "navbar": [
+              36,
+              39,
+              44
+            ]
+          },
+          "selected_text": "rgb(31, 31, 38)",
+          "selected_close_icon": "rgb(31, 31, 38)",
+          "shape_radii": {
+            "tab": "3px",
+            "field": "3px",
+            "button": "3px"
+          },
+          "contrast": {
+            "selected_text": 5.636110061337476,
+            "selected_close": 5.636110061337476,
+            "toolbar_text": 13.1310447913457,
+            "address_text": 15.057676184896131
+          },
+          "focus_contrast": 5.1561890004232716,
+          "button_states": {
+            "hover": {
+              "background": "rgb(45, 49, 54)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 647,
+                "y": 50.5,
+                "width": 28,
+                "height": 28
+              }
+            },
+            "pressed": {
+              "background": "rgb(21, 28, 35)",
+              "image": "none",
+              "color": "rgb(239, 240, 241)",
+              "fill": "rgb(239, 240, 241)",
+              "border": "rgb(239, 240, 241)",
+              "outline": "rgb(86, 159, 204)",
+              "borderWidth": "0px",
+              "outlineWidth": "1px",
+              "outlineStyle": "solid",
+              "radius": "3px",
+              "rect": {
+                "x": 647,
+                "y": 50.5,
+                "width": 28,
+                "height": 28
+              }
+            }
+          },
+          "start_page": {
+            "url": "about:privatebrowsing",
+            "background": "rgb(21, 28, 35)",
+            "image": "none",
+            "body": "rgb(21, 28, 35)",
+            "text": "rgb(239, 240, 241)",
+            "dark": true,
+            "search_field": {
+              "background": "rgb(36, 39, 44)",
+              "text": "rgb(239, 240, 241)",
+              "radius": "3px",
+              "width": 575
+            }
+          }
+        }
+      },
+      "live_profile_refusal": "PASS",
+      "negative_controls": [],
+      "css_diagnostics": [],
+      "remove": {
+        "status": "removed",
+        "restart_firefox": true
+      }
+    }
+  ],
+  "firefox_home": {
+    "status": "BLOCKED_BASELINE",
+    "detail": "Stock Firefox Home React root remains empty without any custom stylesheet enabled.",
+    "snapshot": {
+      "url": "about:newtab",
+      "root": "",
+      "ready": "complete"
+    }
+  },
+  "recovery": {
+    "actual_restart_after_removal": true,
+    "restored_vapor_variable": "",
+    "restored_tab_radius": "24px"
+  },
+  "test_methods": {
+    "browser": "Firefox 159 headless, isolated profiles and test-owned processes; actual UI snapshots and painted pixels.",
+    "states": "Real field focus; synthetic InspectorUtils hover/active locks on test-owned toolbar buttons.",
+    "private": "PrivateBrowsingUtils and privatebrowsingmode state plus visible private indicators.",
+    "automation_cue": "Remove only the remotecontrol attribute from stock and themed test windows before capture.",
+    "focus_transitions": "Await finite native CSS animations and completed frames.",
+    "gui": "Extracted-bundle launcher exercised with a simulated kdialog chooser; no real user profile selected."
+  },
+  "initial_findings_and_corrections": [
+    "Private welcome/search content is outside the ordinary theme API; the user required Breeze UI by default, so the default complete setup uses owned browser/page CSS and a setup tool.",
+    "Firefox 159 private search uses a shadow component; set its documented host variables directly to remove its purple fill and use 3px corners.",
+    "Wait for native focus transitions before sampling; toolbar pixels use a clear gutter away from the classic address-field shadow.",
+    "Measure the button badge-stack surface rather than its nested glyph when checking shape/fill.",
+    "The independently tested stock Firefox Home React root remains empty without any custom styles; Home widget rendering remains blocked and is not counted as tested.",
+    "Setup rollback removes newly created empty directories; injected failures at all six write positions leave the profile retryable and preserve its prior files."
+  ],
+  "screenshots": {
+    "docs/screenshots/firefox-vapor-normal.png": {
+      "sha256": "5edd144b74a1c6b5a52f042a03744623428751280b820cb094e6971ffe330828",
+      "source": "nova-dark-scale-1/normal.png"
+    },
+    "docs/screenshots/firefox-vapor-private.png": {
+      "sha256": "3d0a55578cca0ee7a01c53856acef2d641a16895a26e1b5135879a83877c5d7c",
+      "source": "nova-dark-scale-1/private-first-start-page.png"
+    }
+  },
+  "tools": {
+    "marionette_driver": "3.7.1",
+    "Pillow": "13.0.0",
+    "web_ext": "10.5.0",
+    "node_runtime": {
+      "archive": "node-v22.23.4-linux-x64.tar.xz",
+      "sha256": "1805bcd35e6815559bd2eb97db438d3fdb0eb3a5e6a977b7c1badca76337e9ce",
+      "directory": "/tmp/vapor-firefox-dev-20261030/node-v22.23.4-linux-x64"
+    }
+  },
+  "not_validated": [
+    "Manual KDE setup-dialog walkthrough",
+    "Live Wayland/GPU and fractional scaling",
+    "Comprehensive menu/popup/sidebar/Settings component matrix",
+    "Forced colors/high contrast and full keyboard/screen-reader/RTL coverage",
+    "Comprehensive performance",
+    "Other Firefox versions, ESR, derivatives or Flatpak",
+    "Signed color-component installation/update"
+  ],
+  "live_user_profile_modified": false,
+  "vapor_desktop_gtk_adwaita_aur_payload_changed": false,
+  "public_firefox_release": false,
+  "aur_firefox_update": false,
+  "scratch_evidence": "/tmp/vapor-firefox-release-candidate"
+}

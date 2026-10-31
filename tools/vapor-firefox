@@ -1,0 +1,277 @@
+#!/usr/bin/env python3
+"""Apply/remove the complete Vapor Firefox appearance in a closed profile."""
+import argparse
+import base64
+from contextlib import contextmanager
+import fcntl
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import stat
+import subprocess
+import tempfile
+
+ROOT = Path(__file__).resolve().parent.parent
+KEY = 'toolkit.legacyUserProfileCustomizations.stylesheets'
+STATE = '.vapor-firefox.json'
+ASSETS = ('userChrome.css', 'userContent.css')
+PREF = re.compile(rb'^user_pref\("toolkit\.legacyUserProfileCustomizations\.stylesheets",\s*(true|false)\);\s*$', re.M)
+
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def snapshot(path):
+    if path.is_symlink():
+        raise ValueError(f'Refusing a link: {path.name}')
+    if not path.exists():
+        return None
+    if not path.is_file():
+        raise ValueError(f'Expected a regular file: {path.name}')
+    mode = stat.S_IMODE(path.stat().st_mode)
+    if not mode & stat.S_IWUSR:
+        raise ValueError(f'The file is read-only: {path.name}')
+    return path.read_bytes(), mode
+
+
+def write(path, data, mode):
+    if data is None:
+        path.unlink(missing_ok=True)
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, name = tempfile.mkstemp(prefix='.vapor-write-', dir=path.parent)
+    try:
+        with os.fdopen(fd, 'wb') as f:
+            f.write(data)
+        os.chmod(name, mode)
+        os.replace(name, path)
+    finally:
+        Path(name).unlink(missing_ok=True)
+
+
+def commit(changes):
+    before = {p: snapshot(p) for p in changes}
+    new_directories = set()
+    for path in changes:
+        for parent in path.parents:
+            if parent.exists():
+                break
+            new_directories.add(parent)
+    done = []
+    try:
+        for p, (data, mode) in changes.items():
+            done.append(p)
+            write(p, data, mode)
+    except BaseException:
+        for p in reversed(done):
+            previous = before[p]
+            write(p, None if previous is None else previous[0],
+                  0o600 if previous is None else previous[1])
+        for directory in sorted(new_directories, key=lambda p: len(p.parts), reverse=True):
+            try:
+                directory.rmdir()
+            except OSError:
+                pass
+        raise
+
+
+def pref_value(data):
+    matches = list(PREF.finditer(data))
+    return None if not matches else matches[-1].group(1) == b'true'
+
+
+def marked(name):
+    if name == 'user.js':
+        return (b'// BEGIN Vapor Firefox\nuser_pref("' + KEY.encode() +
+                b'", true);\n// END Vapor Firefox\n')
+    return (b'/* BEGIN Vapor Firefox */\n@import url("vapor-firefox/' +
+            name.encode() + b'");\n/* END Vapor Firefox */\n')
+
+
+def insert(data, name):
+    block = marked(name)
+    if b'BEGIN Vapor Firefox' in data or b'END Vapor Firefox' in data:
+        raise ValueError(f'Unrecognized existing Vapor setup in {name}')
+    if name == 'user.js':
+        block = (b'\n' if data and not data.endswith(b'\n') else b'') + block
+        return data + block, block
+    # CSS imports must precede rules/namespaces, but follow an existing charset.
+    match = re.match(rb'(?:\xef\xbb\xbf)?(?:@charset\s+"[^"]+";[ \t]*(?:\r?\n)?)?', data)
+    position = match.end()
+    return data[:position] + block + data[position:], block
+
+
+@contextmanager
+def closed_profile(profile):
+    if profile.is_symlink():
+        raise ValueError('Choose the Firefox settings folder itself, not a link')
+    profile = profile.resolve()
+    if not profile.is_dir() or profile.stat().st_uid != os.getuid():
+        raise ValueError('Choose a Firefox settings folder owned by your desktop account')
+    if not (profile/'prefs.js').is_file():
+        raise ValueError('This is not a Firefox settings folder: prefs.js was not found')
+    for p in (profile/'chrome', profile/'chrome/vapor-firefox'):
+        if p.is_symlink() or (p.exists() and not p.is_dir()):
+            raise ValueError('The Firefox appearance folder is a link or another file')
+    legacy = profile/'lock'
+    if legacy.is_symlink():
+        match = re.search(r':\+?(\d+)$', os.readlink(legacy))
+        if not match:
+            raise ValueError('Close Firefox first; its profile lock could not be verified')
+        try:
+            os.kill(int(match.group(1)), 0)
+        except ProcessLookupError:
+            pass
+        else:
+            raise ValueError('Close all Firefox windows before changing the appearance')
+    lock = profile/'.parentlock'
+    if lock.is_symlink():
+        raise ValueError('Close Firefox first; its profile lock is a link')
+    fd = os.open(lock, os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW, 0o600)
+    try:
+        try:
+            fcntl.lockf(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            raise ValueError('Close all Firefox windows before changing the appearance') from None
+        yield profile
+    finally:
+        os.close(fd)
+
+
+def manage(profile, action):
+    with closed_profile(profile) as profile:
+        state_file = profile/STATE
+        state_snapshot = snapshot(state_file)
+        state = None if state_snapshot is None else json.loads(state_snapshot[0])
+        if state is not None:
+            if not isinstance(state, dict) or set(state) != {'schema','assets','files','previous_pref'}:
+                raise ValueError('The saved Vapor setup information is not recognized')
+            if state.get('schema') != 1 or set(state.get('assets', {})) != set(ASSETS):
+                raise ValueError('The saved Vapor setup information is not recognized')
+            if state['previous_pref'] is not None and not isinstance(state['previous_pref'], bool):
+                raise ValueError('The saved Firefox setting is not recognized')
+            if set(state.get('files', {})) != {'chrome/userChrome.css', 'chrome/userContent.css', 'user.js'}:
+                raise ValueError('The saved Vapor file list is not recognized')
+            for name, expected in state['assets'].items():
+                asset = snapshot(profile/'chrome/vapor-firefox'/name)
+                if asset is None or digest(asset[0]) != expected:
+                    raise ValueError(f'Your Vapor copy was changed or is missing: {name}')
+            for relative, info in state['files'].items():
+                if not isinstance(info, dict) or set(info) != {'existed','original_sha256','block'}:
+                    raise ValueError('The saved Vapor file information is not recognized')
+                if not isinstance(info['existed'], bool) or not re.fullmatch(r'[0-9a-f]{64}', info['original_sha256']):
+                    raise ValueError('The saved Vapor file information is not recognized')
+                current = snapshot(profile/relative)
+                block = base64.b64decode(info['block'], validate=True)
+                normal = marked(Path(relative).name)
+                if block != normal and not (relative == 'user.js' and block == b'\n'+normal):
+                    raise ValueError('The saved Vapor setup section is not recognized')
+                if current is None or current[0].count(block) != 1:
+                    raise ValueError(f'The Vapor setup section was edited or removed: {relative}')
+        if action == 'status':
+            return {'status': 'applied' if state else 'not applied'}
+        if state is None and action == 'remove':
+            return {'status': 'already removed'}
+        prefs_path = profile/'prefs.js'
+        prefs = snapshot(prefs_path)
+        changes = {}
+        if action == 'install':
+            if state is None:
+                if (profile/'chrome/vapor-firefox').exists():
+                    raise ValueError('A folder named vapor-firefox already exists; it was left untouched')
+                state = {'schema': 1, 'files': {}, 'assets': {}, 'previous_pref': pref_value(prefs[0])}
+                for relative in ('chrome/userChrome.css', 'chrome/userContent.css', 'user.js'):
+                    previous = snapshot(profile/relative)
+                    data = b'' if previous is None else previous[0]
+                    new, block = insert(data, Path(relative).name)
+                    state['files'][relative] = {'existed': previous is not None,
+                        'original_sha256': digest(data), 'block': base64.b64encode(block).decode()}
+                    changes[profile/relative] = (new, 0o600 if previous is None else previous[1])
+            for name in ASSETS:
+                data = (ROOT/'firefox/vapor'/name).read_bytes()
+                state['assets'][name] = digest(data)
+                changes[profile/'chrome/vapor-firefox'/name] = (data, 0o600)
+            changes[state_file] = (json.dumps(state, indent=2).encode()+b'\n', 0o600)
+        else:
+            later_css = False
+            for relative, info in state['files'].items():
+                current, mode = snapshot(profile/relative)
+                remaining = current.replace(base64.b64decode(info['block']), b'', 1)
+                if relative.startswith('chrome/') and remaining and digest(remaining) != info['original_sha256']:
+                    later_css = True
+                changes[profile/relative] = (remaining if remaining or info['existed'] else None, mode)
+            # Firefox persists user.js preferences into prefs.js at startup.
+            # Remove only our setting, retaining all unrelated preferences and
+            # later custom CSS that still needs Firefox's stylesheet loader.
+            if pref_value(prefs[0]) is True and state['previous_pref'] is not True and not later_css:
+                previous = state['previous_pref']
+                replacement = b'' if previous is None else b'user_pref("'+KEY.encode()+b'", '+str(previous).lower().encode()+b');\n'
+                updated = PREF.sub(b'', prefs[0])
+                if replacement:
+                    updated += (b'\n' if updated and not updated.endswith(b'\n') else b'') + replacement
+                changes[prefs_path] = (updated, prefs[1])
+            for name in ASSETS:
+                changes[profile/'chrome/vapor-firefox'/name] = (None, 0o600)
+            changes[state_file] = (None, 0o600)
+        commit(changes)
+        if action == 'remove':
+            try:
+                (profile/'chrome/vapor-firefox').rmdir()
+            except OSError:
+                pass
+        return {'status': 'applied' if action == 'install' else 'removed',
+                'restart_firefox': True}
+
+
+def dialog(*args):
+    result = subprocess.run(['kdialog', '--title', 'Vapor for Firefox', *args],
+                            capture_output=True, text=True)
+    if result.returncode:
+        raise KeyboardInterrupt
+    return result.stdout.strip()
+
+
+def gui():
+    if not shutil.which('kdialog'):
+        raise ValueError('This desktop needs kdialog to show the setup window')
+    action = dialog('--menu', 'Choose what you want to do:',
+                    'install', 'Apply Vapor to Firefox', 'remove', 'Remove Vapor from Firefox')
+    dialog('--msgbox', 'First, find your Firefox settings folder:\n\n'
+           '1. In Firefox, open the menu > Help > More Troubleshooting Information.\n'
+           '2. Beside Profile Directory, click Open Directory. Note which folder opens.\n'
+           '3. Close all Firefox windows.\n\nSelect that folder in the next window.')
+    profile = Path(dialog('--getexistingdirectory', str(Path.home())))
+    result = manage(profile, action)
+    dialog('--msgbox', 'Vapor has been '+('applied' if result['status']=='applied' else 'removed')+
+           '.\n\nOpen Firefox again to see the change.')
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('action', nargs='?', choices=('install', 'remove', 'status'))
+    parser.add_argument('--profile', type=Path)
+    args = parser.parse_args()
+    try:
+        if os.geteuid() == 0:
+            raise ValueError('Run this from your desktop account')
+        if args.action is None and args.profile is None:
+            gui()
+        elif args.action is None or args.profile is None:
+            parser.error('The command-line form requires an action and --profile')
+        else:
+            print(json.dumps(manage(args.profile, args.action)))
+    except KeyboardInterrupt:
+        return
+    except (ValueError, OSError, KeyError, TypeError) as exc:
+        if args.action is None and shutil.which('kdialog'):
+            subprocess.run(['kdialog', '--error', str(exc), '--title', 'Vapor for Firefox'])
+        parser.exit(1, f'Vapor for Firefox: {exc}\n')
+
+
+if __name__ == '__main__':
+    main()

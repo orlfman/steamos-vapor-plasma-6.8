@@ -1,3 +1,17 @@
+Unreleased — 2026-10-30: start Vapor Firefox with default Breeze-style controls
+
+- Add a complete Vapor Firefox setup: colors, Breeze-inspired tab/field/button
+  shapes and matching private windows/private start pages by default.
+- Include a KDE setup/removal window that preserves unrelated appearance files
+  and settings, refuses open profiles and supports reversible updates/removal.
+- Build a reproducible complete ZIP plus a separate unsigned color component.
+  The color component has matching normal/dark variants; it is not the default
+  complete-theme setup and is not installed as an unsigned add-on.
+- Add browser-interface/private-state/contrast/shape regressions and profile
+  recovery tests, plain instructions, screenshots and validation evidence.
+- VGUI2, broader accessibility/Wayland coverage, Firefox public release and AUR
+  integration remain later work. No live user profile is changed in development.
+
 Unreleased — 2026-10-30: investigate matching Firefox themes
 
 - Add firefox-audit.md and firefox-plan.md for Vapor and VGUI2 Classic.

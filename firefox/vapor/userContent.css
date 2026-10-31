@@ -1,0 +1,60 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later
+ * Default Vapor styling for Firefox's own pages only. Never style websites.
+ */
+@-moz-document url("about:privatebrowsing"), url("about:newtab"), url("about:home"),
+  url-prefix("about:preferences"), url-prefix("about:addons") {
+  @media (forced-colors: none) and (prefers-contrast: no-preference) {
+    :root {
+      color-scheme: dark !important;
+      --background-color-canvas: #151c23 !important;
+      --background-color-box: #24272c !important;
+      --text-color: #eff0f1 !important;
+      --in-content-page-background: #151c23 !important;
+      --in-content-page-color: #eff0f1 !important;
+      --in-content-box-background: #24272c !important;
+      --in-content-box-border-color: #616569 !important;
+      --in-content-accent-color: #569fcc !important;
+      --in-content-accent-color-foreground: #1f1f26 !important;
+      --link-color: #569fcc !important;
+      --link-color-hover: #75b4dc !important;
+      --link-color-active: #569fcc !important;
+      --content-search-handoff-ui-background-color: #24272c !important;
+      --content-search-handoff-ui-color: #eff0f1 !important;
+      --newtab-background-color: #151c23 !important;
+      --newtab-background-color-secondary: #2d3136 !important;
+      --newtab-text-primary-color: #eff0f1 !important;
+      --button-background-color: #24272c !important;
+      --button-background-color-hover: #2d3136 !important;
+      --button-text-color: #eff0f1 !important;
+      --border-radius-small: 3px !important;
+      --border-radius-medium: 3px !important;
+      background: #151c23 !important;
+      color: #eff0f1 !important;
+    }
+    body {
+      background-color: #151c23 !important;
+      color: #eff0f1 !important;
+    }
+    button, select, input:not([type="checkbox"]):not([type="radio"]), textarea,
+    .search-handoff-button, moz-button::part(button) {
+      border-radius: 3px !important;
+    }
+    .search-handoff-button {
+      --content-search-handoff-ui-background-color: #24272c !important;
+      --content-search-handoff-ui-color: #eff0f1 !important;
+      background-color: #24272c !important;
+      color: #eff0f1 !important;
+      border: 1px solid #616569 !important;
+    }
+    content-search-handoff-ui {
+      --content-search-handoff-ui-background-color: #24272c !important;
+      --content-search-handoff-ui-color: #eff0f1 !important;
+      --content-search-handoff-ui-border-radius: 3px !important;
+      --content-search-handoff-ui-border-width: 1px !important;
+      --content-search-handoff-ui-unfocused-border-color: #616569 !important;
+      --content-search-handoff-ui-fakefocus-border-color: #569fcc !important;
+      --content-search-handoff-ui-fakefocus-box-shadow-inner: #569fcc !important;
+    }
+    ::selection { background: #569fcc !important; color: #1f1f26 !important; }
+  }
+}

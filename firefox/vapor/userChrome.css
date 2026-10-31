@@ -1,0 +1,108 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later
+ * Vapor with Breeze-inspired controls, Firefox 159.
+ * Default appearance component. Keep native controls and private indicators.
+ */
+@media (forced-colors: none) and (prefers-contrast: no-preference) {
+  :root {
+    color-scheme: dark !important;
+    --vapor-window: #24272c;
+    --vapor-view: #151c23;
+    --vapor-text: #eff0f1;
+    --vapor-accent: #569fcc;
+    --vapor-selected-text: #1f1f26;
+    --vapor-border: #616569;
+    --vapor-hover: #2d3136;
+    --vapor-radius: 3px;
+    --lwt-accent-color: var(--vapor-window) !important;
+    --lwt-accent-color-inactive: var(--vapor-window) !important;
+    --lwt-text-color: var(--vapor-text) !important;
+    --toolbox-background-color: var(--vapor-window) !important;
+    --toolbox-background-color-inactive: var(--vapor-window) !important;
+    --toolbox-text-color: var(--vapor-text) !important;
+    --toolbox-text-color-inactive: var(--vapor-text) !important;
+    --toolbar-background-color: var(--vapor-window) !important;
+    --toolbar-text-color: var(--vapor-text) !important;
+    --toolbarbutton-icon-fill: var(--vapor-text) !important;
+    --toolbarbutton-icon-fill-attention: var(--vapor-accent) !important;
+    --toolbarbutton-background-color-hover: var(--vapor-hover) !important;
+    --toolbarbutton-background-color-active: var(--vapor-view) !important;
+    --toolbarbutton-border-radius: var(--vapor-radius) !important;
+    --tab-background-color-selected: var(--vapor-accent) !important;
+    --tab-text-color-selected: var(--vapor-selected-text) !important;
+    --lwt-tab-line-color: var(--vapor-accent) !important;
+    --toolbar-field-background-color: var(--vapor-view) !important;
+    --toolbar-field-background-color-focus: var(--vapor-view) !important;
+    --toolbar-field-text-color: var(--vapor-text) !important;
+    --toolbar-field-text-color-focus: var(--vapor-text) !important;
+    --toolbar-field-border-color: var(--vapor-border) !important;
+    --toolbar-field-border-color-focus: var(--vapor-accent) !important;
+    --lwt-toolbar-field-highlight: var(--vapor-accent) !important;
+    --lwt-toolbar-field-highlight-text: var(--vapor-selected-text) !important;
+    --panel-background-color: var(--vapor-window) !important;
+    --panel-text-color: var(--vapor-text) !important;
+    --panel-border-color: var(--vapor-border) !important;
+    --arrowpanel-background: var(--vapor-window) !important;
+    --arrowpanel-color: var(--vapor-text) !important;
+    --arrowpanel-border-color: var(--vapor-border) !important;
+    --arrowpanel-border-radius: var(--vapor-radius) !important;
+    --urlbarview-border-radius: var(--vapor-radius) !important;
+    --urlbarview-background-color-selected: var(--vapor-accent) !important;
+    --urlbarview-text-color-selected: var(--vapor-selected-text) !important;
+    --sidebar-background-color: var(--vapor-view) !important;
+    --sidebar-text-color: var(--vapor-text) !important;
+    --sidebar-border-color: var(--vapor-border) !important;
+    --focus-outline-color: var(--vapor-accent) !important;
+    --border-radius-small: var(--vapor-radius) !important;
+    --border-radius-medium: var(--vapor-radius) !important;
+  }
+
+  #navigator-toolbox, #TabsToolbar, #nav-bar, #PersonalToolbar {
+    background-color: var(--vapor-window) !important;
+    color: var(--vapor-text) !important;
+  }
+  .tab-background {
+    border-radius: var(--vapor-radius) !important;
+    box-shadow: none !important;
+  }
+  .tabbrowser-tab:is([selected], [visuallyselected]) .tab-background {
+    background-color: var(--vapor-accent) !important;
+  }
+  .tabbrowser-tab:is([selected], [visuallyselected]) :is(.tab-content, .tab-label, .tab-close-button) {
+    color: var(--vapor-selected-text) !important;
+    fill: var(--vapor-selected-text) !important;
+  }
+  .urlbar-background, .urlbar-input-container, #searchbar {
+    border-radius: var(--vapor-radius) !important;
+  }
+  .urlbar-background {
+    background-color: var(--vapor-view) !important;
+  }
+  .urlbar-input { color: var(--vapor-text) !important; }
+  :is(.urlbar-input, #searchbar input)::selection {
+    background-color: var(--vapor-accent) !important;
+    color: var(--vapor-selected-text) !important;
+  }
+  toolbarbutton > :is(.toolbarbutton-icon, .toolbarbutton-badge-stack),
+  .subviewbutton, .toolbarbutton-menubutton-button {
+    border-radius: var(--vapor-radius) !important;
+  }
+  toolbarbutton:not([disabled]):hover > :is(.toolbarbutton-icon, .toolbarbutton-badge-stack) {
+    background-color: var(--vapor-hover) !important;
+    outline: 1px solid var(--vapor-accent) !important;
+    outline-offset: -1px !important;
+  }
+  toolbarbutton:not([disabled]):active > :is(.toolbarbutton-icon, .toolbarbutton-badge-stack) {
+    background-color: var(--vapor-view) !important;
+  }
+  toolbarbutton:focus-visible {
+    outline-color: var(--vapor-accent) !important;
+  }
+  panel::part(content), menupopup::part(content), .panel-viewstack {
+    border-radius: var(--vapor-radius) !important;
+  }
+  menupopup { --panel-background: var(--vapor-window) !important; }
+  menupopup :is(menuitem, menu)[_moz-menuactive="true"] {
+    background-color: var(--vapor-accent) !important;
+    color: var(--vapor-selected-text) !important;
+  }
+}
