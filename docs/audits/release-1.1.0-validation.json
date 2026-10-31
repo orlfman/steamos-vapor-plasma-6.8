@@ -2,7 +2,7 @@
   "version": "1.1.0",
   "date": "2026-10-30",
   "base_commit": "f7a431047e4c02a88f0744a026d394a1aecc0d9f",
-  "status": "PASS: complete source suites and installed-layout checks; archive/package checks precede public release",
+  "status": "PASS: complete source suites, staged and actual Arch package upgrades",
   "environment": {
     "plasma": "6.8.2",
     "gtk3": "3.24.52",
@@ -73,5 +73,21 @@
     "no forced GTK selection, forced dark appearance or package-time edits to user homes",
     "live GPU/fractional scaling/accessibility/performance and Flatpak remain separate validation",
     "optional converter automation has a stock Broadway baseline assertion, documented in prior audit"
-  ]
+  ],
+  "source_commit": "55dbb46b421c6aa04cae05d70236468befda9608",
+  "arch_package": {
+    "package_version": "1.1.0-1",
+    "files_verified": 214,
+    "payload_identical_after_metadata_only_rebuild": true,
+    "actual_arch_helper_tests": 38,
+    "source_sha256": "3af8dee4ac4f768fbd7045c407396a5874e562a1f17808c7ef40b72e42c98c22",
+    "package_sha256": "e61e44b3db44aad7739250302282e776435b8d4fcc88881e6c978ae7eb9d89e8",
+    "status": "PASS",
+    "namcap": "no errors; four static unused-dependency warnings for required dynamic/theme integration"
+  },
+  "publication": {
+    "github": "https://github.com/orlfman/steamos-vapor-plasma-6.8/releases/tag/v1.1.0",
+    "aur": "https://aur.archlinux.org/packages/plasma6-themes-steamos-vapor-fixed",
+    "aur_version": "1.1.0-1"
+  }
 }

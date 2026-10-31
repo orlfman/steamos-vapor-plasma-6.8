@@ -1681,3 +1681,18 @@ is under `/tmp/vapor-release-1.1.0-pliu11f1`.
   log in again, then restart GTK 4 applications.
 
 Exact results: [release-1.1.0-validation.json](docs/audits/release-1.1.0-validation.json).
+
+Release verification completed: both complete GTK 3/4 suites pass; source,
+staged and actual Arch-package helpers each pass 38 tests. Three real legacy
+upgrade scenarios preserve backup bytes and later CSS edits. The final Arch
+payload matches the tested package after dependency metadata refinement.
+Namcap reports no errors; its four unused-dependency warnings cover required
+Plasma/Breeze integration and GTK/libadwaita libraries loaded dynamically.
+QML and hicolor dependencies are now declared explicitly.
+
+Payload tag v1.1.0 points to 55dbb46. The tagged archive SHA-256 is
+`3af8dee4ac4f768fbd7045c407396a5874e562a1f17808c7ef40b72e42c98c22`. The package is 1.1.0-1;
+AUR metadata and generated .SRCINFO follow the immutable tag on main. An initial
+archive comparison used the aur subdirectory as its root and stopped before
+metadata changes; rerun from the repository root verifies every tagged path.
+The correct 1.1.0 package is rebuilt and verified independently afterward.
