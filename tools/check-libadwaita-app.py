@@ -21,10 +21,13 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--application',type=Path,required=True)
     parser.add_argument('--app-id',required=True)
-    parser.add_argument('--profile',type=Path,default=ROOT/'libadwaita/vapor.css')
+    parser.add_argument('--family',choices=('vapor','vgui2'),default='vapor')
+    parser.add_argument('--profile',type=Path)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--idle-seconds',type=int,default=0,choices=range(0,6),help='measure process CPU during a short idle interval')
     args=parser.parse_args()
+    family=runpy.run_path(str(ROOT/'tools/libadwaita-families.py'))['get_family'](args.family)
+    args.profile=args.profile or family['profile']
     if not args.application.is_file():parser.error('Application does not exist')
     from PIL import Image
     native=runpy.run_path(str(ROOT/'tools/check-libadwaita.py'))
@@ -38,12 +41,15 @@ def main():
         flags=shlex.split(subprocess.check_output(['pkg-config','--cflags','--libs','libadwaita-1'],text=True))
         subprocess.run(['cc','-shared','-fPIC','-Wall','-Wextra','-Werror','-O2',str(ROOT/'tools/libadwaita-app-probe.c'),'-o',str(library),*flags,'-ldl','-lm'],check=True)
         for baseline in (True,False):
-            case='baseline' if baseline else 'vapor';directory=scratch/case;directory.mkdir()
-            options=argparse.Namespace(profile=args.profile,scale=1,hc=False)
+            case='baseline' if baseline else args.family;directory=scratch/case;directory.mkdir()
+            options=argparse.Namespace(profile=args.profile,family=args.family,scale=1,hc=False)
             env,bus=native['make_environment'](directory,options,not baseline)
             command=['dbus-run-session','--config-file='+str(bus),'--','env',f'LD_PRELOAD={library}',
                      'VAPOR_APP_ID='+args.app_id,'VAPOR_APP_BASELINE='+('1' if baseline else '0'),
                      'VAPOR_APP_IDLE_SECONDS='+str(args.idle_seconds),
+                     'VAPOR_APP_ACCENT=#'+family['colors']['accent-bg-color'],
+                     'VAPOR_APP_FOREGROUND=#'+family['colors']['accent-fg-color'],
+                     'VAPOR_APP_BACKGROUND=#'+family['colors']['window-bg-color'],
                      'VAPOR_APP_IMAGE='+str(output/(case+'.png')),str(args.application.resolve())]
             with helpers['private_display'](directory,env),client(directory/'http.socket'):
                 code,stdout,stderr=helpers['run_application'](command,env,output,case)
@@ -60,7 +66,7 @@ def main():
             with Image.open(output/(case+'.png')) as image:
                 assert image.size==(data['width'],data['height']) and len(image.getcolors(image.width*image.height) or [])>20
             results.append(data);print(f'{args.app_id}: {case} PASS',flush=True)
-    report={'application':str(args.application.resolve()),'application_id':args.app_id,
+    report={'family':args.family,'application':str(args.application.resolve()),'application_id':args.app_id,
             'binary_sha256':hashlib.sha256(args.application.read_bytes()).hexdigest(),
             'profile_sha256':hashlib.sha256(args.profile.read_bytes()).hexdigest(),'cases':results,
             'limits':'startup rendering only; no menu, keyboard or application-action coverage'}

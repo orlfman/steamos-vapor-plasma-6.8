@@ -1,3 +1,16 @@
+Unreleased — 2026-10-30, Codex (GPT-6): initial VGUI2 Classic libadwaita profile
+
+- Add a dark/normal-contrast olive/gold profile with 28 color roles and native
+  Adwaita shapes. Strengthen button focus color coverage to 65% after the card
+  trial failed 3:1; preserve semantic action focus and outline geometry.
+- Extend native/app checks and negative controls to both families. VGUI2 passes
+  34 native cases and 17 mutations; standard GTK 4 checks now include matching
+  profile coexistence. All 128 original Vapor Adw PNGs remain byte-identical.
+- Record two isolated Adw demo/FFmpeg Converter startup pairs, screenshots,
+  portable evidence and the work log; include profile/docs in package staging.
+  Shared automatic activation is stage 6. Live settings, helper/login behavior,
+  published release and AUR metadata are unchanged.
+
 Unreleased — 2026-10-30, Codex (GPT-6): audit VGUI2 Classic GTK 4
 
 - Restore GTK 4 frame/optional scroll-frame borders, inset vertical spin fields

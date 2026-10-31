@@ -82,8 +82,9 @@ For source-only, per-user experimentation, the theme folder can be copied to
 `~/.local/share/themes/VGUI2Classic`. A fresh GTK 3 process launched with
 `GTK_THEME=VGUI2Classic` can preview it without changing the global theme.
 The automated commands above do not require that copy or change live settings.
-The current libadwaita manager still supports Vapor only; shared VGUI2 profile
-activation belongs to the later libadwaita stage.
+The [matching libadwaita color profile](VGUI2-LIBADWAITA.md) is implemented and
+tested separately. The current automatic manager still selects Vapor only;
+shared VGUI2 profile activation belongs to stage 6.
 
 ## Recorded results and limits
 

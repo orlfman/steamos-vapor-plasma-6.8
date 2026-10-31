@@ -138,9 +138,12 @@ python3 -I tools/check-gtk4.py
 
 Both checkers run both theme families, including inactive-label contrast and
 spin-background regressions. GTK 4 runs ten installed Widget Factory cases per
-family. Vapor retains its overlay, native libadwaita, reversible-activation,
-broken-profile and package-staging stages. VGUI2 adds real state/focus/glyph/
-popup checks and 32 deliberate regressions; see [VGUI2-GTK4.md](VGUI2-GTK4.md).
+family. Both run matching-profile coexistence, native libadwaita, broken-profile
+and package-staging stages. Vapor also retains reversible-activation tests.
+VGUI2 adds real state/focus/glyph/popup checks and 32 plain GTK regressions;
+see [VGUI2-GTK4.md](VGUI2-GTK4.md). Its initial [libadwaita profile](VGUI2-LIBADWAITA.md)
+passes 34 native cases and 17 negative controls. Automatic VGUI2 profile
+switching remains stage 6; the live theme and released package are unchanged.
 Failures and missing dependencies fail the standard suite; no automatic skip.
 The GTK 3 checker runs both Vapor and VGUI2 Classic, including mapped popup and
 dialog checks. It needs `python-cairo`, `python-pillow`, SVG support and
@@ -232,7 +235,8 @@ indicators, list/column/grid views, popovers and a tested 2x rendering matrix.
 [VGUI2-GTK4.md](VGUI2-GTK4.md) records Widget Factory screenshots and results.
 Its follow-up audit corrected frame borders, vertical fields, column separators,
 expander glyphs/focus and dark-entry verification; fixes are in the standard tests.
-VGUI2 libadwaita support remains planned. The current AUR 1.0.4 release
+The [VGUI2 libadwaita color profile](VGUI2-LIBADWAITA.md) is implemented and
+tested; shared automatic activation remains planned. The current AUR 1.0.4 release
 and live Vapor settings are unchanged. [vgui2-audit.md](vgui2-audit.md) records
 the investigation; [vgui2-plan.md](vgui2-plan.md) tracks the remaining work.
 

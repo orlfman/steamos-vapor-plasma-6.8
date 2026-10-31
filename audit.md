@@ -1,3 +1,42 @@
+# VGUI2 Classic native libadwaita implementation — 2026-10-30
+
+Base: `8935129da5e15fcd9d16d8fb64367498fcc86e1e`. Target: GTK **4.24.1**,
+libadwaita **1.10.0**, Plasma **6.8.2**. Stage 5 is implemented and tested;
+shared automatic activation remains stage 6. Guide:
+[VGUI2-LIBADWAITA.md](VGUI2-LIBADWAITA.md). Portable measurements:
+[vgui2-libadwaita-validation.json](docs/audits/vgui2-libadwaita-validation.json).
+
+- Added 28 guarded color roles with original olive surfaces and gold/dark-text
+  selections. Retained native geometry, light/high-contrast behavior, semantic
+  colors, appearance preferences and the system-accent API.
+- The original pale-focus candidate passed the old 22 cases but failed a newly
+  tested raised card at **2.95:1**. A guarded button outline-color rule raises
+  coverage from native 50% to 65%, keeping width/offset/shape unchanged and
+  excluding semantic action classes. The seven tested focus surfaces now
+  measure **3.84–5.15:1**, with no relaxed contrast gate.
+- Fixed a popup-fixture coordinate error: an inner-child snapshot cropped or
+  displaced the outside outline relative to computed widget bounds. Capturing
+  the popup root makes the measured ring and adjacent background share their
+  coordinate system. Actual focus visibility and valid sample bounds remain
+  required; the failure was not skipped or retried.
+- Family-aware native and app probes pass **34** VGUI2 cases and reject **17**
+  intended profile regressions. Original Vapor retains 22 cases/15 controls;
+  all **128** original native Adw PNGs remain byte-identical.
+- Matching libadwaita demo 1.10.0 and FFmpeg Converter GTK **2.0.1-1** pass
+  baseline/profile startup checks with private HOME/XDG/display/session bus.
+  No app actions or user media are used. The shared app probe also passes
+  original Vapor startup checks.
+- Added matching-profile coexistence and VGUI2 Adw gates to the default GTK 4
+  suite; staged the new profile, guide, evidence and two native screenshots.
+  Full standard results are recorded in the portable evidence and work log.
+
+Production Vapor/GTK 3/4 assets, helper/autostart behavior, release/AUR metadata
+and live settings remain unchanged. The VGUI2 profile is source-only and is not
+selected automatically. Live fractional/GPU/keyboard/accessibility, Flatpak and
+comparative performance validation remain open. No speed claim is made.
+
+---
+
 # VGUI2 Classic GTK 4 follow-up audit and fixes — 2026-10-30
 
 Audited clean base: `1767843808fac5d19ed9d108bcaca8358381ad0d`. Target:

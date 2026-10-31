@@ -12,8 +12,13 @@ records the separate stylesheet, actual application checks and limitations.
 Its follow-up audit fixes GTK 4 frame/field/separator/expander paths and proves
 actual dark-entry loading; see the latest [audit.md](audit.md) entry and work-log
 section 25.
-The findings below preserve the pre-port investigation. VGUI2 Adw and shared
-profile switching remain future work.
+The matching [native Adw profile](VGUI2-LIBADWAITA.md) now passes 34 cases and
+17 mutations, including broader focus surfaces and two real-app startup pairs.
+The card focus trial failed at 2.95:1 and was corrected with guarded 65% color
+coverage; native geometry remains intact. See work-log section 26 and
+[portable results](docs/audits/vgui2-libadwaita-validation.json).
+The findings below preserve the pre-port investigation. Shared automatic
+profile switching remains future work.
 
 Date: **2026-10-30**, America/Phoenix. Agent: Codex (GPT-6).
 Audited base: `e626869`, clean before investigation. Scope: feasibility and

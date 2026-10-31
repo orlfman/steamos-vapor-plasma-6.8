@@ -21,10 +21,13 @@ class Staging(unittest.TestCase):
         self.root=Path(self.temp.name)
         self.source=self.root/'source';(self.source/'usr/share/theme').mkdir(parents=True)
         (self.source/'usr/share/theme/sentinel').write_bytes(b'x')
-        for name in ('libadwaita/vapor.css','tools/vapor-libadwaita','alacritty/vapor.toml','kitty/vapor.conf',
+        for name in ('libadwaita/vapor.css','libadwaita/vgui2.css','tools/vapor-libadwaita','alacritty/vapor.toml','kitty/vapor.conf',
                      'autostart/steamos-vapor-libadwaita.desktop',
                      'docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png',
-                     'VGUI2-GTK3.md','VGUI2-GTK4.md','vgui2-audit.md','vgui2-plan.md',
+                     'VGUI2-GTK3.md','VGUI2-GTK4.md','VGUI2-LIBADWAITA.md','vgui2-audit.md','vgui2-plan.md',
+                     'docs/screenshots/vgui2-libadwaita-preview.png',
+                     'docs/screenshots/vgui2-libadwaita-ffmpeg-converter.png',
+                     'docs/audits/vgui2-libadwaita-validation.json',
                      'docs/screenshots/vgui2-gtk3-preview.png','docs/screenshots/vgui2-gtk3-meld.png',
                      'docs/screenshots/vgui2-gtk3-states.png','docs/screenshots/vgui2-gtk3-notebooks.png',
                      'docs/screenshots/vgui2-gtk4-preview.png','docs/screenshots/vgui2-gtk4-widget-factory.png',
@@ -72,6 +75,8 @@ class Staging(unittest.TestCase):
         self.assertEqual((destination/'usr/share/theme/sentinel').read_bytes(),b'x')
         self.assertEqual((destination/'usr/share/steamos-vapor/libadwaita/vapor.css').read_bytes(),
                          (self.source/'libadwaita/vapor.css').read_bytes())
+        self.assertEqual((destination/'usr/share/steamos-vapor/libadwaita/vgui2.css').read_bytes(),
+                         (self.source/'libadwaita/vgui2.css').read_bytes())
         self.assertEqual(stat.S_IMODE((destination/'usr/bin/vapor-libadwaita').stat().st_mode),0o755)
         for source,target in (
                 ('autostart/steamos-vapor-libadwaita.desktop','etc/xdg/autostart/steamos-vapor-libadwaita.desktop'),
@@ -81,6 +86,11 @@ class Staging(unittest.TestCase):
         self.assertEqual((self.source/'usr/share/theme/sentinel').read_bytes(),b'x')
         self.assertEqual((destination/'usr/share/doc/plasma6-themes-steamos-vapor-fixed/VGUI2-GTK3.md').read_bytes(),
                          (self.source/'VGUI2-GTK3.md').read_bytes())
+        for source in ('VGUI2-LIBADWAITA.md','docs/audits/vgui2-libadwaita-validation.json',
+                       'docs/screenshots/vgui2-libadwaita-preview.png',
+                       'docs/screenshots/vgui2-libadwaita-ffmpeg-converter.png'):
+            self.assertEqual((destination/'usr/share/doc/plasma6-themes-steamos-vapor-fixed'/source).read_bytes(),
+                             (self.source/source).read_bytes())
 
     def test_allow_repository_build_directory_outside_usr(self):
         self.assert_payload(self.source/'build/package')

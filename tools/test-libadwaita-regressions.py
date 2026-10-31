@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Prove color, guard, actual-surface and focus regressions fail on private copies."""
 from pathlib import Path
+import argparse
+import runpy
 import subprocess
 import sys
 import tempfile
@@ -9,12 +11,17 @@ ROOT=Path(__file__).resolve().parent.parent
 
 
 def main():
-    original=(ROOT/'libadwaita/vapor.css').read_text()
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--family',choices=('vapor','vgui2'),default='vapor')
+    args=parser.parse_args()
+    family=runpy.run_path(str(ROOT/'tools/libadwaita-families.py'))['get_family'](args.family)
+    original=family['profile'].read_text()
+    accent=family['colors']['accent-bg-color'];foreground=family['colors']['accent-fg-color']
     def guarded(rule):
         return '\n@media (prefers-color-scheme: dark) and (prefers-contrast: no-preference) {\n'+rule+'\n}\n'
     cases=[
-        ('wrong-blue','--accent-bg-color: #569fcc;','--accent-bg-color: #3daee9;',['--quick'],'ADW-COLOR: accent-bg-color'),
-        ('wrong-foreground','--accent-fg-color: #1f1f26;','--accent-fg-color: #ffffff;',['--quick'],'ADW-COLOR: accent-fg-color'),
+        ('wrong-accent','--accent-bg-color: #'+accent+';','--accent-bg-color: #3daee9;',['--quick'],'ADW-COLOR: accent-bg-color'),
+        ('wrong-foreground','--accent-fg-color: #'+foreground+';','--accent-fg-color: #ffffff;',['--quick'],'ADW-COLOR: accent-fg-color'),
         ('missing-import',None,None,['--quick','--without-import'],'ADW-COLOR: accent-bg-color'),
         ('missing-dark-guard','(prefers-color-scheme: dark) and (prefers-contrast: no-preference)',
          '(prefers-contrast: no-preference)',['--light'],'ADW-GUARD:'),
@@ -29,7 +36,12 @@ def main():
         ('wrong-sidebar',None,guarded('.vapor-fixture-sidebar { background-color: #555555; }'),['--scene','sidebar'],'ADW-SURFACE: sidebar'),
         ('wrong-dialog',None,guarded('.vapor-fixture-dialog { background-color: #555555; }'),['--scene','dialog'],'ADW-SURFACE: dialog'),
         ('wrong-popover',None,guarded('.vapor-fixture-popup { background-color: #555555; }'),['--scene','popover'],'ADW-SURFACE: popover'),
-        ('weak-local-focus',None,guarded('.vapor-fixture-actions { background-color: #555555; }'),['--state','focus'],'ADW-FOCUS: weak ring')]
+        ('weak-local-focus',None,guarded('.vapor-fixture-actions { background-color: #'+('888888' if args.family=='vgui2' else '555555')+'; }'),['--state','focus'],'ADW-FOCUS: weak ring')]
+    if args.family=='vgui2':
+        cases += [
+            ('weak-card-focus','var(--accent-color) 65%','var(--accent-color) 50%',['--state','focus-card'],'ADW-FOCUS: weak ring'),
+            ('wrong-standalone','--accent-color: #ffffe0;','--accent-color: #958831;',['--quick'],'ADW-COLOR: accent-color'),
+        ]
     with tempfile.TemporaryDirectory(prefix='vapor-adw-mutations-') as folder:
         scratch=Path(folder)
         for name,old,new,options,expected in cases:
@@ -40,7 +52,7 @@ def main():
             elif new:text+=new
             profile=scratch/(name+'.css');profile.write_text(text)
             result=subprocess.run([sys.executable,'-I',str(ROOT/'tools/check-libadwaita.py'),
-                                   '--profile',str(profile),*options],capture_output=True,text=True,timeout=35)
+                                   '--family',args.family,'--profile',str(profile),*options],capture_output=True,text=True,timeout=35)
             assert result.returncode!=0 and ('AssertionError: '+expected) in result.stderr,(name,result.stdout,result.stderr)
             print(f'Libadwaita: rejected {name} ({expected})',flush=True)
     print(f'All {len(cases)} deliberate libadwaita regressions rejected; source profile unchanged.')

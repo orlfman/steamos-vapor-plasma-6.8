@@ -1374,3 +1374,117 @@ documentation. Before/after control data, the dark false-positive reproduction,
 frozen-runner comparison and current measurements are retained in the portable
 validation JSON. Commit and push this completed source audit per the standing
 instruction; no package publication is part of this milestone.
+
+## 26. Start the VGUI2 native libadwaita color port — 2026-10-30
+
+User requested the libadwaita port after the plain GTK 4 audit. Started from
+clean `8935129da5e15fcd9d16d8fb64367498fcc86e1e`; saved all 232 tracked-file
+hashes and a frozen checkout in `/tmp/vgui2-libadwaita-port-6cbw54nx`.
+This implements stage 5. Shared automatic activation/migration remains stage 6;
+the existing Vapor helper and live user configuration are unchanged.
+
+### Color profile and independent expectations
+
+- Add `libadwaita/vgui2.css`: 27 paired/surface roles plus the separate pale
+  `--accent-color` under dark appearance and normal contrast. Main/header/
+  dialog/popover are `#4d5845`, content/sidebar `#3f4638`, secondary `#282f21`,
+  cards/thumbnails `#56604e`, ordinary text `#fcfcfc`, solid gold `#958831`,
+  selected ink `#181810` and standalone accent/focus source `#ffffe0`.
+- Retain Adwaita geometry, system fonts, motion, semantic colors and helper
+  opacities. No full GTK stylesheet import or global provider suppression.
+  The effective app appearance still controls the guarded profile. Light and
+  high-contrast renderings remain exactly equal to baseline fixture images.
+- Read upstream libadwaita 1.10 color-variable, appearance and style-class
+  references; inspect matching installed native CSS resources in an isolated
+  process. There is no documented focus-opacity variable for the needed fix.
+  The guide links the upstream references beside the relevant claims.
+- Add `tools/libadwaita-families.py`, independently anchored in the existing
+  KDE family palette and explicitly approved secondary/card/focus roles.
+  Parameterize native fixtures, negative controls and application probes with
+  `--family`, retaining Vapor as the compatibility default. Existing `COLORS`
+  and environment helper callers remain usable.
+
+### Focus finding and fixture corrections
+
+- The first variables-only VGUI2 profile passes the original 22-case matrix.
+  Expanding focus to actual cards reproduces **2.95:1** against `#56604e`:
+  the earlier 3.19:1 main-window trial was insufficient evidence.
+- Raise only button outline-color coverage from upstream 50% to **65%** within
+  the appearance guard. Keep outline width, offset, shape and spacing native.
+  Exclude disabled and destructive/error/warning/success action classes so
+  their semantic focus treatment remains upstream-controlled.
+- Capture the actual adjacent pixels, compare unrounded ratios at the 3:1
+  gate, and retain measurements for upstream baseline focus without applying
+  the project's custom-profile gate to those baselines. Final profile results:
+
+  | Focus surface | Ratio |
+  | --- | --- |
+  | Main window | 4.23:1 |
+  | Raised card | 3.84:1 |
+  | View | 5.15:1 |
+  | Primary sidebar | 5.15:1 |
+  | Dialog | 4.23:1 |
+  | Popover | 4.23:1 |
+  | Menu | 4.23:1 |
+
+- Early new popup-focus captures reported 1:1 despite a visible ring. Capturing
+  the inner box cropped the outline and allowed negative pixel indices;
+  capturing its immediate content node still displaced pixels relative to
+  computed bounds because of native margins. Snapshot the mapped popup root
+  for these new cases, keeping bounds and native painting in one coordinate
+  system. Require visible focus and valid sample coordinates. Both popup types
+  then pass without lowering a gate, forcing CSS geometry or retrying a test.
+- Add six baseline/profile focus pairs (card, view, sidebar, dialog, popover,
+  menu), giving **34** VGUI2 cases. Require native allocations, semantic colors
+  and the system-accent API to match paired baselines. Gold suggested text
+  measures **4.97:1**; the selected-row text measures **5.53:1**.
+- Preserve all 15 original bad-profile scenarios and add weak-card-focus and
+  wrong-standalone-accent controls. All **17** VGUI2 controls fail the intended
+  assertion. The card mutation restores 50% and reproduces the original defect.
+  VGUI2's brighter ring needs a lighter deliberately bad local background;
+  retain Vapor's old bad-background value for its original control.
+
+### Standard suite and independent applications
+
+- Extend the default `tools/check-gtk4.py` flow to run each family's matching
+  profile coexistence, native Adw matrix and negative controls. Keep the
+  existing Vapor activation/recovery tests; do not imply VGUI2 auto support.
+  The deeper plain GTK VGUI checks and all 32 mutations remain mandatory.
+- Rerun the original Vapor 22-case matrix through both frozen and updated
+  runners. All **128** native Adw PNGs are byte-identical. Its 15 negative
+  controls remain passing. All **184** protected production assets, GTK 3/4,
+  SVGs, Vapor profile, helper/autostart and AUR files retain their baseline hashes.
+- The real-app C probe now receives independent expected family colors from
+  the Python driver. Build with warnings as errors. Test matching upstream
+  Adwaita demo **1.10.0** and installed FFmpeg Converter GTK **2.0.1-1** with
+  private HOME/XDG, service-free session bus and Broadway display. Both their
+  baseline/profile startup pairs pass. A Vapor demo startup pair passes too.
+  No media is opened, conversion started or live app/session settings changed.
+- Both families' 22 plain-GTK native/behavior/Widget Factory captures are
+  byte-identical with and without their matching Adw profile. Real apps retain
+  native shapes; these app checks cover startup, not full user workflows.
+- Known Broadway timing diagnostics remain narrowly matched and recorded;
+  unrelated stderr remains fatal. This is deterministic Cairo evidence, not
+  a live GPU or keyboard-navigation claim.
+
+### Packaging, documentation and boundary
+
+- Extend the explicit stager and its eight containment/payload tests with
+  `vgui2.css`, `VGUI2-LIBADWAITA.md`, portable evidence and two unmodified native
+  screenshots. Verify actual staged profile bytes, all copied `usr` assets and
+  helper executable mode. Test the final packaged documentation links too.
+- Add `docs/audits/vgui2-libadwaita-validation.json` with case/phase colors,
+  rendered surfaces, focus, geometry, API and baseline evidence plus real-app
+  results. Update README, both GTK family guides, the Vapor Adw cross-reference,
+  audit, VGUI investigation/status plan, changelog and this log.
+- The full standard-suite result and packaged-file checks are recorded in the
+  portable evidence. Scratch logs, frozen runners, failed experiments, native
+  and application captures remain in the named temporary evidence directory.
+- Read-only live helper status remains enabled, automatic enabled, no pending
+  profile update. Do not activate VGUI2, change automatic theme detection, alter
+  backup metadata, bump/tag/release a version or update AUR in this milestone.
+  Stage 6 will implement tested shared activation and migration. Live fractional
+  scaling, GPU/keyboard/accessibility, broader app workflows, Flatpak and
+  comparative performance remain open. No speed improvement is claimed.
+
+Commit and push the completed source milestone per the standing instruction.

@@ -4,6 +4,10 @@ Status: a standard installed component since 1.0.4. Tested with libadwaita
 1.10.0 and GTK 4.24.1, plus successful user visual checks in Mission Center and
 FFmpeg Converter GTK. Packages before 1.0.4 do not contain this feature.
 
+The working tree also has an unreleased [VGUI2 Classic color profile](VGUI2-LIBADWAITA.md).
+Its automatic profile switching is still planned; the Vapor activation behavior
+below is unchanged.
+
 The profile matches Vapor's dark surfaces and #569fcc accent with dark
 #1f1f26 text. Adwaita keeps its widget shapes, spacing, responsive layouts and
 semantic colors. It applies when the application uses dark appearance with

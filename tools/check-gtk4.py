@@ -251,7 +251,7 @@ def main():
     parser.add_argument('--output', type=Path)
     parser.add_argument('--family',choices=tuple(FAMILY_TOOLS['FAMILIES']))
     parser.add_argument('--theme', type=Path)
-    parser.add_argument('--libadwaita-profile', type=Path, default=ROOT/'libadwaita/vapor.css')
+    parser.add_argument('--libadwaita-profile', type=Path)
     parser.add_argument('--overlay', type=Path, help=argparse.SUPPRESS)
     parser.add_argument('--worker', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('--state', default='normal', choices=('normal','hover','backdrop','rtl','disabled'), help=argparse.SUPPRESS)
@@ -261,6 +261,7 @@ def main():
     both=args.family is None and args.theme is None and not args.worker and not args.overlay
     args.family=args.family or 'vapor'
     family=FAMILY_TOOLS['get_family'](args.family)
+    args.libadwaita_profile=args.libadwaita_profile or ROOT/'libadwaita'/(args.family+'.css')
     args.theme=args.theme or ROOT/'usr/share/themes'/family['name']
     if args.worker:
         worker(args)
@@ -352,20 +353,21 @@ def main():
         subprocess.run(command,check=True)
         if not supplied_theme:
             subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-vgui2-gtk4.py')],check=True)
-        print('GTK 4 VGUI2 Classic native, behavior, Widget Factory and state checks: PASS',flush=True)
-        return
     command=[sys.executable,'-I',str(Path(__file__).resolve()),'--family',args.family,'--theme',str(theme),
              '--overlay',str(args.libadwaita_profile.resolve())]
     if args.output:command += ['--output',str(args.output.resolve()/'coexistence')]
     subprocess.run(command,check=True)
     command=[sys.executable,'-I',str(ROOT/'tools/check-libadwaita.py'),
-             '--profile',str(args.libadwaita_profile.resolve())]
+             '--family',args.family,'--profile',str(args.libadwaita_profile.resolve())]
     if args.output:command += ['--output',str(args.output.resolve()/'libadwaita')]
     subprocess.run(command,check=True)
-    subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-libadwaita-activation.py')],check=True)
-    subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-libadwaita-regressions.py')],check=True)
+    if not family['classic']:
+        subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-libadwaita-activation.py')],check=True)
+    subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-libadwaita-regressions.py'),
+                    '--family',args.family],check=True)
     subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-package-staging.py')],check=True)
-    print('GTK 4 native/Widget Factory, libadwaita, coexistence, activation and negative controls: PASS',flush=True)
+    print('GTK 4 '+family['name']+' native/Widget Factory, libadwaita, coexistence, '+
+          ('' if family['classic'] else 'activation and ')+'negative controls: PASS',flush=True)
     if both:
         command=[sys.executable,'-I',str(Path(__file__).resolve()),'--family','vgui2']
         if args.output:command += ['--output',str(args.output.resolve()/'vgui2')]

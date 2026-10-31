@@ -1,24 +1,26 @@
 # VGUI2 Classic port plan: GTK 3, GTK 4 and libadwaita
 
 Date: **2026-10-30**, America/Phoenix. Agent: Codex (GPT-6).
-Status: **GTK 3.24 audited and initial plain GTK 4 implemented/tested, unreleased**.
-VGUI2Classic libadwaita profiles and shared activation remain planned.
+Status: **GTK 3/4 audited and native libadwaita color profile implemented/tested, unreleased**.
+Shared profile activation remains planned.
 Findings and measured feasibility: [vgui2-audit.md](vgui2-audit.md).
 Baseline: Vapor 1.0.4 / repository `e626869` on Plasma 6.8.2.
 
 | Stage | Current status |
 | --- | --- |
 | 1: identity/palette/reference | VGUI2Classic identity, audited palette and fresh Qt Windows reference implemented |
-| 2: harness | Family-aware GTK 3/4 and Widget Factory checks; 23 GTK 3/32 GTK 4 VGUI mutations; actual variant markers and audit controls; Adw family support pending |
+| 2: harness | Family-aware GTK 3/4, Widget Factory and Adw checks; 23 GTK 3/32 GTK 4/17 Adw VGUI mutations; actual variant markers and audit controls |
 | 3: GTK 3.24 | Independent stylesheet, six SVG glyphs, normal/dark entries; follow-up message/selection/focus/arrow fixes verified; standard checks and Meld 3.24.1 pass |
 | 4: plain GTK 4 | Independent GTK 4 entries/style audited; frame/field/separator/expander fixes, actual variants, selection, native/Widget Factory and scale-2 tests pass |
-| 5–6: Adw / activation | Planned; current Vapor helper unchanged |
-| 7: real apps/displays/performance | Private Meld/GTK Widget Factory pass; integer GTK 4 scale 2 covered; live fractional scaling/keyboard/accessibility/performance pending |
-| 8: packaging/release | Working stager includes GTK 3/4 assets/docs; no new published release or AUR update |
+| 5: native Adw profile | Guarded 28-role olive/gold profile, native geometry and 65% button focus; 34 native cases, 17 mutations and plain-GTK coexistence pass |
+| 6: shared activation | Planned; current Vapor helper/login behavior unchanged |
+| 7: real apps/displays/performance | Private Meld/GTK Widget Factory, Adw demo and FFmpeg Converter startup pass; integer GTK 4 scale 2 covered; live fractional scaling/keyboard/accessibility/performance pending |
+| 8: packaging/release | Working stager includes GTK 3/4 and Adw assets/docs; no new published release or AUR update |
 
 Implementation details/results: [VGUI2-GTK3.md](VGUI2-GTK3.md), [VGUI2-GTK4.md](VGUI2-GTK4.md),
+[VGUI2-LIBADWAITA.md](VGUI2-LIBADWAITA.md),
 [portable evidence](docs/audits/vgui2-gtk3-validation.json), and
-[gtk4port.md](gtk4port.md), sections 22–25. The roadmap below retains the full scope.
+[gtk4port.md](gtk4port.md), sections 22–26. The roadmap below retains the full scope.
 
 ## Intended result
 
@@ -157,6 +159,13 @@ checks; real-app screenshots show the agreed classic GTK treatment.
 
 ## Stage 5 — Add the native libadwaita color profile
 
+**Implemented and tested:** [guide and boundary](VGUI2-LIBADWAITA.md),
+[portable results](docs/audits/vgui2-libadwaita-validation.json). The wider matrix
+found 2.95:1 native focus on cards; guarded 65% button focus coverage raises the
+lowest tested surface to 3.84:1 while retaining native geometry. VGUI2 now has
+34 cases; Vapor retains its original 22. The requirements below remain the
+design record, with shared automatic activation still in stage 6.
+
 Add `libadwaita/vgui2.css` under the existing dark/normal-contrast guard. Start
 with the audit's 27 mapped surface/foreground roles and the separate pale
 standalone accent that resolved the measured focus failure. Treat that color
@@ -259,8 +268,7 @@ smallest part; classic GTK finishing, adapting the tests and safe shared-profile
 migration carry most of the work. The audit's passing private profile reduces
 feasibility uncertainty without replacing those tasks.
 
-The first GTK 3 milestone covers stages 1–3, including the relevant test work.
-Next implement **stage 4**, extending the independent family and harness to
-plain GTK 4. Shared profile activation remains part of stages 5–6, after its
-color profile and migration tests are ready. Live selection/release are later
-tasks; the current milestone leaves the user's Vapor settings unchanged.
+The GTK 3/4 and native Adw milestones now cover stages 1–5, including relevant
+test work. Next implement **stage 6**, with shared profile selection and safe
+migration tests. Broader live validation and release follow; the current
+milestone leaves the user's Vapor settings unchanged.

@@ -1,0 +1,51 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later
+ * VGUI2 Classic color compatibility for libadwaita 1.10 / GTK 4.24.
+ * Native Adwaita geometry, semantics, motion and accessibility helpers remain.
+ * Light and high-contrast appearances retain upstream styling.
+ * See VGUI2-LIBADWAITA.md for tested scope and activation limitations.
+ */
+@media (prefers-color-scheme: dark) and (prefers-contrast: no-preference) {
+  :root {
+    --accent-bg-color: #958831;
+    --accent-fg-color: #181810;
+    /* Standalone text/focus needs more contrast than the opaque gold fill. */
+    --accent-color: #ffffe0;
+
+    --window-bg-color: #4d5845;
+    --window-fg-color: #fcfcfc;
+    --view-bg-color: #3f4638;
+    --view-fg-color: #fcfcfc;
+
+    --headerbar-bg-color: #4d5845;
+    --headerbar-fg-color: #fcfcfc;
+    --headerbar-backdrop-color: #4d5845;
+
+    --sidebar-bg-color: #3f4638;
+    --sidebar-fg-color: #fcfcfc;
+    --sidebar-backdrop-color: #282f21;
+    --secondary-sidebar-bg-color: #282f21;
+    --secondary-sidebar-fg-color: #fcfcfc;
+    --secondary-sidebar-backdrop-color: #4d5845;
+
+    --card-bg-color: #56604e;
+    --card-fg-color: #fcfcfc;
+    --dialog-bg-color: #4d5845;
+    --dialog-fg-color: #fcfcfc;
+    --popover-bg-color: #4d5845;
+    --popover-fg-color: #fcfcfc;
+    --thumbnail-bg-color: #56604e;
+    --thumbnail-fg-color: #fcfcfc;
+    --overview-bg-color: #3f4638;
+    --overview-fg-color: #fcfcfc;
+
+    --active-toggle-bg-color: #958831;
+    --active-toggle-fg-color: #181810;
+  }
+
+  /* Native 50% focus falls below 3:1 on raised olive cards. Change only
+   * ring color/coverage, retaining native outline width, offset and geometry.
+   * Keep semantic action focus under upstream control. */
+  button:focus:focus-visible:not(:disabled):not(.destructive-action):not(.error):not(.warning):not(.success) {
+    outline-color: color-mix(in srgb, var(--accent-color) 65%, transparent);
+  }
+}

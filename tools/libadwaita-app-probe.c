@@ -56,12 +56,16 @@ static gboolean capture(gpointer unused) {
   (void)unused;
   GdkRGBA accent=variable("accent-bg-color"),text=variable("accent-fg-color"),bg=variable("window-bg-color");
   gboolean baseline=g_strcmp0(g_getenv("VAPOR_APP_BASELINE"),"1")==0;
-  int red=baseline?53:86,green=baseline?132:159,blue=baseline?228:204;
+  GdkRGBA expected_accent,expected_text,expected_bg;
+  const char *accent_value=g_getenv("VAPOR_APP_ACCENT"),*text_value=g_getenv("VAPOR_APP_FOREGROUND"),*bg_value=g_getenv("VAPOR_APP_BACKGROUND");
+  if (!accent_value || !text_value || !bg_value || !gdk_rgba_parse(&expected_accent,accent_value) ||
+      !gdk_rgba_parse(&expected_text,text_value) || !gdk_rgba_parse(&expected_bg,bg_value))fail("missing expected family palette");
+  int red=baseline?53:(int)round(expected_accent.red*255),green=baseline?132:(int)round(expected_accent.green*255),blue=baseline?228:(int)round(expected_accent.blue*255);
   if (fabs(accent.red*255-red)>.1 || fabs(accent.green*255-green)>.1 || fabs(accent.blue*255-blue)>.1)
     fail("wrong computed accent");
-  if (!baseline && (fabs(text.red*255-31)>.1 || fabs(text.green*255-31)>.1 || fabs(text.blue*255-38)>.1))
+  if (!baseline && (fabs(text.red-expected_text.red)>.001 || fabs(text.green-expected_text.green)>.001 || fabs(text.blue-expected_text.blue)>.001))
     fail("wrong accent foreground");
-  if (!baseline && (fabs(bg.red*255-36)>.1 || fabs(bg.green*255-39)>.1 || fabs(bg.blue*255-44)>.1))
+  if (!baseline && (fabs(bg.red-expected_bg.red)>.001 || fabs(bg.green-expected_bg.green)>.001 || fabs(bg.blue-expected_bg.blue)>.001))
     fail("wrong window surface");
   GtkWidget *child=gtk_window_get_child(window);
   int width=gtk_widget_get_width(child),height=gtk_widget_get_height(child);

@@ -2,8 +2,9 @@
 
 Status: **initial implementation audited and corrected, unreleased**, 2026-10-30. Tested with
 GTK **4.24.1** on Plasma **6.8.2**. The published AUR **1.0.4** package does
-not include this family. The matching native libadwaita profile and shared
-activation remain later stages in [vgui2-plan.md](vgui2-plan.md).
+not include this family. The matching [native libadwaita color profile](VGUI2-LIBADWAITA.md)
+is now implemented and tested; shared activation remains stage 6 in
+[vgui2-plan.md](vgui2-plan.md).
 
 The standalone `VGUI2Classic/gtk-4.0` stylesheet matches the audited
 [GTK 3 design](VGUI2-GTK3.md): olive surfaces, square raised/sunken edges,
@@ -50,7 +51,8 @@ python3 -I tools/check-gtk4.py --output /tmp/steamos-gtk4
 The default command validates **both families**. Vapor retains its native,
 Widget Factory, overlay coexistence, libadwaita, activation/recovery and mutation
 stages. VGUI2 adds its own native, shared behavior, Widget Factory, real-widget
-state matrix and **32** deliberate regression controls. A missing application,
+state matrix and **32** deliberate regression controls, plus matching-profile
+coexistence, 34 Adw cases and 17 Adw regressions. A missing application,
 parser error or failed assertion fails the suite.
 
 To target VGUI2 alone:
@@ -136,8 +138,9 @@ A source-only preview can use a copy of `usr/share/themes/VGUI2Classic` under
 `GTK_THEME=VGUI2Classic`. The automated checks do not require that installation
 and do not change the active desktop theme.
 
-This is plain GTK 4 support. VGUI2 libadwaita colors and shared profile switching
-are not implemented; the current manager still supports Vapor. Widget Factory
+This guide covers plain GTK 4 support. VGUI2 libadwaita colors are now covered
+by [their separate guide](VGUI2-LIBADWAITA.md). Shared profile switching
+is not implemented; the current automatic manager still selects Vapor. Widget Factory
 provides actual application evidence, while broader app workflows, live Wayland/
 X11, fractional scaling, full keyboard/screen-reader testing, Flatpak and
 comparative performance measurements remain open. Integer scale-2 coverage

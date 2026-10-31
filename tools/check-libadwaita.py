@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test Vapor's native libadwaita colors using temporary user CSS and real widgets.
+"""Test theme-family libadwaita colors using temporary user CSS and real widgets.
 
 Requires GTK 4.24+, libadwaita 1.10+, Python GI/Pillow, gtk4-broadwayd and D-Bus.
 Includes light/high-contrast baselines, popup/dialog roots, scale 2, state and
@@ -19,22 +19,13 @@ import tempfile
 import warnings
 
 ROOT = Path(__file__).resolve().parent.parent
+FAMILY_TOOLS=runpy.run_path(str(ROOT/'tools/libadwaita-families.py'))
 BROADWAY_WARNING = re.compile(
     r'\([^()\n]+:\d+\): Gdk-WARNING \*\*: [\d:.]+: '
     r'(?:gdk_frame_timings_submitted\(\) called on submitted frame\.|'
     r'Duplicate call to gdk_frame_timings_submitted\(\) with different values\.)')
-COLORS = {
-    'accent-bg-color':'569fcc', 'accent-fg-color':'1f1f26',
-    'window-bg-color':'24272c', 'window-fg-color':'eff0f1',
-    'view-bg-color':'151c23', 'view-fg-color':'eff0f1',
-    'headerbar-bg-color':'24272c', 'headerbar-fg-color':'eff0f1', 'headerbar-backdrop-color':'24272c',
-    'sidebar-bg-color':'151c23', 'sidebar-fg-color':'eff0f1', 'sidebar-backdrop-color':'1a212a',
-    'secondary-sidebar-bg-color':'1a212a', 'secondary-sidebar-fg-color':'eff0f1',
-    'secondary-sidebar-backdrop-color':'24272c', 'card-bg-color':'2d3136', 'card-fg-color':'eff0f1',
-    'dialog-bg-color':'24272c', 'dialog-fg-color':'eff0f1', 'popover-bg-color':'24272c',
-    'popover-fg-color':'eff0f1', 'thumbnail-bg-color':'2d3136', 'thumbnail-fg-color':'eff0f1',
-    'overview-bg-color':'151c23', 'overview-fg-color':'eff0f1',
-    'active-toggle-bg-color':'569fcc', 'active-toggle-fg-color':'1f1f26'}
+# Kept for callers importing the historical Vapor expectation name.
+COLORS = FAMILY_TOOLS['get_family']('vapor')['colors']
 
 
 def contrast(a, b):
@@ -46,6 +37,8 @@ def contrast(a, b):
 
 
 def worker(args):
+    family=FAMILY_TOOLS['get_family'](args.family)
+    colors_expected=family['colors']
     warnings.filterwarnings('ignore', category=DeprecationWarning)
     import gi
     gi.require_version('Gtk','4.0');gi.require_version('Adw','1')
@@ -67,15 +60,15 @@ def worker(args):
     assert not errors, 'ADW-CSS: '+str(errors)
     # Parsing only; actual profile styling must arrive through the staged user import.
     query = Gtk.CssProvider()
-    tokens = (*COLORS, 'accent-color', 'destructive-color', 'error-color', 'warning-color',
-              'success-color', 'border-opacity', 'disabled-opacity', 'window-radius')
+    tokens = tuple(dict.fromkeys((*colors_expected, 'accent-color', 'destructive-color', 'error-color', 'warning-color',
+              'success-color', 'border-opacity', 'disabled-opacity', 'window-radius')))
     query.load_from_string('\n'.join('.vapor-query-'+name+' { color: var(--'+name+'); }'
-                                    for name in tokens if name in COLORS or name.endswith('-color')))
+                                    for name in tokens if name in colors_expected or name.endswith('-color')))
     Gtk.StyleContext.add_provider_for_display(Gtk.Widget.get_display(Gtk.Label()),query,Gtk.STYLE_PROVIDER_PRIORITY_USER)
-    window = Adw.Window(title='Vapor libadwaita checks')
+    window = Adw.Window(title=family['name']+' libadwaita checks')
     window.set_default_size(1050,850)
     toolbar = Adw.ToolbarView()
-    header = Adw.HeaderBar();header.set_title_widget(Adw.WindowTitle(title='Vapor',subtitle='libadwaita compatibility'))
+    header = Adw.HeaderBar();header.set_title_widget(Adw.WindowTitle(title=family['name'],subtitle='libadwaita compatibility'))
     toolbar.add_top_bar(header)
     body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=14,
                    margin_start=20,margin_end=20,margin_top=20,margin_bottom=20)
@@ -104,7 +97,10 @@ def worker(args):
     destructive = Gtk.Button(label='Destructive');destructive.add_css_class('destructive-action')
     toggle = Gtk.ToggleButton(label='Checked',active=True)
     for widget in (ordinary,suggested,disabled,destructive,toggle):buttons.append(widget)
+    if args.state in ('focus-card','focus-view'):
+        buttons.add_css_class('card' if args.state=='focus-card' else 'view')
     body.append(buttons)
+    focus_target=suggested
     checks = Gtk.Box(spacing=12)
     checks.append(Gtk.CheckButton(label='Checked',active=True));checks.append(Gtk.Switch(active=True))
     accent = Gtk.Label(label='Readable standalone accent');accent.add_css_class('accent');checks.append(accent)
@@ -119,12 +115,12 @@ def worker(args):
     view.get_buffer().set_text('Native view surface');view.set_size_request(220,36);fields.append(view)
     body.append(fields)
     banner = Adw.Banner(title='Native banner surface');banner.set_revealed(True);body.append(banner)
-    status = Adw.StatusPage(title='Vapor compatibility',description='Color profile; native Adwaita widgets',icon_name='preferences-desktop-theme-symbolic')
+    status = Adw.StatusPage(title=family['name']+' compatibility',description='Color profile; native Adwaita widgets',icon_name='preferences-desktop-theme-symbolic')
     status.add_css_class('compact')
     status.set_vexpand(True);body.append(status)
     queries = {}
     for name in tokens:
-        if name not in COLORS and not name.endswith('-color'):continue
+        if name not in colors_expected and not name.endswith('-color'):continue
         label = Gtk.Label();label.add_css_class('vapor-query-'+name);label.set_visible(False)
         body.append(label);queries[name]=label
     target = body
@@ -132,6 +128,12 @@ def worker(args):
     if args.scene == 'sidebar':
         toolbar.set_content(None)
         sidebar = Adw.NavigationPage.new(Adw.StatusPage(title='Primary sidebar'),'Sidebar')
+        if args.state=='focus':
+            sidebar_content=Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=20,
+                                    margin_start=20,margin_end=20,margin_top=20,margin_bottom=20)
+            sidebar_content.append(Gtk.Label(label='Primary sidebar'))
+            focus_target=Gtk.Button(label='Sidebar focus');focus_target.add_css_class('suggested-action')
+            sidebar_content.append(focus_target);sidebar.set_child(sidebar_content)
         sidebar.add_css_class('vapor-fixture-sidebar')
         navigation = Adw.NavigationSplitView()
         navigation.set_sidebar(sidebar);navigation.set_content(Adw.NavigationPage.new(body,'Content'))
@@ -147,7 +149,7 @@ def worker(args):
             window.insert_action_group('test',actions)
             popup = Gtk.PopoverMenu.new_from_model(model)
             extra = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=12,margin_start=12,margin_end=12,margin_top=12,margin_bottom=12)
-            extra.append(Gtk.Label(label='Popup inherits Vapor colors'))
+            extra.append(Gtk.Label(label='Popup inherits '+family['name']+' colors'))
             popup.add_child(extra,'controls')
         else:
             popup = Gtk.Popover();extra=Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=12,
@@ -158,13 +160,14 @@ def worker(args):
         extra.add_css_class('vapor-fixture-popup')
         for label in queries.values():body.remove(label);extra.append(label)
         popup_button=Gtk.Button(label='Suggested');popup_button.add_css_class('suggested-action');extra.append(popup_button)
+        if args.state=='focus':focus_target=popup_button
         button.set_popover(popup)
         def open_popup():button.popup();return False
         GLib.timeout_add(150,open_popup)
     dialog = None
     if args.scene == 'dialog':
         toolbar.set_content(Gtk.Label(label='Window beneath dialog'))
-        dialog=Adw.Dialog(title='Vapor dialog',content_width=1000,content_height=750)
+        dialog=Adw.Dialog(title=family['name']+' dialog',content_width=1000,content_height=750)
         body.add_css_class('vapor-fixture-dialog')
         dialog.set_child(body)
         GLib.timeout_add(150,lambda: (dialog.present(window),False)[1])
@@ -219,10 +222,10 @@ def worker(args):
             for widget in descendants(window):widget.set_state_flags(Gtk.StateFlags.BACKDROP,False)
         else:
             for widget in descendants(window):widget.unset_state_flags(Gtk.StateFlags.BACKDROP)
-        if args.state=='focus':
-            suggested.grab_focus();window.set_focus_visible(True)
+        if args.state.startswith('focus'):
+            focus_target.grab_focus();window.set_focus_visible(True)
         return False
-    GLib.timeout_add(100,apply_test_state)
+    GLib.timeout_add(300 if args.state.startswith('focus') else 100,apply_test_state)
 
     def capture():
         assert window.get_scale_factor()==args.scale,'ADW-SCALE: requested native scale was not applied'
@@ -238,24 +241,28 @@ def worker(args):
         if popup:surface_widgets['popover']=(extra,False)
         surfaces={name:surface_pixels(widget,name,content)
                   for name,(widget,content) in surface_widgets.items()}
-        for name,expected in COLORS.items():
+        for name,expected in colors_expected.items():
             if active:
                 wanted=[int(expected[i:i+2],16) for i in (0,2,4)]
                 assert colors[name]==wanted,f'ADW-COLOR: {name}: {colors[name]} != {wanted}'
         if not active:
-            assert colors['accent-bg-color']==[53,132,228], 'ADW-GUARD: non-Vapor appearance was recolored'
+            assert colors['accent-bg-color']==[53,132,228], 'ADW-GUARD: upstream appearance was recolored'
             assert colors['window-bg-color']==([34,34,38] if dark else [250,250,251]), 'ADW-GUARD: window changed'
         else:
             for name,pixels in surfaces.items():
-                expected=COLORS[name+'-bg-color']
+                expected=colors_expected[name+'-bg-color']
                 wanted=[int(expected[i:i+2],16) for i in (0,2,4)]
                 assert all(pixel==wanted for pixel in pixels),f'ADW-SURFACE: {name}: {pixels} != {wanted}'
         assert settings.get_property('gtk-theme-name')=='Adwaita-empty','Adwaita providers must remain enabled'
         fg=rgb(suggested.get_child())
-        assert fg==([31,31,38] if active else [255,255,255]),f'ADW-FOREGROUND: {fg}'
+        assert fg==(list(family['selection_foreground']) if active else [255,255,255]),f'ADW-FOREGROUND: {fg}'
         assert not disabled.get_sensitive() and suggested.get_sensitive()
         # Capture the actual mapped content, with the real window CSS background.
         snapshot_target = popup.get_child() if popup else target
+        if popup and args.state=='focus':
+            # Snapshot the popup root so native padding/margins and computed
+            # button bounds share coordinates, including its outside outline.
+            snapshot_target=popup
         if args.scene=='dialog':snapshot_target=body
         if not snapshot_target.get_mapped():
             chain=[];ancestor=snapshot_target
@@ -281,28 +288,30 @@ def worker(args):
             ok,bounds=suggested.compute_bounds(snapshot_target);assert ok
             point=((round(bounds.get_x())+6)*args.scale,round(bounds.get_y()+bounds.get_height()/2)*args.scale)
             bg=list(image.getpixel(point))
-            assert bg==([86,159,204] if active else [53,132,228]),f'ADW-PIXEL: suggested fill {bg}'
-            ratios['suggested']=round(contrast(fg,bg),2)
+            assert bg==(list(family['selection']) if active else [53,132,228]),f'ADW-PIXEL: suggested fill {bg}'
+            ratio=contrast(fg,bg);ratios['suggested']=round(ratio,2)
             if active:
-                assert ratios['suggested']>=4.5,f'ADW-CONTRAST: suggested {ratios}'
+                assert ratio>=4.5,f'ADW-CONTRAST: suggested {ratios}'
             ok,bounds=row.compute_bounds(snapshot_target);assert ok
             selected_bg=list(image.getpixel(((round(bounds.get_x())+6)*args.scale,round(bounds.get_y()+bounds.get_height()/2)*args.scale)))
-            ratios['selected-row']=round(contrast(rgb(selected_label),selected_bg),2)
-            assert ratios['selected-row']>=4.5,f'ADW-CONTRAST: selected row {ratios}'
+            ratio=contrast(rgb(selected_label),selected_bg);ratios['selected-row']=round(ratio,2)
+            assert ratio>=4.5,f'ADW-CONTRAST: selected row {ratios}'
         if popup:
             assert popup.get_mapped() and popup.get_native().get_surface() is not None,'ADW-SURFACE: popup missing'
-            assert rgb(popup_button.get_child())==([31,31,38] if active else [255,255,255]),'ADW-POPUP: wrong label'
+            assert rgb(popup_button.get_child())==(list(family['selection_foreground']) if active else [255,255,255]),'ADW-POPUP: wrong label'
         if dialog:assert dialog.get_mapped(),'ADW-SURFACE: dialog missing'
-        if args.state=='focus':
-            assert suggested.get_state_flags() & Gtk.StateFlags.FOCUS_VISIBLE,'ADW-FOCUS: visible focus was not established'
-            ok,bounds=suggested.compute_bounds(snapshot_target);assert ok
+        if args.state.startswith('focus'):
+            assert focus_target.get_state_flags() & Gtk.StateFlags.FOCUS_VISIBLE,'ADW-FOCUS: visible focus was not established'
+            ok,bounds=focus_target.compute_bounds(snapshot_target);assert ok
             x=round(bounds.get_x());y=round(bounds.get_y()+bounds.get_height()/2)
+            assert x>=8 and y>=3,'ADW-FOCUS: outline sample lies outside capture'
             ring=[image.getpixel((px,py)) for px in range(x-6,x) for py in range(y-2,y+3)]
             # Sample the same image beside the ring; an ancestor may paint a
             # different background while leaving --window-bg-color unchanged.
             focus_background=list(image.getpixel((x-8,y)))
-            ratios['focus-ring']=round(max(contrast(pixel,focus_background) for pixel in ring),2)
-            assert ratios['focus-ring']>=3,f'ADW-FOCUS: weak ring {ratios} on actual {focus_background}'
+            ratio=max(contrast(pixel,focus_background) for pixel in ring);ratios['focus-ring']=round(ratio,2)
+            if not args.baseline:
+                assert ratio>=3,f'ADW-FOCUS: weak ring {ratios} on actual {focus_background}; bounds={[bounds.get_x(),bounds.get_y(),bounds.get_width(),bounds.get_height()]}'
         geom={name:[widget.get_width(),widget.get_height()] for name,widget in
               (('ordinary',ordinary),('suggested',suggested),('action-row',action),('switch-row',switchrow),
                ('entry-row',entryrow),('combo-row',combo),('spin-row',spinrow),('button-row',buttonrow))}
@@ -314,7 +323,7 @@ def worker(args):
                 'image':filename,'image_sha256':hashlib.sha256(image.tobytes()).hexdigest(),
                 'image_size':list(image.size),'widget_scale':window.get_scale_factor(),
                 'popup_mapped':bool(popup and popup.get_mapped()),'dialog_mapped':bool(dialog and dialog.get_mapped()),
-                'focus_visible':bool(suggested.get_state_flags() & Gtk.StateFlags.FOCUS_VISIBLE),
+                'focus_visible':bool(focus_target.get_state_flags() & Gtk.StateFlags.FOCUS_VISIBLE),
                 'accent_api':[round(api.red*255),round(api.green*255),round(api.blue*255)],
                 'mapped_classes':sorted({type(w).__name__ for w in descendants(window) if w.get_mapped()})}
 
@@ -333,7 +342,7 @@ def worker(args):
     if failures:raise failures[0]
     result={'gtk':f'{Gtk.get_major_version()}.{Gtk.get_minor_version()}.{Gtk.get_micro_version()}',
             'adwaita':f'{Adw.get_major_version()}.{Adw.get_minor_version()}.{Adw.get_micro_version()}',
-            'scene':args.scene,'state':args.state,'scale':args.scale,'baseline':args.baseline,'phases':phases}
+            'family':args.family,'scene':args.scene,'state':args.state,'scale':args.scale,'baseline':args.baseline,'phases':phases}
     print(json.dumps(result))
 
 
@@ -343,7 +352,8 @@ def make_environment(scratch,args,overlay):
                             ('XDG_CACHE_HOME','cache'),('XDG_STATE_HOME','state'),('XDG_RUNTIME_DIR','runtime')):
         p=scratch/folder;p.mkdir(mode=0o700);env[variable]=str(p)
     config=scratch/'config/gtk-4.0';config.mkdir()
-    (config/'settings.ini').write_text('[Settings]\ngtk-theme-name=Vapor\ngtk-font-name=DejaVu Sans 10\n')
+    family=FAMILY_TOOLS['get_family'](getattr(args,'family','vapor'))
+    (config/'settings.ini').write_text('[Settings]\ngtk-theme-name='+family['name']+'\ngtk-font-name=DejaVu Sans 10\n')
     # Exercise the same activation mechanism, preserving a KDE-style import.
     (config/'colors.css').write_text('@define-color theme_bg_color_breeze #24272c;\n')
     (config/'gtk.css').write_text("@import 'colors.css';\n")
@@ -370,19 +380,22 @@ def make_environment(scratch,args,overlay):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--profile',type=Path,default=ROOT/'libadwaita/vapor.css')
+    parser.add_argument('--family',choices=('vapor','vgui2'),default='vapor')
+    parser.add_argument('--profile',type=Path)
     parser.add_argument('--output',type=Path)
     parser.add_argument('--quick',action='store_true',help='only baseline/profile normal dark fixtures')
     parser.add_argument('--strict',action='store_true',help='also reject known Broadway frame-timing diagnostics')
     parser.add_argument('--worker',action='store_true',help=argparse.SUPPRESS)
     parser.add_argument('--scene',default='main',choices=('main','sidebar','dialog','popover','menu','transition'),help=argparse.SUPPRESS)
-    parser.add_argument('--state',default='normal',choices=('normal','backdrop','rtl','focus'),help=argparse.SUPPRESS)
+    parser.add_argument('--state',default='normal',choices=('normal','backdrop','rtl','focus','focus-card','focus-view'),help=argparse.SUPPRESS)
     parser.add_argument('--light',action='store_true',help=argparse.SUPPRESS)
     parser.add_argument('--hc',action='store_true',help=argparse.SUPPRESS)
     parser.add_argument('--baseline',action='store_true',help=argparse.SUPPRESS)
     parser.add_argument('--without-import',action='store_true',help=argparse.SUPPRESS)
     parser.add_argument('--scale',type=int,default=1,choices=(1,2),help=argparse.SUPPRESS)
     args=parser.parse_args()
+    family=FAMILY_TOOLS['get_family'](args.family)
+    args.profile=args.profile or family['profile']
     if args.worker:worker(args);return
     helpers=runpy.run_path(str(ROOT/'tools/check-widget-factory.py'))
     frame_client=runpy.run_path(str(ROOT/'tools/broadway-test-client.py'))['FrameClient']
@@ -398,6 +411,11 @@ def main():
             cases.extend([('main',state,False,False,1,False) for state in ('backdrop','rtl','focus')])
             cases += [('main','normal',False,False,2,baseline) for baseline in (True,False)]
             cases += [('transition','normal',False,False,1,False)]
+            if args.family=='vgui2':
+                cases.extend([('main',state,False,False,1,baseline)
+                              for state in ('focus-card','focus-view') for baseline in (True,False)])
+                cases.extend([(scene,'focus',False,False,1,baseline)
+                              for scene in ('sidebar','dialog','popover','menu') for baseline in (True,False)])
         if args.scene != 'main':
             cases=[case for case in cases if case[0]==args.scene]
         if args.state != 'normal':
@@ -407,12 +425,12 @@ def main():
         assert cases,'No cases selected'
         results=[]
         for index,(scene,state,light,hc,scale,baseline) in enumerate(cases):
-            case=f'{index:02}-{scene}-{state}-'+('light' if light else 'dark')+('-hc' if hc else '')+f'-s{scale}-'+('base' if baseline else 'vapor')
+            case=f'{index:02}-{scene}-{state}-'+('light' if light else 'dark')+('-hc' if hc else '')+f'-s{scale}-'+('base' if baseline else args.family)
             directory=scratch/case;directory.mkdir();case_output=output/case;case_output.mkdir(exist_ok=True)
             options=argparse.Namespace(**vars(args));options.light=light;options.hc=hc;options.scale=scale
             env,bus=make_environment(directory,options,not baseline)
             command=['dbus-run-session','--config-file='+str(bus),'--',sys.executable,'-I',str(Path(__file__).resolve()),
-                     '--worker','--profile',str(args.profile.resolve()),'--output',str(case_output),
+                     '--worker','--family',args.family,'--profile',str(args.profile.resolve()),'--output',str(case_output),
                      '--scene',scene,'--state',state,'--scale',str(scale)]
             for flag,value in (('--light',light),('--hc',hc),('--baseline',baseline)):
                 if value:command.append(flag)
@@ -438,11 +456,12 @@ def main():
             assert matches,'Missing corresponding overlay case'
             base=baseline['phases'][0];overlay=matches[0]['phases'][0]
             assert base['geometry']==overlay['geometry'],'ADW-GEOMETRY: profile changed widget allocations'
+            assert base['accent_api']==overlay['accent_api'],'ADW-ACCENT-API: profile changed system accent API'
             for name in ('destructive-color','success-color','warning-color','error-color'):
                 assert base['tokens'][name]==overlay['tokens'][name],f'ADW-SEMANTIC: {name}'
             if not overlay['active']:
                 assert base['image_sha256']==overlay['image_sha256'],'ADW-GUARD: fallback rendering changed'
-        report={'profile_sha256':hashlib.sha256(args.profile.read_bytes()).hexdigest(),
+        report={'family':args.family,'profile_sha256':hashlib.sha256(args.profile.read_bytes()).hexdigest(),
                 'backend':'Broadway','native_renderer':'Broadway','snapshot_renderer':'Cairo','cases':results,
                 'limits':['synthetic focus/backdrop; no desktop keyboard input','fractional/live GPU untested','accent API remains system color']}
         (output/'results.json').write_text(json.dumps(report,indent=2)+'\n')
