@@ -1,3 +1,30 @@
+# VGUI2 Classic GTK 3 implementation — 2026-10-30
+
+The initial GTK 3.24 family is implemented with standalone olive/gold CSS,
+square beveled controls, six scalable glyphs and real normal/dark theme entries.
+[VGUI2-GTK3.md](VGUI2-GTK3.md) contains scope, screenshots and commands;
+[portable results](docs/audits/vgui2-gtk3-validation.json) retain measurements.
+
+The default GTK 3 command validates both families, mapped windows/dialogs/
+popovers/menus/file choosers, state/artwork checks and 13 deliberate VGUI
+regressions. Meld 3.24.1 startup passes in a private session. Gold text measures
+4.965:1; sampled focus checks for seven control types are at least 5.040:1.
+All 14 prior Vapor GTK 3 PNGs are byte-identical, the six original GTK 3/4
+mutations still fail correctly, and the full existing GTK 4/Adw suite passes.
+
+Test-harness corrections included sampling inside transparent window corners,
+initializing the expected Gtk.Settings theme preference, using the proper KDE
+Button foreground role for legacy Vapor, and waiting for popup-anchor layout.
+The same pre-layout menu failure occurred with unchanged Vapor. A private
+GTK 3 protocol client supplies viewport/surface replies. These corrections
+are documented in the work log; no diagnostic allowance was added.
+
+This milestone is unreleased and leaves live settings, existing Vapor CSS/art,
+the native helper and AUR metadata unchanged. VGUI2 GTK 4/Adw and live scaling,
+keyboard/accessibility/performance validation remain open.
+
+---
+
 # VGUI2 Classic port feasibility audit — 2026-10-30
 
 The GTK 3.24 / GTK 4 / native libadwaita investigation is saved separately in

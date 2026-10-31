@@ -34,10 +34,14 @@ def main():
     install('libadwaita/vapor.css','usr/share/steamos-vapor/libadwaita/vapor.css')
     install('tools/vapor-libadwaita','usr/bin/vapor-libadwaita',0o755)
     install('autostart/steamos-vapor-libadwaita.desktop','etc/xdg/autostart/steamos-vapor-libadwaita.desktop')
-    for name in ('README.md','CHANGES.txt','GTK3.md','gtk4port.md','LIBADWAITA.md','libadwaita-plan.md','audit.md'):
+    for name in ('README.md','CHANGES.txt','GTK3.md','gtk4port.md','LIBADWAITA.md','libadwaita-plan.md','audit.md',
+                 'VGUI2-GTK3.md','vgui2-audit.md','vgui2-plan.md'):
         install(name,'usr/share/doc/plasma6-themes-steamos-vapor-fixed/'+name)
-    image='docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png'
-    install(image,'usr/share/doc/plasma6-themes-steamos-vapor-fixed/'+image)
+    for asset in ('docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png',
+                  'docs/screenshots/vgui2-gtk3-preview.png','docs/screenshots/vgui2-gtk3-meld.png',
+                  'docs/screenshots/vgui2-qt-windows-reference.png','docs/audits/vgui2-feasibility.json',
+                  'docs/audits/vgui2-gtk3-validation.json'):
+        install(asset,'usr/share/doc/plasma6-themes-steamos-vapor-fixed/'+asset)
     print('Staged theme payload:',destination)
 
 

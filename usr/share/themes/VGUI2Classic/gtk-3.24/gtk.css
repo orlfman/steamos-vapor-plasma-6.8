@@ -1,0 +1,472 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later
+ * VGUI2 Classic for GTK 3.24, 2026.
+ * Palette: Valve's VGUI scheme, with readable Union selection text.
+ * GTK node/state coverage and inactive-label/spin fixes informed by the
+ * maintained Valve Vapor theme. This stylesheet is independent of Vapor.
+ * See VGUI2-GTK3.md for scope, provenance and validation.
+ */
+@define-color theme_bg_color #4d5845;
+@define-color theme_fg_color #fcfcfc;
+@define-color theme_base_color #3f4638;
+@define-color theme_text_color #fcfcfc;
+@define-color theme_selected_bg_color #958831;
+@define-color theme_selected_fg_color #181810;
+@define-color theme_unfocused_bg_color @theme_bg_color;
+@define-color theme_unfocused_fg_color @theme_fg_color;
+@define-color theme_unfocused_base_color @theme_base_color;
+@define-color theme_unfocused_text_color @theme_text_color;
+@define-color theme_unfocused_selected_bg_color alpha(@theme_selected_bg_color, 0.5);
+@define-color theme_unfocused_selected_fg_color @theme_fg_color;
+@define-color insensitive_bg_color #47513f;
+@define-color insensitive_fg_color alpha(@theme_fg_color, 0.4);
+@define-color insensitive_base_color #3f4638;
+@define-color borders #7a876c;
+@define-color unfocused_borders @borders;
+@define-color insensitive_borders alpha(@borders, 0.5);
+@define-color warning_color #f6cc60;
+@define-color error_color #ffa08c;
+@define-color success_color #a5de78;
+@define-color content_view_bg @theme_base_color;
+@define-color vgui_shadow #282f21;
+@define-color vgui_light #96a486;
+@define-color vgui_hover #58634f;
+@define-color vgui_focus #ffffe0;
+@define-color vgui_link #f0e078;
+@define-color vgui_visited #d5cf98;
+@define-color vgui_muted #cbd2c2;
+@define-color vgui_destructive #953f36;
+
+/* Static, square classic controls. Preserve the user's font and text size. */
+* {
+  padding: 0;
+  border-radius: 0;
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+  outline-style: none;
+}
+.background, .background:backdrop {
+  color: @theme_fg_color;
+  background-color: @theme_bg_color;
+}
+.view, textview text, iconview, treeview.view {
+  color: @theme_text_color;
+  background-color: @theme_base_color;
+}
+label:backdrop { color: @theme_unfocused_fg_color; }
+*:disabled, label:disabled, label:backdrop:disabled {
+  color: @insensitive_fg_color;
+  -gtk-icon-effect: dim;
+}
+.dim-label, .subtitle { color: @vgui_muted; }
+separator {
+  min-width: 1px;
+  min-height: 1px;
+  background-color: @vgui_shadow;
+}
+frame > border, scrolledwindow > junction {
+  border: 1px solid @borders;
+}
+scrolledwindow > overshoot, scrolledwindow > undershoot {
+  background: none;
+}
+rubberband, .rubberband {
+  border: 1px solid @theme_selected_bg_color;
+  background-color: alpha(@theme_selected_bg_color, 0.25);
+}
+
+/* Opaque gold uses dark text; dimmed text selections use light text. */
+selection, label selection, entry selection, textview text selection,
+treeview.view:selected, iconview:selected, flowboxchild:selected, row:selected {
+  color: @theme_selected_fg_color;
+  background-color: @theme_selected_bg_color;
+}
+label selection:backdrop, entry selection:backdrop,
+textview text selection:backdrop, treeview.view:selected:backdrop {
+  color: @theme_unfocused_selected_fg_color;
+  background-color: @theme_unfocused_selected_bg_color;
+}
+row:selected, row:selected:backdrop, row.activatable:selected:backdrop,
+.sidebar row:selected, .sidebar row:selected:backdrop {
+  color: @theme_selected_fg_color;
+  background-color: @theme_selected_bg_color;
+}
+row:selected label, row:selected:backdrop label,
+row.activatable:selected:backdrop label, .sidebar row:selected label {
+  color: @theme_selected_fg_color;
+}
+row:selected:disabled, row:selected:disabled:backdrop {
+  color: @insensitive_fg_color;
+  background-color: @theme_unfocused_selected_bg_color;
+}
+row:selected:disabled label, row:selected:disabled label:backdrop {
+  color: @insensitive_fg_color;
+}
+
+/* Raised edges, exchanged when pressed. Gold fills remain flat for contrast. */
+button, notebook > header > tabs > arrow {
+  min-height: 24px;
+  min-width: 16px;
+  padding: 3px 8px;
+  border: 1px solid;
+  border-color: @vgui_light @vgui_shadow @vgui_shadow @vgui_light;
+  color: @theme_fg_color;
+  background-color: @theme_bg_color;
+  background-image: none;
+  box-shadow: inset 1px 1px alpha(@vgui_light, 0.3), inset -1px -1px alpha(@vgui_shadow, 0.5);
+}
+button:hover:not(:disabled), notebook > header > tabs > arrow:hover {
+  background-color: @vgui_hover;
+}
+button:active:not(:disabled), button:checked:not(:disabled),
+button:active:hover:not(:disabled), button:checked:hover:not(:disabled) {
+  color: @theme_selected_fg_color;
+  background-color: @theme_selected_bg_color;
+  border-color: @vgui_shadow @vgui_light @vgui_light @vgui_shadow;
+  box-shadow: inset 1px 1px alpha(@vgui_shadow, 0.5);
+}
+button:disabled, button:backdrop:disabled {
+  color: @insensitive_fg_color;
+  background-color: @insensitive_bg_color;
+  background-image: none;
+  border-color: @insensitive_borders;
+  box-shadow: none;
+}
+button.flat, toolbar button.flat, modelbutton.flat, .menuitem.button.flat {
+  box-shadow: none;
+  border-color: transparent;
+  background-color: transparent;
+}
+button.flat:hover:not(:disabled), modelbutton.flat:hover,
+.menuitem.button.flat:hover {
+  color: @theme_selected_fg_color;
+  background-color: @theme_selected_bg_color;
+}
+button.flat:hover:not(:disabled) label,
+button.flat:hover:not(:disabled) label:backdrop,
+.menuitem.button.flat:hover label, .menuitem.button.flat:hover label:backdrop {
+  color: inherit;
+}
+button.suggested-action:not(:disabled), button.suggested-action:hover:not(:disabled) {
+  color: @theme_selected_fg_color;
+  background-color: @theme_selected_bg_color;
+}
+button.suggested-action:not(:disabled) label,
+button.suggested-action:not(:disabled) label:backdrop {
+  color: inherit;
+}
+button.destructive-action:not(:disabled), button.destructive-action:hover:not(:disabled),
+button.destructive-action:active:not(:disabled) {
+  color: @theme_fg_color;
+  background-color: @vgui_destructive;
+}
+button.destructive-action:not(:disabled) label,
+button.destructive-action:not(:disabled) label:backdrop { color: inherit; }
+button:focus, entry:focus, spinbutton:focus, scale:focus, switch:focus,
+checkbutton:focus, radiobutton:focus, treeview.view:focus, row:focus,
+modelbutton:focus, flowboxchild:focus, expander:focus, calendar:focus,
+notebook > header > tabs > tab:focus {
+  outline-style: dotted;
+  outline-width: 1px;
+  outline-offset: -4px;
+  outline-color: @vgui_focus;
+}
+button:backdrop:checked:not(:disabled) label,
+button:backdrop:active:not(:disabled) label {
+  color: inherit;
+}
+button.image-button { padding: 3px; }
+.linked > button, .linked > entry { margin: 0; }
+button arrow, combobox arrow {
+  min-width: 16px;
+  min-height: 16px;
+  -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+}
+button:link, button:visited, link, label link {
+  color: @vgui_link;
+  text-decoration-line: underline;
+  background: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+button:visited, label link:visited { color: @vgui_visited; }
+button:link:hover, button:visited:hover, label link:hover { color: @vgui_focus; }
+
+entry, spinbutton:not(.vertical) {
+  min-height: 24px;
+  padding: 3px 6px;
+  color: @theme_text_color;
+  background-color: @theme_base_color;
+  border: 1px solid;
+  border-color: @vgui_shadow @vgui_light @vgui_light @vgui_shadow;
+  box-shadow: inset 1px 1px alpha(@vgui_shadow, 0.4);
+}
+entry:disabled, spinbutton:disabled { color: @insensitive_fg_color; }
+entry image { color: @vgui_muted; }
+entry image:hover { color: @vgui_focus; }
+entry.warning { border-color: @warning_color; }
+entry.error { border-color: @error_color; }
+entry progress { background-color: alpha(@theme_selected_bg_color, 0.3); }
+textview border { background-color: @theme_bg_color; }
+spinbutton:not(.vertical) entry {
+  min-width: 28px;
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+spinbutton:not(.vertical) button {
+  min-height: 16px;
+  min-width: 16px;
+  padding: 0 3px;
+  background-image: none;
+  box-shadow: none;
+}
+spinbutton:not(.vertical) button:backdrop:disabled {
+  background-image: none;
+}
+spinbutton.vertical entry {
+  min-width: 26px;
+  min-height: 26px;
+  padding: 0;
+}
+spinbutton.vertical button {
+  min-height: 26px;
+  min-width: 26px;
+  padding: 0;
+  background-image: none;
+  box-shadow: none;
+}
+spinbutton.vertical button:backdrop:disabled {
+  background-image: none;
+}
+
+/* A scalable glyph sits over the CSS-painted, classic inset indicator. */
+checkbutton, radiobutton { padding: 2px 0; }
+checkbutton label, radiobutton label { margin: 0 4px; }
+check, radio {
+  min-width: 18px;
+  min-height: 18px;
+  margin: 0 4px;
+  border: 1px solid;
+  border-color: @vgui_shadow @vgui_light @vgui_light @vgui_shadow;
+  background-color: @theme_base_color;
+  -gtk-icon-source: none;
+}
+check:only-child, radio:only-child { margin: 0; }
+radio { border-radius: 50%; }
+check:hover, radio:hover { border-color: @vgui_focus; }
+check:checked, check:indeterminate, radio:checked, radio:indeterminate {
+  background-color: @theme_selected_bg_color;
+}
+check:checked { -gtk-icon-source: url("../assets/check.svg"); }
+check:indeterminate, radio:indeterminate { -gtk-icon-source: url("../assets/mixed.svg"); }
+radio:checked { -gtk-icon-source: url("../assets/radio.svg"); }
+check:disabled, radio:disabled {
+  background-color: @insensitive_bg_color;
+  border-color: @insensitive_borders;
+}
+check:checked:disabled { -gtk-icon-source: url("../assets/check-disabled.svg"); }
+check:indeterminate:disabled, radio:indeterminate:disabled {
+  -gtk-icon-source: url("../assets/mixed-disabled.svg");
+}
+radio:checked:disabled { -gtk-icon-source: url("../assets/radio-disabled.svg"); }
+modelbutton, .menuitem.button { min-height: 24px; padding: 4px 8px; }
+modelbutton.flat check, modelbutton.flat radio {
+  min-width: 18px;
+  min-height: 18px;
+  margin: 0 6px;
+}
+modelbutton.flat label:backdrop { color: inherit; }
+modelbutton arrow, menuitem arrow {
+  min-width: 14px;
+  min-height: 14px;
+  -gtk-icon-source: -gtk-icontheme("pan-end-symbolic");
+}
+
+switch {
+  min-height: 24px;
+  min-width: 48px;
+  margin: 2px;
+  border: 1px solid;
+  border-color: @vgui_shadow @vgui_light @vgui_light @vgui_shadow;
+  background-color: @vgui_shadow;
+  color: @theme_fg_color;
+}
+switch:checked { background-color: @theme_selected_bg_color; color: @theme_selected_fg_color; }
+switch slider {
+  min-width: 22px;
+  min-height: 22px;
+  border: 1px solid;
+  border-color: @vgui_light @vgui_shadow @vgui_shadow @vgui_light;
+  background-color: @theme_bg_color;
+}
+switch:hover slider { background-color: @vgui_hover; }
+switch:disabled, switch:disabled slider { background-color: @insensitive_bg_color; }
+switch:disabled { color: @insensitive_fg_color; }
+
+scale { min-height: 18px; min-width: 18px; }
+scale trough {
+  min-height: 4px;
+  min-width: 4px;
+  margin: 9px;
+  border: 1px solid;
+  border-color: @vgui_shadow @vgui_light @vgui_light @vgui_shadow;
+  background-color: @vgui_shadow;
+}
+scale highlight, scale fill {
+  min-height: 4px;
+  min-width: 4px;
+  background-color: @theme_selected_bg_color;
+}
+scale slider {
+  min-width: 14px;
+  min-height: 16px;
+  margin: -7px 0;
+  border: 1px solid;
+  border-color: @vgui_light @vgui_shadow @vgui_shadow @vgui_light;
+  background-color: @theme_bg_color;
+}
+scale.vertical slider { min-width: 16px; min-height: 14px; margin: 0 -7px; }
+scale slider:hover { background-color: @vgui_hover; }
+scale slider:active { background-color: @theme_selected_bg_color; }
+scale:disabled slider, scale:disabled highlight { background-color: @insensitive_bg_color; }
+scale marks { color: @vgui_muted; }
+scale marks indicator { min-width: 1px; min-height: 4px; background-color: @vgui_muted; }
+scale value { margin: 3px; color: @theme_fg_color; }
+progressbar trough, levelbar trough {
+  min-height: 8px;
+  min-width: 8px;
+  border: 1px solid;
+  border-color: @vgui_shadow @vgui_light @vgui_light @vgui_shadow;
+  background-color: @vgui_shadow;
+}
+progressbar progress, levelbar block.filled {
+  min-height: 8px;
+  min-width: 2px;
+  background-color: @theme_selected_bg_color;
+}
+progressbar.vertical trough, progressbar.vertical progress { min-width: 8px; }
+levelbar block { min-width: 12px; min-height: 8px; margin: 1px; }
+levelbar block.empty { background-color: @theme_base_color; }
+levelbar block.low { background-color: @warning_color; }
+levelbar block.high, levelbar block.full { background-color: @success_color; }
+
+scrollbar { background-color: @theme_bg_color; }
+scrollbar trough { min-width: 14px; min-height: 14px; background-color: @vgui_shadow; }
+scrollbar slider {
+  min-width: 12px;
+  min-height: 30px;
+  border: 1px solid;
+  border-color: @vgui_light @vgui_shadow @vgui_shadow @vgui_light;
+  background-color: @theme_bg_color;
+}
+scrollbar.horizontal slider { min-width: 30px; min-height: 12px; }
+scrollbar slider:hover { background-color: @vgui_hover; }
+scrollbar slider:active { background-color: @theme_selected_bg_color; }
+scrollbar button { min-width: 14px; min-height: 14px; padding: 0; }
+scrollbar button.up { -gtk-icon-source: -gtk-icontheme("pan-up-symbolic"); }
+scrollbar button.down { -gtk-icon-source: -gtk-icontheme("pan-down-symbolic"); }
+scrollbar button.left { -gtk-icon-source: -gtk-icontheme("pan-start-symbolic"); }
+scrollbar button.right { -gtk-icon-source: -gtk-icontheme("pan-end-symbolic"); }
+
+notebook > header { background-color: @theme_bg_color; }
+notebook > header > tabs > tab {
+  min-height: 24px;
+  padding: 3px 10px;
+  border: 1px solid;
+  border-color: @vgui_light @vgui_shadow @vgui_shadow @vgui_light;
+  background-color: @insensitive_bg_color;
+}
+notebook > header > tabs > tab:checked { background-color: @theme_bg_color; }
+notebook > header > tabs > tab:hover { background-color: @vgui_hover; }
+notebook > stack { padding: 6px; border: 1px solid @borders; }
+notebook > header > tabs > arrow { padding: 0; min-width: 16px; }
+notebook > header > tabs > arrow.down { -gtk-icon-source: -gtk-icontheme("pan-start-symbolic"); }
+notebook > header > tabs > arrow.up { -gtk-icon-source: -gtk-icontheme("pan-end-symbolic"); }
+
+list, flowbox, stacksidebar.sidebar, placessidebar.sidebar { background-color: @theme_base_color; }
+row { min-height: 24px; padding: 3px; }
+row.activatable:hover:not(:selected) { background-color: @vgui_hover; }
+treeview.view { -GtkTreeView-expander-size: 16; -GtkTreeView-grid-line-width: 1; }
+treeview.view.expander { -gtk-icon-source: -gtk-icontheme("pan-end-symbolic"); }
+treeview.view.expander:checked { -gtk-icon-source: -gtk-icontheme("pan-down-symbolic"); }
+treeview.view header button { padding: 2px 6px; }
+treeview.view.separator { color: @borders; }
+treeview.view:selected:disabled { color: @insensitive_fg_color; }
+expander title arrow {
+  min-width: 16px;
+  min-height: 16px;
+  -gtk-icon-source: -gtk-icontheme("pan-end-symbolic");
+}
+expander title arrow:checked { -gtk-icon-source: -gtk-icontheme("pan-down-symbolic"); }
+expander title:hover { color: @vgui_link; }
+
+toolbar, headerbar, .titlebar, searchbar, .inline-toolbar, actionbar {
+  padding: 4px;
+  color: @theme_fg_color;
+  background-color: @theme_bg_color;
+  border-bottom: 1px solid @vgui_shadow;
+}
+headerbar, .titlebar {
+  min-height: 30px;
+  border-top: 1px solid @vgui_light;
+}
+headerbar .title { font-weight: bold; }
+headerbar button.titlebutton { min-width: 18px; min-height: 18px; padding: 1px; }
+headerbar button.titlebutton image { -gtk-icon-style: symbolic; }
+toolbar button { margin: 1px; }
+statusbar { padding: 3px; border-top: 1px solid @borders; }
+
+menu, .menu, popover.background {
+  padding: 3px;
+  color: @theme_fg_color;
+  background-color: @theme_bg_color;
+  border: 1px solid;
+  border-color: @vgui_light @vgui_shadow @vgui_shadow @vgui_light;
+  box-shadow: none;
+}
+menubar { padding: 2px; background-color: @theme_bg_color; }
+menuitem { min-height: 22px; min-width: 16px; padding: 3px 8px; }
+menuitem:hover, menuitem:selected {
+  color: @theme_selected_fg_color;
+  background-color: @theme_selected_bg_color;
+}
+menuitem:hover label, menuitem:hover label:backdrop,
+menuitem:selected label, modelbutton.flat:hover label { color: inherit; }
+menuitem:disabled { color: @insensitive_fg_color; }
+menuitem separator { margin: 3px 2px; }
+popover modelbutton { min-height: 24px; }
+.osd { background-color: @theme_bg_color; color: @theme_fg_color; }
+tooltip, tooltip.background {
+  padding: 5px;
+  border: 1px solid @vgui_shadow;
+  background-color: @theme_bg_color;
+  color: @theme_fg_color;
+}
+tooltip label, tooltip label:backdrop { color: @theme_fg_color; }
+decoration { border: 1px solid @vgui_shadow; box-shadow: none; }
+.maximized decoration, .fullscreen decoration, .tiled decoration { border: none; }
+
+infobar { padding: 6px; }
+infobar.info { background-color: @vgui_focus; color: @theme_selected_fg_color; }
+infobar.warning { background-color: @warning_color; color: @theme_selected_fg_color; }
+infobar.error { background-color: @error_color; color: @theme_selected_fg_color; }
+infobar.question { background-color: @vgui_light; color: @theme_selected_fg_color; }
+infobar label, infobar label:backdrop { color: inherit; }
+.error, .error:backdrop { color: @error_color; }
+.warning, .warning:backdrop { color: @warning_color; }
+.success, .success:backdrop { color: @success_color; }
+
+calendar {
+  padding: 4px;
+  background-color: @theme_base_color;
+  color: @theme_text_color;
+  border: 1px solid @borders;
+}
+calendar.header { background-color: @theme_bg_color; }
+calendar:selected { background-color: @theme_selected_bg_color; color: @theme_selected_fg_color; }
+calendar.button:hover { color: @vgui_link; }
+calendar:indeterminate { color: @vgui_muted; }
+spinner { min-width: 16px; min-height: 16px; -gtk-icon-source: -gtk-icontheme("process-working-symbolic"); }
+spinner:checked { animation: vgui-spin 1s steps(12) infinite; }
+@keyframes vgui-spin { to { -gtk-icon-transform: rotate(1turn); } }

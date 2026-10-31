@@ -1,5 +1,11 @@
 # Vapor GTK 3.24 support
 
+The default `tools/check-gtk3.py` command now validates both Vapor and the
+unreleased VGUI2Classic family. Use `--family vapor` for this theme alone.
+[VGUI2-GTK3.md](VGUI2-GTK3.md) documents the separate GTK 3 port. The new mapped
+window/popup/dialog stage also requires `dbus-run-session`; VGUI2 SVG indicators
+need librsvg. Existing Vapor styling and all 14 reference images are unchanged.
+
 The maintained theme now targets GTK 3.24. The old folder name did not mean the
 previous theme was incompatible: GTK 3.24 already loaded its gtk-3.20 stylesheet
 through GTK's version fallback, and it parsed with zero errors. The changes

@@ -1,3 +1,19 @@
+Unreleased — 2026-10-30, Codex (GPT-6): start VGUI2 Classic with GTK 3.24
+
+- Added independent VGUI2Classic normal/dark GTK 3 entries and standalone
+  olive/gold CSS with classic beveled controls and six new SVG indicator glyphs.
+  Original Vapor CSS/artwork and the Qt VGUI/Union choices stay intact.
+- Gold selections use dark readable text; dimmed selections keep light text.
+  Separate brighter focus/link colors pass painted contrast checks, including
+  rows, tabs, modelbuttons, entries, check buttons, switches and buttons.
+- Default GTK 3 checks now cover both families, mapped windows/popups/dialogs,
+  13 deliberate VGUI regressions and the existing label/spin checks. Isolated
+  Meld startup also passes. All 14 old Vapor GTK 3 images are byte-identical;
+  the full GTK 4/libadwaita suite and six legacy mutation controls still pass.
+- Added previews, validation records and VGUI2-GTK3.md; updated audit/plan/log.
+  GTK 4/Adw VGUI2, shared activation and broader live validation remain planned.
+  No live selection, new release or AUR update is part of this milestone.
+
 1.0.4 — 2026-10-30, Codex (GPT-6): native libadwaita in the standard installation
 
 - Include the color profile, helper and Plasma login integration by default.

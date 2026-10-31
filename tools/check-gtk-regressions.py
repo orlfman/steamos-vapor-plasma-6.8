@@ -10,10 +10,14 @@ import json
 import os
 from pathlib import Path
 import shutil
+import runpy
 import subprocess
 import sys
 import tempfile
 import time
+
+ROOT=Path(__file__).resolve().parent.parent
+FAMILY_TOOLS=runpy.run_path(str(ROOT/'tools/theme-families.py'))
 
 
 def contrast(a, b):
@@ -25,6 +29,7 @@ def contrast(a, b):
 
 
 def worker(args):
+    family=FAMILY_TOOLS['get_family'](args.family)
     import gi
     gi.require_version('Gtk', args.gtk)
     if args.gtk == '4.0':
@@ -87,8 +92,8 @@ def worker(args):
                 renderer.render_texture(node,rect).save_to_png(str(target));renderer.unrealize()
             image=Image.open(target).convert('RGBA')
             fg=color(label(toggle))
-            assert fg==(31,31,38), f'R1: checked label must inherit dark foreground, got {fg}'
-            assert color(label(ordinary))==(239,240,241),'Ordinary inactive label changed'
+            assert fg==family['selection_foreground'], f'R1: checked label must inherit selected foreground, got {fg}'
+            assert color(label(ordinary))==family['foreground'],'Ordinary inactive label changed'
             # Sample inside the gradient, away from glyphs and border. The toggle
             # spans the first two columns; coordinates come from the real widget.
             if args.gtk=='3.0':
@@ -100,12 +105,12 @@ def worker(args):
             ratio=contrast(fg,bg)
             assert ratio>=4.5,f'R1: checked label contrast {ratio:.2f}:1 on {bg}'
             assert pressed.get_state_flags() & Gtk.StateFlags.ACTIVE, 'Pressed state not applied'
-            assert color(label(pressed))==(31,31,38), 'R1: pressed label must inherit dark foreground'
+            assert color(label(pressed))==family['selection_foreground'], 'R1: pressed label must inherit selected foreground'
             disabled_label=label(disabled)
             assert disabled_label.get_state_flags() & Gtk.StateFlags.INSENSITIVE
             # Ensure disabled text stays insensitive instead of inheriting the
             # new enabled-toggle foreground override.
-            assert color(disabled_label)!=(31,31,38),'Disabled label incorrectly recolored dark'
+            assert color(disabled_label)!=family['selection_foreground'],'Disabled label incorrectly recolored dark'
             backgrounds=0
             for spin,orientation,name,value,sensitive in spins:
                 for direction in ('down','up'):
@@ -150,23 +155,26 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--gtk',required=True,choices=('3.0','4.0'))
     parser.add_argument('--theme',required=True,type=Path)
+    parser.add_argument('--family',choices=tuple(FAMILY_TOOLS['FAMILIES']),default='vapor')
     parser.add_argument('--output',type=Path)
     parser.add_argument('--user-css',type=Path,help='stage a GTK 4 libadwaita overlay for coexistence checks')
     parser.add_argument('--worker',action='store_true',help=argparse.SUPPRESS)
     parser.add_argument('--state',choices=('normal','backdrop'),default='normal',help=argparse.SUPPRESS)
     args=parser.parse_args()
+    family=FAMILY_TOOLS['get_family'](args.family)
     if args.worker:worker(args);return
     if args.user_css and args.gtk!='4.0':parser.error('--user-css is for GTK 4 only')
     with tempfile.TemporaryDirectory(prefix='vapor-behavior-check-') as name:
         root=Path(name);env=os.environ.copy()
         for variable,folder in (('HOME','home'),('XDG_CONFIG_HOME','config'),('XDG_DATA_HOME','data'),('XDG_CACHE_HOME','cache'),('XDG_RUNTIME_DIR','runtime'),('XDG_STATE_HOME','state')):
             (root/folder).mkdir(mode=0o700);env[variable]=str(root/folder)
-        shutil.copytree(args.theme.resolve(),root/'data/themes/Vapor')
+        staged=root/'data/themes'/family['name']
+        shutil.copytree(args.theme.resolve(),staged)
         if args.user_css:
             subprocess.run([sys.executable,'-I',str(Path(__file__).resolve().parent/'vapor-libadwaita'),'enable',
                             '--config-home',str(root/'config'),'--profile',str(args.user_css.resolve()),'--json'],
                            capture_output=True,text=True,check=True)
-        env.update({'XDG_CONFIG_DIRS':str(root/'config'),'XDG_DATA_DIRS':'/usr/share','GTK_THEME':'Vapor','GDK_BACKEND':'broadway','BROADWAY_DISPLAY':':1','GSK_RENDERER':'cairo','GTK_A11Y':'none','NO_AT_BRIDGE':'1','GTK_MODULES':'','GTK3_MODULES':'','GSETTINGS_BACKEND':'memory','DBUS_SESSION_BUS_ADDRESS':'unix:path=/nonexistent','LC_ALL':'C.UTF-8','GDK_SCALE':'1','GDK_DPI_SCALE':'1'})
+        env.update({'XDG_CONFIG_DIRS':str(root/'config'),'XDG_DATA_DIRS':'/usr/share','GTK_THEME':family['name'],'GDK_BACKEND':'broadway','BROADWAY_DISPLAY':':1','GSK_RENDERER':'cairo','GTK_A11Y':'none','NO_AT_BRIDGE':'1','GTK_MODULES':'','GTK3_MODULES':'','GSETTINGS_BACKEND':'memory','DBUS_SESSION_BUS_ADDRESS':'unix:path=/nonexistent','LC_ALL':'C.UTF-8','GDK_SCALE':'1','GDK_DPI_SCALE':'1'})
         for variable in ('DISPLAY','WAYLAND_DISPLAY','GTK_PATH','GTK_DEBUG','GSK_DEBUG','GDK_DEBUG','GTK_DATA_PREFIX'):env.pop(variable,None)
         daemon='broadwayd' if args.gtk=='3.0' else 'gtk4-broadwayd'
         server=subprocess.Popen([daemon,'-u',str(root/'http.socket'),':1'],env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -178,7 +186,7 @@ def main():
             else:raise RuntimeError('Private display did not start')
             output=args.output.resolve() if args.output else root/'captures';output.mkdir(parents=True,exist_ok=True)
             for state in ('normal','backdrop'):
-                command=[sys.executable,'-I',str(Path(__file__).resolve()),'--worker','--gtk',args.gtk,'--theme',str(root/'data/themes/Vapor'),'--state',state,'--output',str(output)]
+                command=[sys.executable,'-I',str(Path(__file__).resolve()),'--worker','--gtk',args.gtk,'--theme',str(staged),'--family',args.family,'--state',state,'--output',str(output)]
                 if args.user_css:command += ['--user-css',str(args.user_css.resolve())]
                 result=subprocess.run(command,env=env,capture_output=True,text=True,timeout=15)
                 if result.returncode or result.stderr:raise RuntimeError(result.stdout+result.stderr)

@@ -24,6 +24,10 @@ class Staging(unittest.TestCase):
         for name in ('libadwaita/vapor.css','tools/vapor-libadwaita','alacritty/vapor.toml','kitty/vapor.conf',
                      'autostart/steamos-vapor-libadwaita.desktop',
                      'docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png',
+                     'VGUI2-GTK3.md','vgui2-audit.md','vgui2-plan.md',
+                     'docs/screenshots/vgui2-gtk3-preview.png','docs/screenshots/vgui2-gtk3-meld.png',
+                     'docs/screenshots/vgui2-qt-windows-reference.png','docs/audits/vgui2-feasibility.json',
+                     'docs/audits/vgui2-gtk3-validation.json',
                      'README.md','CHANGES.txt','GTK3.md','gtk4port.md','LIBADWAITA.md','libadwaita-plan.md','audit.md'):
             p=self.source/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(name+'\n')
 
@@ -71,6 +75,8 @@ class Staging(unittest.TestCase):
                  'usr/share/doc/plasma6-themes-steamos-vapor-fixed/docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png')):
             self.assertEqual((destination/target).read_bytes(),(self.source/source).read_bytes())
         self.assertEqual((self.source/'usr/share/theme/sentinel').read_bytes(),b'x')
+        self.assertEqual((destination/'usr/share/doc/plasma6-themes-steamos-vapor-fixed/VGUI2-GTK3.md').read_bytes(),
+                         (self.source/'VGUI2-GTK3.md').read_bytes())
 
     def test_allow_repository_build_directory_outside_usr(self):
         self.assert_payload(self.source/'build/package')

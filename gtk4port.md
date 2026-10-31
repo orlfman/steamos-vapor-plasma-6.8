@@ -981,3 +981,99 @@ activation helper and staging. Read matching GTK/libadwaita documentation.
   the reports from README/audit.md. The current production test harness remains
   unchanged; only the disposable checker used VGUI palette substitutions. No
   new theme, package version, AUR update or live theme switch is part of this work.
+
+## 22. Implement the VGUI2 Classic GTK 3 milestone — 2026-10-30
+
+User requested starting the port with GTK 3. Started at clean 7e63667 and saved
+tracked-file hashes/evidence in /tmp/vgui2-gtk3-port-heua7u9x. Scope is the new
+GTK 3 family, its testing and source-package staging; GTK 4/Adw VGUI2 and live
+selection remain later work. Existing Vapor CSS/artwork, Qt schemes and the
+libadwaita manager are unchanged.
+
+### Theme and reference
+
+- Added VGUI2Classic chooser metadata, standard GTK 3.0 import, maintained
+  GTK 3.24 stylesheet and explicit same-palette dark entries. Used Vapor's
+  tested node/state patterns and label/spin fixes as a compatibility reference,
+  while authoring independent classic CSS. This avoids carrying all Vapor
+  gradients/bitmaps into the new family or relying on a runtime Vapor import.
+- Matched VGUI olive windows/content and gold fills; used Union's dark text on
+  opaque gold and light text on dimmed selections. Added raised/sunken edges,
+  square controls, bright dotted focus, readable links and semantic states.
+  Preserved fonts/hit targets; kept traditional round radio indicators.
+- Replaced bitmap requirements with six new code-native SVG glyphs. CSS paints
+  their field, border and state, including disabled variants. No old raster
+  image is modified. GTK 2 and GTK 4 directories are not created.
+- Built a temporary Qt Windows reference with KColorScheme reading the actual
+  VGUI.colors. The first compile needed the installed KF6/KConfig include
+  directory; adding it fixed the build. Rendered offscreen with private settings,
+  preserving the Qt palette/style and recording the GTK readability differences.
+- A final secondary-text review found the first muted role at 3.717:1 on olive.
+  Brightened it to #cbd2c2 and added explicit ordinary/secondary/entry contrast
+  gates: 7.317 / 4.839 / 9.545:1. Disabled glyphs retain their intentionally
+  subdued treatment. Final review also matched tooltip surfaces to the source
+  olive palette and ensured selected disabled rows keep dimmed text; both have
+  explicit style/render checks.
+
+### Family-aware tests and mapped applications
+
+- Added independent expected family roles derived from KDE schemes; selected
+  foreground uses VGUIUnion for VGUI2. Ordinary GTK control text follows the
+  Button role. An early combined run mistakenly used Window foreground for
+  legacy Vapor (241,241,242 versus 239,240,241); using the correct Button role
+  restores all prior expectations without editing any Vapor stylesheet.
+- Parameterized GTK 3 discovery/staging/palette/artwork and shared GTK 3/4
+  behavior tests. Default GTK 3 now checks both families. Explicit --family or
+  --theme targets one; mutation copies use --theme and cannot recurse into their
+  own mutation runner. Archived Vapor --baseline remains separate.
+- Added Cairo-painted classic contracts: square corners, opposite raised edges,
+  ordinary/entry/secondary text, pressed/checked/suggested/destructive fills,
+  links, seven focus contexts and progress/trough contrast. Preserve unrounded
+  gate comparisons. All six normal/hover/backdrop/RTL/fine-tune/disabled widget
+  states and eight scaled indicator contexts render correctly.
+- First actual-background check sampled the transparent offscreen corner and
+  timed out after a callback assertion. Sample inside the frame instead and
+  propagate failures out of the loop, so a wrong surface fails promptly.
+- Added mapped native windows, dialogs, popovers, menus and file choosers with
+  private HOME/XDG, service-free D-Bus and no live desktop input. Setting only
+  GTK_THEME did not set Gtk.Settings' reported preference; set the preference
+  inside the test process too. Images are GTK/Cairo exports of mapped widgets.
+- Implemented a GTK 3.24.52 Broadway viewport/configuration client sharing the
+  existing WebSocket transport. Verified character operations against matching
+  upstream broadway.js; it sends transport replies, not user input, and rejects
+  unknown commands. An immediate menu popup still had a 1x1 unallocated anchor;
+  the same failure occurs with unmodified Vapor. Open it after the first layout,
+  matching when a real click can occur. All five mapped scenes then pass with
+  both themes, without adding diagnostic allowances.
+- Tested installed Meld 3.24.1's real startup page with isolated settings/bus,
+  without loading comparison files or activating actions. Retained its screenshot.
+  This is a separate explicit --meld check; it is not silently skipped or made
+  a runtime dependency. Native popup/dialog fixtures are standard-suite stages.
+
+### Results, artifacts and remaining scope
+
+- Both GTK 3 families pass the standard command. VGUI2 gold text is 4.965:1,
+  links 5.590:1, destructive text 6.728:1 and progress/trough 3.848:1. Focus
+  checks cover buttons/rows/tabs/modelbuttons/entries/check buttons/switches;
+  the lowest captured ratio is 5.040:1. See portable JSON for final text metrics.
+- Added 13 independent disposable regressions for palette, light-on-gold,
+  dimmed text, actual surface, focus, bevels, SVG blue leakage, inherited labels,
+  both spin orientations, parser errors and missing asset/entry paths. The CSS
+  parser raises GLib.GError directly for an invalid property; require that exact
+  error/name for this control instead of incorrectly requiring AssertionError.
+  All 13 fail their intended gate. Six old Vapor GTK 3/4 mutations still fail
+  the original R1/R2 gates after the shared harness changes.
+- Ran the previous GTK 3 checker from the starting commit against Vapor and
+  compared all 14 PNGs with the current checker: byte-identical. Full existing
+  GTK 4/Widget Factory/coexistence/Adw suite passes too, including 22 Adw cases,
+  28 recovery tests and 15 broken-profile controls. Ten native GTK 4 images are
+  identical with/without the existing Vapor overlay.
+- Added VGUI2-GTK3.md, native/Meld/Qt-reference previews and portable measured
+  results; updated README, audits, plan and changelog. Extended source-package
+  staging to include the new guide, linked plans/evidence/images and the GTK 3
+  family through usr. Published AUR/version/checksum files are not changed.
+
+Evidence includes standard-gtk3/, standard-gtk4/, final-vgui2/, meld-final-current/,
+the failed/corrected window runs, mutation logs, old Vapor checker/renderings and
+temporary Qt reference source. This is initial GTK 3 support, not completion of
+the GTK 4/libadwaita port or live HiDPI/accessibility/performance validation.

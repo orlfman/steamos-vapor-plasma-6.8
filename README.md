@@ -16,6 +16,7 @@ shortcuts) are left out.
 | Vapor Plasma style | `usr/share/plasma/desktoptheme/Vapor` |
 | Vapor and VGUI color schemes, plus Union versions | `usr/share/color-schemes` |
 | Vapor GTK 3.24 theme | `usr/share/themes/Vapor/gtk-3.0`, `gtk-3.24` |
+| VGUI2 Classic GTK 3.24, unreleased | `usr/share/themes/VGUI2Classic` |
 | Vapor GTK 4 theme, initial (plain GTK 4 apps; libadwaita apps ignore themes) | `usr/share/themes/Vapor/gtk-4.0` |
 | Native libadwaita colors, installed by default since 1.0.4 | `libadwaita/vapor.css` |
 | Vapor Konsole profile and colors | `usr/share/konsole` |
@@ -140,7 +141,9 @@ repeats plain GTK checks with the libadwaita overlay present, and runs native
 libadwaita, reversible-activation, broken-profile and package-staging checks
 automatically.
 Failures and missing dependencies fail the standard suite; no automatic skip.
-The GTK 3 checker additionally needs `python-pillow`. To prove the tests reject
+The GTK 3 checker runs both Vapor and VGUI2 Classic, including mapped popup and
+dialog checks. It needs `python-cairo`, `python-pillow`, SVG support and
+`dbus-run-session` alongside GTK 3/Python GI and fonts. To prove the tests reject
 the original bugs on both toolkits, run:
 
 ```sh
@@ -214,13 +217,16 @@ good. This screenshot records the live appearance during testing.
 
 ![Vapor manual testing: FFmpeg Converter GTK and Mission Center](docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png)
 
-## Planned VGUI2 Classic GTK/libadwaita support
+## VGUI2 Classic GTK port (unreleased)
 
-The existing VGUI2 Classic KDE theme does not yet include a matching GTK theme.
-[vgui2-audit.md](vgui2-audit.md) records the palette/style audit and disposable
-libadwaita experiments; [vgui2-plan.md](vgui2-plan.md) lays out the GTK 3.24,
-GTK 4 and native libadwaita work. This is planning material, not an installed
-feature or a change to the active Vapor theme.
+The working tree now includes an independent **VGUI2Classic GTK 3.24 theme**:
+olive/gold colors, classic beveled controls and vector indicators. Both theme
+families pass the default GTK 3 suite; isolated Meld startup checks pass too.
+See [VGUI2-GTK3.md](VGUI2-GTK3.md) for previews, tests and limits.
+
+GTK 4 and VGUI2 libadwaita support remain planned. The current AUR 1.0.4 release
+and live Vapor settings are unchanged. [vgui2-audit.md](vgui2-audit.md) records
+the investigation; [vgui2-plan.md](vgui2-plan.md) tracks the remaining work.
 
 ## License
 

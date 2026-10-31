@@ -1,9 +1,23 @@
 # VGUI2 Classic port plan: GTK 3, GTK 4 and libadwaita
 
 Date: **2026-10-30**, America/Phoenix. Agent: Codex (GPT-6).
-Status: **planning only**. No VGUI2 GTK theme is implemented or enabled.
+Status: **initial GTK 3.24 implementation complete and tested, unreleased**.
+VGUI2Classic GTK 4/libadwaita profiles and shared activation remain planned.
 Findings and measured feasibility: [vgui2-audit.md](vgui2-audit.md).
 Baseline: Vapor 1.0.4 / repository `e626869` on Plasma 6.8.2.
+
+| Stage | Current status |
+| --- | --- |
+| 1: identity/palette/reference | VGUI2Classic identity, audited palette and fresh Qt Windows reference implemented |
+| 2: harness | GTK 3/shared behavior family support, mapped windows and 13 VGUI mutations implemented; GTK 4/Adw parameterization pending |
+| 3: GTK 3.24 | Initial independent stylesheet, six SVG glyphs, normal/dark entries; standard checks and Meld 3.24.1 pass |
+| 4–6: GTK 4 / Adw / activation | Planned; current Vapor helper unchanged |
+| 7: real apps/displays/performance | Private Meld startup passes; live VGUI2 scaling/keyboard/accessibility/performance checks pending |
+| 8: packaging/release | Working stager includes GTK 3 assets/docs; no new published release or AUR update |
+
+Implementation details/results: [VGUI2-GTK3.md](VGUI2-GTK3.md),
+[portable evidence](docs/audits/vgui2-gtk3-validation.json), and
+[gtk4port.md](gtk4port.md), section 22. The roadmap below retains the full scope.
 
 ## Intended result
 
@@ -101,8 +115,8 @@ control fails its specific VGUI assertion. No automatic skip or weakened gate.
 
 ## Stage 3 — Implement and verify GTK 3.24
 
-Use the maintained Vapor GTK 3.24 branch as a compatibility starting point,
-copying into the independent VGUI2Classic family. Keep the standard gtk-3.0
+Use the maintained Vapor GTK 3.24 branch as a compatibility reference for the
+independent VGUI2Classic family. Keep the standard gtk-3.0
 entry. Replace every palette-dependent surface, gradient, border, shadow,
 selection, foreground and indicator deliberately. Do not import all of Vapor
 at runtime and depend on later overrides to conceal it.
@@ -244,6 +258,8 @@ smallest part; classic GTK finishing, adapting the tests and safe shared-profile
 migration carry most of the work. The audit's passing private profile reduces
 feasibility uncertainty without replacing those tasks.
 
-Start with **stages 1 and 2**: settle the family/role specification and adapt
-the harness while keeping Vapor green. Then build GTK 3, GTK 4 and Adw in that
-order. The audit and this plan authorize no live theme switch or release.
+The first GTK 3 milestone covers stages 1–3, including the relevant test work.
+Next implement **stage 4**, extending the independent family and harness to
+plain GTK 4. Shared profile activation remains part of stages 5–6, after its
+color profile and migration tests are ready. Live selection/release are later
+tasks; the current milestone leaves the user's Vapor settings unchanged.

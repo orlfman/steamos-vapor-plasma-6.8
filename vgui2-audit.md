@@ -1,5 +1,11 @@
 # VGUI2 Classic: GTK 3, GTK 4 and libadwaita port audit
 
+**Implementation follow-up:** the user subsequently requested starting GTK 3.
+An initial VGUI2Classic GTK 3.24 theme and its tests are now implemented;
+see [VGUI2-GTK3.md](VGUI2-GTK3.md) and [the status table](vgui2-plan.md).
+The findings below preserve the pre-port investigation. GTK 4, VGUI2 Adw and
+shared profile switching remain future work.
+
 Date: **2026-10-30**, America/Phoenix. Agent: Codex (GPT-6).
 Audited base: `e626869`, clean before investigation. Scope: feasibility and
 implementation requirements; no production theme or live settings changed.
