@@ -72,14 +72,24 @@ static gboolean capture(gpointer unused) {
   if (!gtk_style_context_lookup_color(context, "vapor_factory_test_marker", &marker) ||
       fabs(marker.red - 17.0/255.0) > .001 || fabs(marker.green - 23.0/255.0) > .001 ||
       fabs(marker.blue - 29.0/255.0) > .001)
-    fail("staged Vapor theme was not loaded");
+    fail("staged theme was not loaded");
+  GdkRGBA expected_background, expected_foreground;
+  const char *theme_name = g_getenv("VAPOR_FACTORY_THEME");
+  const char *bg = g_getenv("VAPOR_FACTORY_SELECTION_BG");
+  const char *fg = g_getenv("VAPOR_FACTORY_SELECTION_FG");
+  if (!theme_name || !bg || !fg || !gdk_rgba_parse(&expected_background, bg) ||
+      !gdk_rgba_parse(&expected_foreground, fg)) fail("missing expected family palette");
+  char *actual_theme = NULL;
+  g_object_get(gtk_settings_get_default(), "gtk-theme-name", &actual_theme, NULL);
+  if (g_strcmp0(actual_theme, theme_name)) fail("wrong named theme");
+  g_free(actual_theme);
   if (!gtk_style_context_lookup_color(context, "theme_selected_bg_color", &background) ||
-      fabs(background.red - 86.0/255.0) > .001 || fabs(background.green - 159.0/255.0) > .001 ||
-      fabs(background.blue - 204.0/255.0) > .001)
-    fail("wrong selection blue");
+      fabs(background.red - expected_background.red) > .001 || fabs(background.green - expected_background.green) > .001 ||
+      fabs(background.blue - expected_background.blue) > .001)
+    fail("wrong selection background");
   if (!gtk_style_context_lookup_color(context, "theme_selected_fg_color", &foreground) ||
-      fabs(foreground.red - 31.0/255.0) > .001 || fabs(foreground.green - 31.0/255.0) > .001 ||
-      fabs(foreground.blue - 38.0/255.0) > .001)
+      fabs(foreground.red - expected_foreground.red) > .001 || fabs(foreground.green - expected_foreground.green) > .001 ||
+      fabs(foreground.blue - expected_foreground.blue) > .001)
     fail("wrong selection foreground");
   G_GNUC_END_IGNORE_DEPRECATIONS
   int width = gtk_widget_get_width(page), height = gtk_widget_get_height(page);
@@ -111,9 +121,9 @@ static gboolean capture(gpointer unused) {
   if (mapped < 20) fail("page did not map its controls");
   g_print("VAPOR_FACTORY_RESULT {\"page\":\"%s\",\"state\":\"%s\",\"dark\":%s,"
           "\"width\":%d,\"height\":%d,\"mapped_widgets\":%d,\"file\":\"%s\","
-          "\"gtk\":\"%d.%d.%d\",\"theme_marker\":true}\n",
+          "\"gtk\":\"%d.%d.%d\",\"theme\":\"%s\",\"theme_marker\":true}\n",
           page_name, state_name, dark ? "true" : "false", width, height, mapped, filename,
-          gtk_get_major_version(), gtk_get_minor_version(), gtk_get_micro_version());
+          gtk_get_major_version(), gtk_get_minor_version(), gtk_get_micro_version(), theme_name);
   g_free(path); g_free(filename); g_object_unref(texture);
   gsk_renderer_unrealize(renderer); g_object_unref(renderer); gsk_render_node_unref(node);
   g_application_quit(G_APPLICATION(gtk_window_get_application(main_window)));

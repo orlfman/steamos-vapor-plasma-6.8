@@ -1,0 +1,3661 @@
+{
+  "date": "2026-10-30",
+  "timezone": "America/Phoenix",
+  "base_commit": "7ccdf926ac05feff6379917b534059cc5c5d84f1",
+  "status": "Initial plain GTK 4 implementation; unreleased; VGUI2 Adw/shared activation remain future work.",
+  "environment": {
+    "plasma": "6.8.2",
+    "gtk": "4.24.1",
+    "snapshot_renderer": "Cairo",
+    "display_transport": "Broadway"
+  },
+  "native": [
+    {
+      "gtk": "4.24.1",
+      "family": "vgui2",
+      "theme_name": "VGUI2Classic",
+      "variant": "normal",
+      "state": "normal",
+      "parse_errors": 0,
+      "captures": [
+        "normal-normal.png"
+      ],
+      "selection": [
+        149,
+        136,
+        49
+      ],
+      "foreground": [
+        24,
+        24,
+        16
+      ],
+      "display_scale": 1
+    },
+    {
+      "gtk": "4.24.1",
+      "family": "vgui2",
+      "theme_name": "VGUI2Classic",
+      "variant": "normal",
+      "state": "hover",
+      "parse_errors": 0,
+      "captures": [
+        "hover-normal.png"
+      ],
+      "selection": [
+        149,
+        136,
+        49
+      ],
+      "foreground": [
+        24,
+        24,
+        16
+      ],
+      "display_scale": 1
+    },
+    {
+      "gtk": "4.24.1",
+      "family": "vgui2",
+      "theme_name": "VGUI2Classic",
+      "variant": "normal",
+      "state": "backdrop",
+      "parse_errors": 0,
+      "captures": [
+        "backdrop-normal.png"
+      ],
+      "selection": [
+        149,
+        136,
+        49
+      ],
+      "foreground": [
+        24,
+        24,
+        16
+      ],
+      "display_scale": 1
+    },
+    {
+      "gtk": "4.24.1",
+      "family": "vgui2",
+      "theme_name": "VGUI2Classic",
+      "variant": "normal",
+      "state": "rtl",
+      "parse_errors": 0,
+      "captures": [
+        "rtl-normal.png"
+      ],
+      "selection": [
+        149,
+        136,
+        49
+      ],
+      "foreground": [
+        24,
+        24,
+        16
+      ],
+      "display_scale": 1
+    },
+    {
+      "gtk": "4.24.1",
+      "family": "vgui2",
+      "theme_name": "VGUI2Classic",
+      "variant": "normal",
+      "state": "disabled",
+      "parse_errors": 0,
+      "captures": [
+        "disabled-normal.png"
+      ],
+      "selection": [
+        149,
+        136,
+        49
+      ],
+      "foreground": [
+        24,
+        24,
+        16
+      ],
+      "display_scale": 1
+    },
+    {
+      "gtk": "4.24.1",
+      "family": "vgui2",
+      "theme_name": "VGUI2Classic",
+      "variant": "dark",
+      "state": "normal",
+      "parse_errors": 0,
+      "captures": [
+        "normal-dark.png"
+      ],
+      "selection": [
+        149,
+        136,
+        49
+      ],
+      "foreground": [
+        24,
+        24,
+        16
+      ],
+      "display_scale": 1
+    },
+    {
+      "gtk": "4.24.1",
+      "family": "vgui2",
+      "theme_name": "VGUI2Classic",
+      "variant": "dark",
+      "state": "hover",
+      "parse_errors": 0,
+      "captures": [
+        "hover-dark.png"
+      ],
+      "selection": [
+        149,
+        136,
+        49
+      ],
+      "foreground": [
+        24,
+        24,
+        16
+      ],
+      "display_scale": 1
+    },
+    {
+      "gtk": "4.24.1",
+      "family": "vgui2",
+      "theme_name": "VGUI2Classic",
+      "variant": "dark",
+      "state": "backdrop",
+      "parse_errors": 0,
+      "captures": [
+        "backdrop-dark.png"
+      ],
+      "selection": [
+        149,
+        136,
+        49
+      ],
+      "foreground": [
+        24,
+        24,
+        16
+      ],
+      "display_scale": 1
+    },
+    {
+      "gtk": "4.24.1",
+      "family": "vgui2",
+      "theme_name": "VGUI2Classic",
+      "variant": "dark",
+      "state": "rtl",
+      "parse_errors": 0,
+      "captures": [
+        "rtl-dark.png"
+      ],
+      "selection": [
+        149,
+        136,
+        49
+      ],
+      "foreground": [
+        24,
+        24,
+        16
+      ],
+      "display_scale": 1
+    },
+    {
+      "gtk": "4.24.1",
+      "family": "vgui2",
+      "theme_name": "VGUI2Classic",
+      "variant": "dark",
+      "state": "disabled",
+      "parse_errors": 0,
+      "captures": [
+        "disabled-dark.png"
+      ],
+      "selection": [
+        149,
+        136,
+        49
+      ],
+      "foreground": [
+        24,
+        24,
+        16
+      ],
+      "display_scale": 1
+    }
+  ],
+  "widget_factory": {
+    "application": "/usr/bin/gtk4-widget-factory",
+    "family": "vgui2",
+    "theme_name": "VGUI2Classic",
+    "binary_sha256": "23237503834cac170640b1037ab537f981286edecb3e2d3ee34cdedb579d09eb",
+    "theme_css_sha256": "e03fbc252d82c8b0f1a75c9de3860443da73aaf630b62011b31adb09c6362517",
+    "user_css_sha256": null,
+    "renderer": "Cairo",
+    "display_scale": 1,
+    "strict": false,
+    "cases": [
+      {
+        "page": "page1",
+        "state": "normal",
+        "dark": false,
+        "width": 1181,
+        "height": 706,
+        "mapped_widgets": 320,
+        "file": "page1-normal-normal.png",
+        "gtk": "4.24.1",
+        "theme": "VGUI2Classic",
+        "theme_marker": true,
+        "pixel_sha256": "98a37b8edd86854d372ffdfd6cad8a0a917528489c9fc68482ad18894a824695",
+        "known_broadway_warnings": []
+      },
+      {
+        "page": "page2",
+        "state": "normal",
+        "dark": false,
+        "width": 1181,
+        "height": 706,
+        "mapped_widgets": 223,
+        "file": "page2-normal-normal.png",
+        "gtk": "4.24.1",
+        "theme": "VGUI2Classic",
+        "theme_marker": true,
+        "pixel_sha256": "bd049b4c9be1f557e85f378f2e844f96aef92332d94e956d33d38bf09b07733e",
+        "known_broadway_warnings": []
+      },
+      {
+        "page": "page3",
+        "state": "normal",
+        "dark": false,
+        "width": 1181,
+        "height": 706,
+        "mapped_widgets": 431,
+        "file": "page3-normal-normal.png",
+        "gtk": "4.24.1",
+        "theme": "VGUI2Classic",
+        "theme_marker": true,
+        "pixel_sha256": "c09ab5fae6b0a92de78d1bf45bbffb2ed7c94ad284509db6f187ced2a2eb5d56",
+        "known_broadway_warnings": [
+          "(gtk4-widget-factory:478159): Gdk-WARNING **: 19:00:29.977: gdk_frame_timings_submitted() called on submitted frame."
+        ]
+      },
+      {
+        "page": "page1",
+        "state": "normal",
+        "dark": true,
+        "width": 1181,
+        "height": 706,
+        "mapped_widgets": 320,
+        "file": "page1-normal-dark.png",
+        "gtk": "4.24.1",
+        "theme": "VGUI2Classic",
+        "theme_marker": true,
+        "pixel_sha256": "98a37b8edd86854d372ffdfd6cad8a0a917528489c9fc68482ad18894a824695",
+        "known_broadway_warnings": []
+      },
+      {
+        "page": "page2",
+        "state": "normal",
+        "dark": true,
+        "width": 1181,
+        "height": 706,
+        "mapped_widgets": 223,
+        "file": "page2-normal-dark.png",
+        "gtk": "4.24.1",
+        "theme": "VGUI2Classic",
+        "theme_marker": true,
+        "pixel_sha256": "bd049b4c9be1f557e85f378f2e844f96aef92332d94e956d33d38bf09b07733e",
+        "known_broadway_warnings": []
+      },
+      {
+        "page": "page3",
+        "state": "normal",
+        "dark": true,
+        "width": 1181,
+        "height": 706,
+        "mapped_widgets": 431,
+        "file": "page3-normal-dark.png",
+        "gtk": "4.24.1",
+        "theme": "VGUI2Classic",
+        "theme_marker": true,
+        "pixel_sha256": "c09ab5fae6b0a92de78d1bf45bbffb2ed7c94ad284509db6f187ced2a2eb5d56",
+        "known_broadway_warnings": [
+          "(gtk4-widget-factory:478577): Gdk-WARNING **: 19:00:31.847: gdk_frame_timings_submitted() called on submitted frame."
+        ]
+      },
+      {
+        "page": "page1",
+        "state": "backdrop",
+        "dark": false,
+        "width": 1181,
+        "height": 706,
+        "mapped_widgets": 320,
+        "file": "page1-backdrop-normal.png",
+        "gtk": "4.24.1",
+        "theme": "VGUI2Classic",
+        "theme_marker": true,
+        "pixel_sha256": "074ce183db69e7fc1bfd856d6d3f2a21ec0972504810ff52049b6a10202b5602",
+        "known_broadway_warnings": []
+      },
+      {
+        "page": "page2",
+        "state": "backdrop",
+        "dark": false,
+        "width": 1181,
+        "height": 706,
+        "mapped_widgets": 223,
+        "file": "page2-backdrop-normal.png",
+        "gtk": "4.24.1",
+        "theme": "VGUI2Classic",
+        "theme_marker": true,
+        "pixel_sha256": "9d4df31f04c8a76c6b213bbabac3c9d8b1aec89524ea4250bd6436c70fe1beee",
+        "known_broadway_warnings": []
+      },
+      {
+        "page": "page3",
+        "state": "backdrop",
+        "dark": false,
+        "width": 1181,
+        "height": 706,
+        "mapped_widgets": 431,
+        "file": "page3-backdrop-normal.png",
+        "gtk": "4.24.1",
+        "theme": "VGUI2Classic",
+        "theme_marker": true,
+        "pixel_sha256": "c09ab5fae6b0a92de78d1bf45bbffb2ed7c94ad284509db6f187ced2a2eb5d56",
+        "known_broadway_warnings": [
+          "(gtk4-widget-factory:478987): Gdk-WARNING **: 19:00:33.725: gdk_frame_timings_submitted() called on submitted frame."
+        ]
+      },
+      {
+        "page": "page1",
+        "state": "rtl",
+        "dark": false,
+        "width": 1181,
+        "height": 706,
+        "mapped_widgets": 320,
+        "file": "page1-rtl-normal.png",
+        "gtk": "4.24.1",
+        "theme": "VGUI2Classic",
+        "theme_marker": true,
+        "pixel_sha256": "3bdd30e90d7b4a2af6e1009f02536234302c0606c75a746101ad4d6729736462",
+        "known_broadway_warnings": []
+      }
+    ]
+  },
+  "state_matrix": [
+    {
+      "gtk": "4.24.1",
+      "state": "normal",
+      "dark": false,
+      "display_scale": 1,
+      "labels": [
+        {
+          "name": "Ordinary",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Checked",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Pressed",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Suggested",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Destructive",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            63,
+            54,
+            255
+          ],
+          "contrast": 6.728,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "list",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "list-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "flow",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "flow-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "listview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "listview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "columnview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "columnview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "gridview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "gridview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "info",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            255,
+            224,
+            255
+          ],
+          "contrast": 17.53,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "warning",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            246,
+            204,
+            96,
+            255
+          ],
+          "contrast": 11.661,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "error",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            160,
+            140,
+            255
+          ],
+          "contrast": 9.056,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "question",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            150,
+            164,
+            134,
+            255
+          ],
+          "contrast": 6.756,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "disabled-selected",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            0.4000000059604645
+          ],
+          "painted_background": [
+            105,
+            103,
+            52,
+            255
+          ],
+          "contrast": 2.261,
+          "disabled": true,
+          "passed": true
+        }
+      ],
+      "focus": [
+        {
+          "name": "Ordinary",
+          "contrast": 6.749,
+          "changed_pixels": 135
+        },
+        {
+          "name": "Checked",
+          "contrast": 4.627,
+          "changed_pixels": 135
+        },
+        {
+          "name": "Pressed",
+          "contrast": 4.616,
+          "changed_pixels": 101
+        },
+        {
+          "name": "Suggested",
+          "contrast": 4.965,
+          "changed_pixels": 163
+        },
+        {
+          "name": "Destructive",
+          "contrast": 6.226,
+          "changed_pixels": 164
+        },
+        {
+          "name": "Entry",
+          "contrast": 9.516,
+          "changed_pixels": 764
+        },
+        {
+          "name": "Checked-switch",
+          "contrast": 6.017,
+          "changed_pixels": 183
+        },
+        {
+          "name": "list",
+          "contrast": 4.965,
+          "changed_pixels": 1375
+        },
+        {
+          "name": "flow",
+          "contrast": 4.485,
+          "changed_pixels": 584
+        }
+      ],
+      "indicators": [
+        {
+          "kind": "check",
+          "state": "unchecked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "unchecked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        }
+      ],
+      "notebooks": [
+        {
+          "position": "top",
+          "icon": "pan-start-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "top",
+          "icon": "pan-end-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "bottom",
+          "icon": "pan-start-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "bottom",
+          "icon": "pan-end-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "left",
+          "icon": "pan-up-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "left",
+          "icon": "pan-down-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "right",
+          "icon": "pan-up-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "right",
+          "icon": "pan-down-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        }
+      ],
+      "popups": [
+        "menu",
+        "dropdown",
+        "filechooser"
+      ],
+      "acknowledged_frames": 52835,
+      "known_broadway_warnings": [
+        "(process:479314): Gdk-WARNING **: 19:00:35.014: Duplicate call to gdk_frame_timings_submitted() with different values.",
+        "(process:479314): Gdk-WARNING **: 19:00:37.504: gdk_frame_timings_submitted() called on submitted frame."
+      ]
+    },
+    {
+      "gtk": "4.24.1",
+      "state": "normal",
+      "dark": true,
+      "display_scale": 1,
+      "labels": [
+        {
+          "name": "Ordinary",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Checked",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Pressed",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Suggested",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Destructive",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            63,
+            54,
+            255
+          ],
+          "contrast": 6.728,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "list",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "list-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "flow",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "flow-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "listview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "listview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "columnview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "columnview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "gridview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "gridview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "info",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            255,
+            224,
+            255
+          ],
+          "contrast": 17.53,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "warning",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            246,
+            204,
+            96,
+            255
+          ],
+          "contrast": 11.661,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "error",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            160,
+            140,
+            255
+          ],
+          "contrast": 9.056,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "question",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            150,
+            164,
+            134,
+            255
+          ],
+          "contrast": 6.756,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "disabled-selected",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            0.4000000059604645
+          ],
+          "painted_background": [
+            105,
+            103,
+            52,
+            255
+          ],
+          "contrast": 2.261,
+          "disabled": true,
+          "passed": true
+        }
+      ],
+      "focus": [
+        {
+          "name": "Ordinary",
+          "contrast": 6.749,
+          "changed_pixels": 135
+        },
+        {
+          "name": "Checked",
+          "contrast": 4.627,
+          "changed_pixels": 135
+        },
+        {
+          "name": "Pressed",
+          "contrast": 4.616,
+          "changed_pixels": 101
+        },
+        {
+          "name": "Suggested",
+          "contrast": 4.965,
+          "changed_pixels": 163
+        },
+        {
+          "name": "Destructive",
+          "contrast": 6.226,
+          "changed_pixels": 164
+        },
+        {
+          "name": "Entry",
+          "contrast": 9.516,
+          "changed_pixels": 764
+        },
+        {
+          "name": "Checked-switch",
+          "contrast": 6.017,
+          "changed_pixels": 183
+        },
+        {
+          "name": "list",
+          "contrast": 4.965,
+          "changed_pixels": 1375
+        },
+        {
+          "name": "flow",
+          "contrast": 4.485,
+          "changed_pixels": 584
+        }
+      ],
+      "indicators": [
+        {
+          "kind": "check",
+          "state": "unchecked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "unchecked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        }
+      ],
+      "notebooks": [
+        {
+          "position": "top",
+          "icon": "pan-start-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "top",
+          "icon": "pan-end-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "bottom",
+          "icon": "pan-start-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "bottom",
+          "icon": "pan-end-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "left",
+          "icon": "pan-up-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "left",
+          "icon": "pan-down-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "right",
+          "icon": "pan-up-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "right",
+          "icon": "pan-down-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        }
+      ],
+      "popups": [
+        "menu",
+        "dropdown",
+        "filechooser"
+      ],
+      "acknowledged_frames": 51619,
+      "known_broadway_warnings": [
+        "(process:479519): Gdk-WARNING **: 19:00:38.500: Duplicate call to gdk_frame_timings_submitted() with different values.",
+        "(process:479519): Gdk-WARNING **: 19:00:40.987: gdk_frame_timings_submitted() called on submitted frame."
+      ]
+    },
+    {
+      "gtk": "4.24.1",
+      "state": "backdrop",
+      "dark": false,
+      "display_scale": 1,
+      "labels": [
+        {
+          "name": "Ordinary",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Checked",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Pressed",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Suggested",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Destructive",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            63,
+            54,
+            255
+          ],
+          "contrast": 6.728,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "list",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "list-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "flow",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "flow-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "listview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "listview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "columnview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "columnview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "gridview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "gridview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "info",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            255,
+            224,
+            255
+          ],
+          "contrast": 17.53,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "warning",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            246,
+            204,
+            96,
+            255
+          ],
+          "contrast": 11.661,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "error",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            160,
+            140,
+            255
+          ],
+          "contrast": 9.056,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "question",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            150,
+            164,
+            134,
+            255
+          ],
+          "contrast": 6.756,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "disabled-selected",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            0.4000000059604645
+          ],
+          "painted_background": [
+            105,
+            103,
+            52,
+            255
+          ],
+          "contrast": 2.261,
+          "disabled": true,
+          "passed": true
+        }
+      ],
+      "focus": [
+        {
+          "name": "Ordinary",
+          "contrast": 6.749,
+          "changed_pixels": 135
+        },
+        {
+          "name": "Checked",
+          "contrast": 4.627,
+          "changed_pixels": 135
+        },
+        {
+          "name": "Pressed",
+          "contrast": 4.616,
+          "changed_pixels": 101
+        },
+        {
+          "name": "Suggested",
+          "contrast": 4.965,
+          "changed_pixels": 163
+        },
+        {
+          "name": "Destructive",
+          "contrast": 6.226,
+          "changed_pixels": 164
+        },
+        {
+          "name": "Entry",
+          "contrast": 9.516,
+          "changed_pixels": 764
+        },
+        {
+          "name": "Checked-switch",
+          "contrast": 6.017,
+          "changed_pixels": 183
+        },
+        {
+          "name": "list",
+          "contrast": 4.965,
+          "changed_pixels": 1375
+        },
+        {
+          "name": "flow",
+          "contrast": 4.485,
+          "changed_pixels": 584
+        }
+      ],
+      "indicators": [
+        {
+          "kind": "check",
+          "state": "unchecked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "unchecked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        }
+      ],
+      "notebooks": [
+        {
+          "position": "top",
+          "icon": "pan-start-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "top",
+          "icon": "pan-end-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "bottom",
+          "icon": "pan-start-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "bottom",
+          "icon": "pan-end-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "left",
+          "icon": "pan-up-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "left",
+          "icon": "pan-down-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "right",
+          "icon": "pan-up-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "right",
+          "icon": "pan-down-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        }
+      ],
+      "popups": [
+        "menu",
+        "dropdown",
+        "filechooser"
+      ],
+      "acknowledged_frames": 52037,
+      "known_broadway_warnings": [
+        "(process:479721): Gdk-WARNING **: 19:00:41.984: Duplicate call to gdk_frame_timings_submitted() with different values.",
+        "(process:479721): Gdk-WARNING **: 19:00:44.485: gdk_frame_timings_submitted() called on submitted frame."
+      ]
+    },
+    {
+      "gtk": "4.24.1",
+      "state": "rtl",
+      "dark": false,
+      "display_scale": 1,
+      "labels": [
+        {
+          "name": "Ordinary",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Checked",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Pressed",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Suggested",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Destructive",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            63,
+            54,
+            255
+          ],
+          "contrast": 6.728,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "list",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "list-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "flow",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "flow-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "listview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "listview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "columnview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "columnview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "gridview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "gridview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "info",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            255,
+            224,
+            255
+          ],
+          "contrast": 17.53,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "warning",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            246,
+            204,
+            96,
+            255
+          ],
+          "contrast": 11.661,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "error",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            160,
+            140,
+            255
+          ],
+          "contrast": 9.056,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "question",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            150,
+            164,
+            134,
+            255
+          ],
+          "contrast": 6.756,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "disabled-selected",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            0.4000000059604645
+          ],
+          "painted_background": [
+            105,
+            103,
+            52,
+            255
+          ],
+          "contrast": 2.261,
+          "disabled": true,
+          "passed": true
+        }
+      ],
+      "focus": [
+        {
+          "name": "Ordinary",
+          "contrast": 6.749,
+          "changed_pixels": 135
+        },
+        {
+          "name": "Checked",
+          "contrast": 4.627,
+          "changed_pixels": 135
+        },
+        {
+          "name": "Pressed",
+          "contrast": 4.616,
+          "changed_pixels": 101
+        },
+        {
+          "name": "Suggested",
+          "contrast": 4.965,
+          "changed_pixels": 163
+        },
+        {
+          "name": "Destructive",
+          "contrast": 6.226,
+          "changed_pixels": 164
+        },
+        {
+          "name": "Entry",
+          "contrast": 9.516,
+          "changed_pixels": 764
+        },
+        {
+          "name": "Checked-switch",
+          "contrast": 4.965,
+          "changed_pixels": 182
+        },
+        {
+          "name": "list",
+          "contrast": 4.965,
+          "changed_pixels": 1373
+        },
+        {
+          "name": "flow",
+          "contrast": 4.485,
+          "changed_pixels": 584
+        }
+      ],
+      "indicators": [
+        {
+          "kind": "check",
+          "state": "unchecked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "unchecked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed-hover",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed-disabled",
+          "size": [
+            18,
+            18
+          ],
+          "passed": true
+        }
+      ],
+      "notebooks": [
+        {
+          "position": "top",
+          "icon": "pan-end-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "top",
+          "icon": "pan-start-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "bottom",
+          "icon": "pan-end-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "bottom",
+          "icon": "pan-start-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "left",
+          "icon": "pan-up-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "left",
+          "icon": "pan-down-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "right",
+          "icon": "pan-up-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "right",
+          "icon": "pan-down-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        }
+      ],
+      "popups": [
+        "menu",
+        "dropdown",
+        "filechooser"
+      ],
+      "acknowledged_frames": 53174,
+      "known_broadway_warnings": [
+        "(process:479924): Gdk-WARNING **: 19:00:45.476: Duplicate call to gdk_frame_timings_submitted() with different values.",
+        "(process:479924): Gdk-WARNING **: 19:00:47.968: gdk_frame_timings_submitted() called on submitted frame."
+      ]
+    },
+    {
+      "gtk": "4.24.1",
+      "state": "normal",
+      "dark": false,
+      "display_scale": 2,
+      "labels": [
+        {
+          "name": "Ordinary",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Checked",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Pressed",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Suggested",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "Destructive",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            63,
+            54,
+            255
+          ],
+          "contrast": 6.728,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "list",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "list-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "flow",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "flow-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "listview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "listview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "columnview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "columnview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "gridview",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "gridview-button",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "info",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            255,
+            224,
+            255
+          ],
+          "contrast": 17.53,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "warning",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            246,
+            204,
+            96,
+            255
+          ],
+          "contrast": 11.661,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "error",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            160,
+            140,
+            255
+          ],
+          "contrast": 9.056,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "question",
+          "foreground": [
+            0.0941176488995552,
+            0.0941176488995552,
+            0.062745101749897,
+            1.0
+          ],
+          "painted_background": [
+            150,
+            164,
+            134,
+            255
+          ],
+          "contrast": 6.756,
+          "disabled": false,
+          "passed": true
+        },
+        {
+          "name": "disabled-selected",
+          "foreground": [
+            0.9882352948188782,
+            0.9882352948188782,
+            0.9882352948188782,
+            0.4000000059604645
+          ],
+          "painted_background": [
+            105,
+            103,
+            52,
+            255
+          ],
+          "contrast": 2.261,
+          "disabled": true,
+          "passed": true
+        }
+      ],
+      "focus": [
+        {
+          "name": "Ordinary",
+          "contrast": 7.376,
+          "changed_pixels": 390
+        },
+        {
+          "name": "Checked",
+          "contrast": 4.965,
+          "changed_pixels": 390
+        },
+        {
+          "name": "Pressed",
+          "contrast": 4.965,
+          "changed_pixels": 346
+        },
+        {
+          "name": "Suggested",
+          "contrast": 4.965,
+          "changed_pixels": 475
+        },
+        {
+          "name": "Destructive",
+          "contrast": 6.782,
+          "changed_pixels": 504
+        },
+        {
+          "name": "Entry",
+          "contrast": 9.621,
+          "changed_pixels": 2481
+        },
+        {
+          "name": "Checked-switch",
+          "contrast": 6.756,
+          "changed_pixels": 558
+        },
+        {
+          "name": "list",
+          "contrast": 6.454,
+          "changed_pixels": 3639
+        },
+        {
+          "name": "flow",
+          "contrast": 6.756,
+          "changed_pixels": 2336
+        }
+      ],
+      "indicators": [
+        {
+          "kind": "check",
+          "state": "unchecked",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked-hover",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed-hover",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "checked-disabled",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        },
+        {
+          "kind": "check",
+          "state": "mixed-disabled",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "unchecked",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked-hover",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed-hover",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "checked-disabled",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        },
+        {
+          "kind": "radio",
+          "state": "mixed-disabled",
+          "size": [
+            36,
+            36
+          ],
+          "passed": true
+        }
+      ],
+      "notebooks": [
+        {
+          "position": "top",
+          "icon": "pan-start-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "top",
+          "icon": "pan-end-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "bottom",
+          "icon": "pan-start-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "bottom",
+          "icon": "pan-end-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "left",
+          "icon": "pan-up-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "left",
+          "icon": "pan-down-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "right",
+          "icon": "pan-up-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "position": "right",
+          "icon": "pan-down-symbolic",
+          "glyph_support_iou": 1.0,
+          "passed": true
+        }
+      ],
+      "popups": [
+        "menu",
+        "dropdown",
+        "filechooser"
+      ],
+      "acknowledged_frames": 52447,
+      "known_broadway_warnings": [
+        "(process:480125): Gdk-WARNING **: 19:00:48.968: Duplicate call to gdk_frame_timings_submitted() with different values.",
+        "(process:480125): Gdk-WARNING **: 19:00:51.570: gdk_frame_timings_submitted() called on submitted frame."
+      ]
+    }
+  ],
+  "counts": {
+    "native_cases": 10,
+    "widget_factory_cases": 10,
+    "matrix_cases": 5,
+    "label_samples": 100,
+    "focus_cases": 45,
+    "indicator_renders": 70,
+    "notebook_glyphs": 40,
+    "popup_chooser_captures": 15,
+    "gtk4_mutations_rejected": 19,
+    "gtk3_mutations_rejected": 23,
+    "staging_tests": 8
+  },
+  "gates": {
+    "enabled_text_contrast": 4.5,
+    "focus_contrast": 3,
+    "arrow_glyph_iou": 0.85,
+    "arrow_glyph_logical_interior_threshold": 0.2
+  },
+  "measured": {
+    "minimum_enabled_text_contrast": 4.965,
+    "minimum_focus_contrast": 4.485,
+    "minimum_notebook_glyph_iou": 1.0
+  },
+  "preservation": {
+    "vapor_pngs_byte_identical": 172,
+    "png_paths": [
+      "disabled-dark.png",
+      "rtl-dark.png",
+      "backdrop-dark.png",
+      "hover-dark.png",
+      "normal-dark.png",
+      "disabled-normal.png",
+      "rtl-normal.png",
+      "backdrop-normal.png",
+      "hover-normal.png",
+      "normal-normal.png",
+      "coexistence/disabled-dark.png",
+      "coexistence/rtl-dark.png",
+      "coexistence/backdrop-dark.png",
+      "coexistence/hover-dark.png",
+      "coexistence/normal-dark.png",
+      "coexistence/disabled-normal.png",
+      "coexistence/rtl-normal.png",
+      "coexistence/backdrop-normal.png",
+      "coexistence/hover-normal.png",
+      "coexistence/normal-normal.png",
+      "widget-factory/page1-rtl-normal.png",
+      "widget-factory/page3-backdrop-normal.png",
+      "widget-factory/page2-backdrop-normal.png",
+      "widget-factory/page1-backdrop-normal.png",
+      "widget-factory/page3-normal-dark.png",
+      "widget-factory/page2-normal-dark.png",
+      "widget-factory/page1-normal-dark.png",
+      "widget-factory/page3-normal-normal.png",
+      "widget-factory/page2-normal-normal.png",
+      "widget-factory/page1-normal-normal.png",
+      "behavior/backdrop.png",
+      "behavior/normal.png",
+      "coexistence/widget-factory/page1-rtl-normal.png",
+      "coexistence/widget-factory/page3-backdrop-normal.png",
+      "coexistence/widget-factory/page2-backdrop-normal.png",
+      "coexistence/widget-factory/page1-backdrop-normal.png",
+      "coexistence/widget-factory/page3-normal-dark.png",
+      "coexistence/widget-factory/page2-normal-dark.png",
+      "coexistence/widget-factory/page1-normal-dark.png",
+      "coexistence/widget-factory/page3-normal-normal.png",
+      "coexistence/widget-factory/page2-normal-normal.png",
+      "coexistence/widget-factory/page1-normal-normal.png",
+      "coexistence/behavior/backdrop.png",
+      "coexistence/behavior/normal.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/2-transition.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/2-surface-view.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/2-surface-card.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/2-surface-headerbar.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/2-surface-window.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/1-transition.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/1-surface-view.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/1-surface-card.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/1-surface-headerbar.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/1-surface-window.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/0-transition.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/0-surface-view.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/0-surface-card.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/0-surface-headerbar.png",
+      "libadwaita/21-transition-normal-dark-s1-vapor/0-surface-window.png",
+      "libadwaita/20-main-normal-dark-s2-vapor/0-main.png",
+      "libadwaita/20-main-normal-dark-s2-vapor/0-surface-view.png",
+      "libadwaita/20-main-normal-dark-s2-vapor/0-surface-card.png",
+      "libadwaita/20-main-normal-dark-s2-vapor/0-surface-headerbar.png",
+      "libadwaita/20-main-normal-dark-s2-vapor/0-surface-window.png",
+      "libadwaita/19-main-normal-dark-s2-base/0-main.png",
+      "libadwaita/19-main-normal-dark-s2-base/0-surface-view.png",
+      "libadwaita/19-main-normal-dark-s2-base/0-surface-card.png",
+      "libadwaita/19-main-normal-dark-s2-base/0-surface-headerbar.png",
+      "libadwaita/19-main-normal-dark-s2-base/0-surface-window.png",
+      "libadwaita/18-main-focus-dark-s1-vapor/0-main.png",
+      "libadwaita/18-main-focus-dark-s1-vapor/0-surface-view.png",
+      "libadwaita/18-main-focus-dark-s1-vapor/0-surface-card.png",
+      "libadwaita/18-main-focus-dark-s1-vapor/0-surface-headerbar.png",
+      "libadwaita/18-main-focus-dark-s1-vapor/0-surface-window.png",
+      "libadwaita/17-main-rtl-dark-s1-vapor/0-main.png",
+      "libadwaita/17-main-rtl-dark-s1-vapor/0-surface-view.png",
+      "libadwaita/17-main-rtl-dark-s1-vapor/0-surface-card.png",
+      "libadwaita/17-main-rtl-dark-s1-vapor/0-surface-headerbar.png",
+      "libadwaita/17-main-rtl-dark-s1-vapor/0-surface-window.png",
+      "libadwaita/16-main-backdrop-dark-s1-vapor/0-main.png",
+      "libadwaita/16-main-backdrop-dark-s1-vapor/0-surface-view.png",
+      "libadwaita/16-main-backdrop-dark-s1-vapor/0-surface-card.png",
+      "libadwaita/16-main-backdrop-dark-s1-vapor/0-surface-headerbar.png",
+      "libadwaita/16-main-backdrop-dark-s1-vapor/0-surface-window.png",
+      "libadwaita/15-menu-normal-dark-s1-vapor/0-menu.png",
+      "libadwaita/15-menu-normal-dark-s1-vapor/0-surface-popover.png",
+      "libadwaita/15-menu-normal-dark-s1-vapor/0-surface-view.png",
+      "libadwaita/15-menu-normal-dark-s1-vapor/0-surface-card.png",
+      "libadwaita/15-menu-normal-dark-s1-vapor/0-surface-headerbar.png",
+      "libadwaita/15-menu-normal-dark-s1-vapor/0-surface-window.png",
+      "libadwaita/14-menu-normal-dark-s1-base/0-menu.png",
+      "libadwaita/14-menu-normal-dark-s1-base/0-surface-popover.png",
+      "libadwaita/14-menu-normal-dark-s1-base/0-surface-view.png",
+      "libadwaita/14-menu-normal-dark-s1-base/0-surface-card.png",
+      "libadwaita/14-menu-normal-dark-s1-base/0-surface-headerbar.png",
+      "libadwaita/14-menu-normal-dark-s1-base/0-surface-window.png",
+      "libadwaita/13-popover-normal-dark-s1-vapor/0-popover.png",
+      "libadwaita/13-popover-normal-dark-s1-vapor/0-surface-popover.png",
+      "libadwaita/13-popover-normal-dark-s1-vapor/0-surface-view.png",
+      "libadwaita/13-popover-normal-dark-s1-vapor/0-surface-card.png",
+      "libadwaita/13-popover-normal-dark-s1-vapor/0-surface-headerbar.png",
+      "libadwaita/13-popover-normal-dark-s1-vapor/0-surface-window.png",
+      "libadwaita/12-popover-normal-dark-s1-base/0-popover.png",
+      "libadwaita/12-popover-normal-dark-s1-base/0-surface-popover.png",
+      "libadwaita/12-popover-normal-dark-s1-base/0-surface-view.png",
+      "libadwaita/12-popover-normal-dark-s1-base/0-surface-card.png",
+      "libadwaita/12-popover-normal-dark-s1-base/0-surface-headerbar.png",
+      "libadwaita/12-popover-normal-dark-s1-base/0-surface-window.png",
+      "libadwaita/11-dialog-normal-dark-s1-vapor/0-dialog.png",
+      "libadwaita/11-dialog-normal-dark-s1-vapor/0-surface-dialog.png",
+      "libadwaita/11-dialog-normal-dark-s1-vapor/0-surface-view.png",
+      "libadwaita/11-dialog-normal-dark-s1-vapor/0-surface-card.png",
+      "libadwaita/11-dialog-normal-dark-s1-vapor/0-surface-headerbar.png",
+      "libadwaita/11-dialog-normal-dark-s1-vapor/0-surface-window.png",
+      "libadwaita/10-dialog-normal-dark-s1-base/0-dialog.png",
+      "libadwaita/10-dialog-normal-dark-s1-base/0-surface-dialog.png",
+      "libadwaita/10-dialog-normal-dark-s1-base/0-surface-view.png",
+      "libadwaita/10-dialog-normal-dark-s1-base/0-surface-card.png",
+      "libadwaita/10-dialog-normal-dark-s1-base/0-surface-headerbar.png",
+      "libadwaita/10-dialog-normal-dark-s1-base/0-surface-window.png",
+      "libadwaita/09-sidebar-normal-dark-s1-vapor/0-sidebar.png",
+      "libadwaita/09-sidebar-normal-dark-s1-vapor/0-surface-sidebar.png",
+      "libadwaita/09-sidebar-normal-dark-s1-vapor/0-surface-view.png",
+      "libadwaita/09-sidebar-normal-dark-s1-vapor/0-surface-card.png",
+      "libadwaita/09-sidebar-normal-dark-s1-vapor/0-surface-headerbar.png",
+      "libadwaita/09-sidebar-normal-dark-s1-vapor/0-surface-window.png",
+      "libadwaita/08-sidebar-normal-dark-s1-base/0-sidebar.png",
+      "libadwaita/08-sidebar-normal-dark-s1-base/0-surface-sidebar.png",
+      "libadwaita/08-sidebar-normal-dark-s1-base/0-surface-view.png",
+      "libadwaita/08-sidebar-normal-dark-s1-base/0-surface-card.png",
+      "libadwaita/08-sidebar-normal-dark-s1-base/0-surface-headerbar.png",
+      "libadwaita/08-sidebar-normal-dark-s1-base/0-surface-window.png",
+      "libadwaita/07-main-normal-light-hc-s1-vapor/0-main.png",
+      "libadwaita/07-main-normal-light-hc-s1-vapor/0-surface-view.png",
+      "libadwaita/07-main-normal-light-hc-s1-vapor/0-surface-card.png",
+      "libadwaita/07-main-normal-light-hc-s1-vapor/0-surface-headerbar.png",
+      "libadwaita/07-main-normal-light-hc-s1-vapor/0-surface-window.png",
+      "libadwaita/06-main-normal-light-hc-s1-base/0-main.png",
+      "libadwaita/06-main-normal-light-hc-s1-base/0-surface-view.png",
+      "libadwaita/06-main-normal-light-hc-s1-base/0-surface-card.png",
+      "libadwaita/06-main-normal-light-hc-s1-base/0-surface-headerbar.png",
+      "libadwaita/06-main-normal-light-hc-s1-base/0-surface-window.png",
+      "libadwaita/05-main-normal-dark-hc-s1-vapor/0-main.png",
+      "libadwaita/05-main-normal-dark-hc-s1-vapor/0-surface-view.png",
+      "libadwaita/05-main-normal-dark-hc-s1-vapor/0-surface-card.png",
+      "libadwaita/05-main-normal-dark-hc-s1-vapor/0-surface-headerbar.png",
+      "libadwaita/05-main-normal-dark-hc-s1-vapor/0-surface-window.png",
+      "libadwaita/04-main-normal-dark-hc-s1-base/0-main.png",
+      "libadwaita/04-main-normal-dark-hc-s1-base/0-surface-view.png",
+      "libadwaita/04-main-normal-dark-hc-s1-base/0-surface-card.png",
+      "libadwaita/04-main-normal-dark-hc-s1-base/0-surface-headerbar.png",
+      "libadwaita/04-main-normal-dark-hc-s1-base/0-surface-window.png",
+      "libadwaita/03-main-normal-light-s1-vapor/0-main.png",
+      "libadwaita/03-main-normal-light-s1-vapor/0-surface-view.png",
+      "libadwaita/03-main-normal-light-s1-vapor/0-surface-card.png",
+      "libadwaita/03-main-normal-light-s1-vapor/0-surface-headerbar.png",
+      "libadwaita/03-main-normal-light-s1-vapor/0-surface-window.png",
+      "libadwaita/02-main-normal-light-s1-base/0-main.png",
+      "libadwaita/02-main-normal-light-s1-base/0-surface-view.png",
+      "libadwaita/02-main-normal-light-s1-base/0-surface-card.png",
+      "libadwaita/02-main-normal-light-s1-base/0-surface-headerbar.png",
+      "libadwaita/02-main-normal-light-s1-base/0-surface-window.png",
+      "libadwaita/01-main-normal-dark-s1-vapor/0-main.png",
+      "libadwaita/01-main-normal-dark-s1-vapor/0-surface-view.png",
+      "libadwaita/01-main-normal-dark-s1-vapor/0-surface-card.png",
+      "libadwaita/01-main-normal-dark-s1-vapor/0-surface-headerbar.png",
+      "libadwaita/01-main-normal-dark-s1-vapor/0-surface-window.png",
+      "libadwaita/00-main-normal-dark-s1-base/0-main.png",
+      "libadwaita/00-main-normal-dark-s1-base/0-surface-view.png",
+      "libadwaita/00-main-normal-dark-s1-base/0-surface-card.png",
+      "libadwaita/00-main-normal-dark-s1-base/0-surface-headerbar.png",
+      "libadwaita/00-main-normal-dark-s1-base/0-surface-window.png"
+    ],
+    "existing_payload_files_unchanged": 180
+  },
+  "coexistence": {
+    "overlay": "libadwaita/vapor.css",
+    "byte_identical_pngs": 22,
+    "paths": [
+      "normal-normal.png",
+      "hover-normal.png",
+      "backdrop-normal.png",
+      "rtl-normal.png",
+      "disabled-normal.png",
+      "normal-dark.png",
+      "hover-dark.png",
+      "backdrop-dark.png",
+      "rtl-dark.png",
+      "disabled-dark.png",
+      "behavior/normal.png",
+      "behavior/backdrop.png",
+      "widget-factory/page1-rtl-normal.png",
+      "widget-factory/page3-backdrop-normal.png",
+      "widget-factory/page2-backdrop-normal.png",
+      "widget-factory/page1-backdrop-normal.png",
+      "widget-factory/page3-normal-dark.png",
+      "widget-factory/page2-normal-dark.png",
+      "widget-factory/page1-normal-dark.png",
+      "widget-factory/page3-normal-normal.png",
+      "widget-factory/page2-normal-normal.png",
+      "widget-factory/page1-normal-normal.png"
+    ],
+    "meaning": "Existing Vapor overlay leaves plain VGUI2 GTK apps unchanged; no VGUI2 Adw profile implemented."
+  },
+  "existing_suites": {
+    "vapor_gtk4_adw": "PASS; native, Widget Factory, coexistence, 22 Adw cases, 28 activation/recovery tests, 15 bad profiles, eight staging tests.",
+    "gtk3": "PASS; both families, seven mapped VGUI scenes and 23 VGUI regressions."
+  },
+  "diagnostics": {
+    "css_errors": 0,
+    "unexpected_diagnostics": 0,
+    "timing_control": "Both permitted exact Broadway frame-timing strings reproduced on stock GTK with no project CSS; retained in work log and local control evidence.",
+    "strict_mode": "State checker --strict rejects the reproduced timing warnings too."
+  },
+  "preview_sha256": {
+    "docs/screenshots/vgui2-gtk4-preview.png": "c88333c913300a4517343045629242ea735b5cc377b9e93b5b9fc5713ef22a54",
+    "docs/screenshots/vgui2-gtk4-states.png": "2e30be5056ce12bd73ec3d09ea3cf022cfe4e3421221f42a9f32d1d0f611d4aa",
+    "docs/screenshots/vgui2-gtk4-widget-factory.png": "7215e05631570b9f88db2962e304de061b2b21aa9259bccd7597c1456efda6a5"
+  },
+  "limits": [
+    "No VGUI2 libadwaita profile or shared activation implementation.",
+    "No release/AUR update or live activation.",
+    "Actual integer scale-2 windows are covered; live fractional scaling, full keyboard/accessibility, broader app workflows, Flatpak and performance benchmarks remain open."
+  ]
+}

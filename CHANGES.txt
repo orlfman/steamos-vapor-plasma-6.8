@@ -1,3 +1,16 @@
+Unreleased — 2026-10-30, Codex (GPT-6): initial VGUI2 Classic GTK 4
+
+- Add independent normal/dark GTK 4 entries with classic olive/gold controls,
+  GTK 4 text/selection/popover/calendar nodes and shared scalable SVG glyphs.
+- Preserve readable selected/nested/inactive labels, use stronger GTK 4 focus
+  dots and paint correct notebook arrows for horizontal/vertical and RTL layouts.
+- Make GTK 4/Widget Factory tools family-aware; run both themes by default.
+  Add real state, glyph, focus, popup, notebook and scale-2 checks plus 19
+  deliberate regressions. Existing Vapor GTK 4/Adw captures remain identical.
+- Add the GTK 4 guide, native/Widget Factory screenshots and portable evidence;
+  update the audit, plan and work log. VGUI2 Adw/activation are later stages.
+  Published release/AUR metadata and the user's active theme are unchanged.
+
 Unreleased — 2026-10-30, Codex (GPT-6): audit and fix VGUI2 Classic GTK 3
 
 - Keep warning/error InfoBar text readable when inactive; selected-row labels

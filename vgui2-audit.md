@@ -7,8 +7,10 @@ focus contrast/coverage, vertical notebook arrows and a glyph-test blind spot;
 the latest findings and evidence are in [audit.md](audit.md), with the work
 recorded in [gtk4port.md](gtk4port.md), section 23.
 See [VGUI2-GTK3.md](VGUI2-GTK3.md) and [the status table](vgui2-plan.md).
-The findings below preserve the pre-port investigation. GTK 4, VGUI2 Adw and
-shared profile switching remain future work.
+Initial plain GTK 4 is now implemented and tested; [VGUI2-GTK4.md](VGUI2-GTK4.md)
+records the separate stylesheet, actual application checks and limitations.
+The findings below preserve the pre-port investigation. VGUI2 Adw and shared
+profile switching remain future work.
 
 Date: **2026-10-30**, America/Phoenix. Agent: Codex (GPT-6).
 Audited base: `e626869`, clean before investigation. Scope: feasibility and

@@ -1157,3 +1157,113 @@ No comparative benchmark is claimed. Live VGUI2 scaling, full keyboard/
 accessibility, broader app workflows, GTK 4/Adw and shared activation remain
 later work. The user's active theme, runtime helper, AUR metadata and published
 release are unchanged. The changes are committed/pushed as source work only.
+
+## 24. Start the VGUI2 Classic plain GTK 4 port — 2026-10-30
+
+User request: start the GTK 4 port. Started from clean
+`7ccdf926ac05feff6379917b534059cc5c5d84f1`. Scratch evidence:
+`/tmp/vgui2-gtk4-port-2yli_fgl`. Saved SHA-256 hashes for every tracked file and
+exported the baseline commit to a private directory. Ran the complete previous
+Vapor GTK 4/Adw suite there to establish comparison images before editing.
+
+### Implementation and family support
+
+- Created independent gtk-4.0/gtk.css and explicit gtk-dark.css in VGUI2Classic.
+  Transferred the audited olive/gold palette, bevels, semantic colors, inactive
+  label fixes and six unchanged SVG glyphs. Updated the theme metadata comment
+  to cover both toolkits. No runtime GTK 3/Vapor import or new bitmap assets.
+- Adapted GTK 4 text children, icon filtering, grouped checks, list/column/grid
+  views, dropdown/popover contents, observed menu-model nodes, calendar grid,
+  title controls and focus-within. Removed GTK 3 widget-specific properties and
+  unsupported widget assumptions. Added a reduced-motion animation guard.
+- Parameterized check-gtk4.py, check-widget-factory.py and its C probe with the
+  existing independent family specification. The C probe verifies actual theme
+  name, fixture marker and expected palette from the runner. Both family names
+  are tested by default; Vapor's complete Adw/coexistence stages remain intact.
+  Explicit --family selects one, and --theme avoids recursive VGUI mutations.
+- Added check-vgui2-gtk4.py for real labels, nested controls, semantic messages,
+  disabled selection, glyphs, focus, notebook arrows and actual menu/dropdown/
+  file-chooser captures. Five cases cover normal/dark, backdrop, RTL and actual
+  scale-2 windows; PNG exports apply the matching scale with native GTK/GSK.
+- Added 19 disposable GTK 4 mutations for wrong palette/surface, nested and
+  inactive labels, warning/error messages, hidden/replaced glyphs, weak/missing
+  focus, sideways arrows, menu text, invalid CSS, missing assets/dark entry and
+  both spin gradients. Every mutation must fail its specific assertion.
+
+### Findings fixed during the port
+
+- GTK 4 rasterizes the one-pixel dotted focus differently: an ordinary button
+  measured 2.73:1. Widened the dotted ring to two pixels without changing
+  allocations, retained pale focus on dark/red and dark focus on gold. Real
+  normal/checked/pressed/suggested/destructive/entry/switch/row/flow cases pass.
+- Initially assumed the compatibility button.model selector from the maintained
+  Vapor GTK 4 additions. Actual node inspection showed modelbutton.flat on this
+  GTK 4.24.1 installation. Used that observed path and tested real menu labels.
+- GTK 4 notebook overflow nodes are GtkButtons with GtkImage children. Copied
+  GTK 3 icon-source rules on the outer arrow did not control the visible child.
+  A same-widget CSS-reference test also falsely accepted a wrong arrow; its
+  independent mutation exposed that weakness. Replaced it with independent
+  GtkSymbolicPaintable reference rendering and comparison of actual visible
+  glyphs. The stylesheet paints one symbolic background glyph on the native
+  button and hides its image child, keeping geometry/navigation intact.
+- CSS icon-theme backgrounds do not resolve logical start/end like the
+  direction-aware reference API. An initial extra RTL swap pointed the wrong
+  way. Removed that swap and verified horizontal/vertical layouts in RTL too.
+  The wrong-direction mutation now fails the glyph gate.
+- CSS color compositing and SVG rasterization alter edge intensities at 1x/2x.
+  Compare normalized occupied glyph support in logical pixels, averaging each
+  scale block, with a 0.2 interior threshold and at least 0.85 intersection over
+  union. This avoids claiming byte identity across different rendering paths;
+  a sideways glyph fails. Original text/focus contrast thresholds stay intact.
+
+### Harness corrections and diagnostic controls
+
+- The native state matrix needs acknowledged frames to update focus snapshots.
+  Reused the existing private Broadway protocol client. Use Broadway for display
+  transport and Cairo for exported snapshots, as the existing Adw matrix does.
+  A Cairo live transport produced a native render-node cache assertion.
+- Reusing a server across workers and changing a mapped complex window from LTR
+  to RTL also exposed Broadway render-node reuse failures. Start a fresh private
+  display for each case and construct the RTL fixture in RTL before mapping.
+  No failure/timeout is retried or silently skipped.
+- Explicitly set/verify synthetic active/backdrop flags, clear initial focus
+  before applying them, and retain actual label node paths for diagnostics.
+  The original virtual-row mutation lost to a more specific activatable-row
+  rule; use an overriding selector so it tests the intended label failure.
+- Sampling the top-left window pixel accidentally tested the automatic titlebar
+  instead of the client background. The wrong-background mutation caught that
+  false positive. Sample empty client-area padding at the bottom instead.
+- Preserve the original worker error before requiring acknowledged frames:
+  palette/parser failures can legitimately exit before mapping any surface.
+- Reproduced both frame-timing warning strings using a separate stock GTK
+  window/focus/popover probe, without any project theme, saved in
+  timing-control.py/log. Retain/count only those exact two strings and support
+  --strict. Unexpected diagnostics and all CSS parser errors still fail.
+
+### Verification, documentation and remaining scope
+
+- Both GTK 4 family suites pass. VGUI2 has ten native and ten actual Widget
+  Factory cases; its five deeper cases total 100 labels, 45 focus checks,
+  70 indicators, 40 arrows and 15 popup/chooser captures. All 19 negative
+  controls fail at their intended gate. Enabled text passes 4.5:1 and focus 3:1;
+  solid-gold text remains 4.965:1. Temporary HOME/XDG and a service-free bus
+  prevent user-file or desktop-service interactions.
+- Ran the full existing Vapor GTK 4/Adw suite after the harness changes. All
+  172 baseline PNGs are byte-identical, including its original native, Widget
+  Factory, behavior, coexistence and Adw captures. Existing recovery/mutation/
+  staging stages pass. Both GTK 3 families and all 23 VGUI GTK 3 controls pass.
+- Separately ran plain VGUI2 GTK 4 with the existing Vapor Adw overlay staged
+  into the private user config. Native/behavior/Widget Factory captures remain
+  identical. This proves coexistence only; it does not implement a VGUI Adw
+  profile or change the current activation manager.
+- Added VGUI2-GTK4.md, native/Widget Factory/state screenshots and portable
+  validation JSON. Updated README, audit, roadmap, prior GTK 3 guide, changelog
+  and package staging/fixture seeds. Verify staged files and linked docs/images.
+  Record protected payload hashes and live helper status before committing.
+
+GTK documentation for checks/grouping, spin text children, column/notebook nodes
+and symbolic snapshots is linked in audit.md. No performance benchmark is
+claimed. Live Wayland/X11 and fractional scaling, full keyboard/screen-reader
+checks, broader app workflows, Flatpak, VGUI2 Adw and shared activation remain
+later work. The current release/AUR metadata, runtime helper/profile and user's
+active theme remain unchanged. This milestone is committed/pushed as source work.

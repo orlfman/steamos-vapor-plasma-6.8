@@ -17,6 +17,7 @@ shortcuts) are left out.
 | Vapor and VGUI color schemes, plus Union versions | `usr/share/color-schemes` |
 | Vapor GTK 3.24 theme | `usr/share/themes/Vapor/gtk-3.0`, `gtk-3.24` |
 | VGUI2 Classic GTK 3.24, unreleased | `usr/share/themes/VGUI2Classic` |
+| VGUI2 Classic plain GTK 4, initial/unreleased | `usr/share/themes/VGUI2Classic/gtk-4.0` |
 | Vapor GTK 4 theme, initial (plain GTK 4 apps; libadwaita apps ignore themes) | `usr/share/themes/Vapor/gtk-4.0` |
 | Native libadwaita colors, installed by default since 1.0.4 | `libadwaita/vapor.css` |
 | Vapor Konsole profile and colors | `usr/share/konsole` |
@@ -135,11 +136,11 @@ python3 -I tools/check-gtk3.py
 python3 -I tools/check-gtk4.py
 ```
 
-Both checkers also run inactive-label contrast and spin-background regressions.
-The GTK 4 checker runs all ten installed Widget Factory application cases,
-repeats plain GTK checks with the libadwaita overlay present, and runs native
-libadwaita, reversible-activation, broken-profile and package-staging checks
-automatically.
+Both checkers run both theme families, including inactive-label contrast and
+spin-background regressions. GTK 4 runs ten installed Widget Factory cases per
+family. Vapor retains its overlay, native libadwaita, reversible-activation,
+broken-profile and package-staging stages. VGUI2 adds real state/focus/glyph/
+popup checks and 19 deliberate regressions; see [VGUI2-GTK4.md](VGUI2-GTK4.md).
 Failures and missing dependencies fail the standard suite; no automatic skip.
 The GTK 3 checker runs both Vapor and VGUI2 Classic, including mapped popup and
 dialog checks. It needs `python-cairo`, `python-pillow`, SVG support and
@@ -219,14 +220,17 @@ good. This screenshot records the live appearance during testing.
 
 ## VGUI2 Classic GTK port (unreleased)
 
-The working tree now includes an independent **VGUI2Classic GTK 3.24 theme**:
+The working tree now includes independent **VGUI2Classic GTK 3.24 and GTK 4 themes**:
 olive/gold colors, classic beveled controls and vector indicators. Both theme
 families pass the default GTK 3 suite; isolated Meld startup checks pass too.
 The GTK 3 audit corrected inactive messages, selected-container labels, focus
 and vertical notebook arrows; the standard suite rejects 23 broken VGUI copies.
 See [VGUI2-GTK3.md](VGUI2-GTK3.md) for previews, tests and limits.
 
-GTK 4 and VGUI2 libadwaita support remain planned. The current AUR 1.0.4 release
+The initial GTK 4 implementation includes GTK 4-specific entries, grouped
+indicators, list/column/grid views, popovers and a tested 2x rendering matrix.
+[VGUI2-GTK4.md](VGUI2-GTK4.md) records Widget Factory screenshots and results.
+VGUI2 libadwaita support remains planned. The current AUR 1.0.4 release
 and live Vapor settings are unchanged. [vgui2-audit.md](vgui2-audit.md) records
 the investigation; [vgui2-plan.md](vgui2-plan.md) tracks the remaining work.
 

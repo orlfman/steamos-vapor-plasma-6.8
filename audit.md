@@ -1,3 +1,57 @@
+# VGUI2 Classic initial plain GTK 4 port — 2026-10-30
+
+The independent GTK 4 family is implemented from audited base `7ccdf92`, tested
+with GTK **4.24.1** on Plasma **6.8.2**, and remains unreleased. Details,
+screenshots and commands are in [VGUI2-GTK4.md](VGUI2-GTK4.md); durable evidence
+is in [vgui2-gtk4-validation.json](docs/audits/vgui2-gtk4-validation.json).
+
+The GTK 4 stylesheet carries the olive/gold palette and readable state rules
+into actual GTK 4 text, grouped-check, virtualized-list, calendar and popover
+nodes. It imports neither GTK 3 nor Vapor and reuses the six unchanged SVGs.
+Normal/dark entry points are explicit; fonts remain user-selected.
+
+| Port finding | Resolution and test |
+| --- | --- |
+| GTK 3 one-pixel focus dots become too faint under GTK 4 rendering (**2.73:1**) | Two-pixel dots, pale on dark surfaces and dark on gold; nine real focus cases per matrix case pass 3:1 without resizing |
+| Notebook arrows are GTK 4 buttons containing images; GTK 3 gadget icon rules do not control that image correctly | Paint one directional symbolic glyph on each button and hide its native image; compare actual glyph geometry to independently rendered icons in all tab positions, both directions and scale 2 |
+| Popup models differ from an assumed compatibility button class | Use observed `modelbutton.flat` nodes. Actual menu hover labels remain dark on gold; dropdown/file-chooser captures verify mapped native surfaces |
+| GTK 4 entry/spin contents use text children; virtualized views need their own selection paths | Independent GTK 4 rules plus shared normal/backdrop behavior tests and 20 actual label samples per matrix case; nested controls retain their foreground |
+
+The standard GTK 4 checker now supports both families. VGUI2 runs ten native
+renders, ten installed Widget Factory cases, shared label/spin checks, and five
+state-matrix cases: normal, dark, synthetic backdrop, RTL and actual integer
+scale 2. Together these check 100 label samples, 45 focus cases, 70 indicator
+states, 40 notebook arrows and 15 popup/chooser captures. All **19** deliberately
+broken VGUI2 GTK 4 copies fail their intended assertions.
+
+The full existing Vapor GTK 4/Adw suite passes with the family-aware harness;
+all **172** baseline PNGs are byte-identical. Both GTK 3 families and their 23
+VGUI regression controls pass. A separate existing-overlay coexistence run
+leaves plain VGUI2 GTK 4 output unchanged. Production Vapor/GTK 3/artwork,
+libadwaita helper/profile and AUR metadata are hash-preserved.
+
+Two exact Broadway frame-timing warnings were independently reproduced using
+stock GTK without project CSS; tests retain/count them and offer strict mode.
+Other diagnostics fail. Native images use GTK/GSK with Cairo export. The work
+log records corrections for empty reference glyphs, client-background sampling,
+CSS specificity, native arrow images, RTL setup, render-node transport failures
+and scale-2 antialiasing. A failing negative control was treated as a test defect,
+then corrected and rerun; no CSS diagnostic allowance or contrast gate was relaxed.
+
+This implements the first plain GTK 4 milestone. VGUI2 Adw colors, shared
+activation, live fractional scaling, full keyboard/accessibility, wider app
+workflows and performance benchmarks remain open. The user's installed theme,
+release and AUR package are unchanged. See [gtk4port.md](gtk4port.md), section 24.
+
+Sources used for toolkit adaptations: GTK's
+[CheckButton nodes and grouping](https://docs.gtk.org/gtk4/class.CheckButton.html#css-nodes),
+[SpinButton text nodes](https://docs.gtk.org/gtk4/class.SpinButton.html#css-nodes),
+[ColumnView structure](https://docs.gtk.org/gtk4/class.ColumnView.html#css-nodes),
+[Notebook nodes](https://docs.gtk.org/gtk4/class.Notebook.html#css-nodes) and
+[independent symbolic snapshots](https://docs.gtk.org/gtk4/method.SymbolicPaintable.snapshot_symbolic.html).
+
+---
+
 # VGUI2 Classic GTK 3 follow-up audit and fixes — 2026-10-30
 
 Audited base: `4edece99be07a7a8dce67c4f1f56e39746407f05` (clean).

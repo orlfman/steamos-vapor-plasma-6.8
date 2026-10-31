@@ -1,8 +1,9 @@
 # VGUI2 Classic for GTK 3.24
 
 Status: **initial implementation audited and corrected, unreleased**, 2026-10-30. The published
-1.0.4 AUR package does not include this theme. GTK 4 and the VGUI2 libadwaita
-profile remain planned in [vgui2-plan.md](vgui2-plan.md).
+1.0.4 AUR package does not include this theme. Initial plain GTK 4 support is
+now documented in [VGUI2-GTK4.md](VGUI2-GTK4.md); the VGUI2 libadwaita profile
+and shared activation remain planned in [vgui2-plan.md](vgui2-plan.md).
 
 The independent **VGUI2Classic** theme matches the olive/gold KDE palette with
 square raised/sunken controls. It keeps system fonts and normal GTK control
@@ -117,7 +118,7 @@ verified those production files are unchanged.
 The 2x checks exercise scaled indicator contexts; whole-window HiDPI,
 fractional scaling, live Wayland/X11, full keyboard navigation, accessibility
 tools and performance need further validation. The successful Vapor 4K/175%
-result does not establish VGUI2 coverage. GTK 4, libadwaita VGUI2 switching and
+result does not establish VGUI2 coverage. Libadwaita VGUI2 switching and
 Flatpak support are separate work. No release or live activation is included.
 
 Portable results: [vgui2-gtk3-validation.json](docs/audits/vgui2-gtk3-validation.json).

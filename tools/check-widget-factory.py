@@ -13,6 +13,7 @@ import json
 import os
 from pathlib import Path
 import re
+import runpy
 import shlex
 import shutil
 import signal
@@ -22,6 +23,7 @@ import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parent.parent
+FAMILY_TOOLS=runpy.run_path(str(ROOT/'tools/theme-families.py'))
 PAGES = ('page1', 'page2', 'page3')
 # Reproduced on GTK 4.24.1 with only two named colors and no Vapor rules.
 # Retain/count it; never ignore CSS diagnostics.
@@ -89,11 +91,14 @@ def run_application(launch, env, output, case):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, help='retain screenshots/logs; otherwise discard temporary output')
-    parser.add_argument('--theme', type=Path, default=ROOT / 'usr/share/themes/Vapor')
+    parser.add_argument('--family',choices=tuple(FAMILY_TOOLS['FAMILIES']),default='vapor')
+    parser.add_argument('--theme', type=Path)
     parser.add_argument('--user-css', type=Path, help='stage a libadwaita overlay to check plain GTK coexistence')
     parser.add_argument('--quick', action='store_true', help='one normal capture per page')
     parser.add_argument('--strict', action='store_true', help='also reject the known Broadway timing warning')
     args = parser.parse_args()
+    family=FAMILY_TOOLS['get_family'](args.family)
+    args.theme=args.theme or ROOT/'usr/share/themes'/family['name']
     from PIL import Image
     for command in ('gtk4-widget-factory', 'gtk4-broadwayd', 'pkg-config', 'cc', 'dbus-run-session'):
         if not shutil.which(command):
@@ -122,7 +127,7 @@ def main():
             path = scratch / folder
             path.mkdir(mode=0o700)
             env[variable] = str(path)
-        theme = scratch / 'data/themes/Vapor'
+        theme = scratch / 'data/themes'/family['name']
         shutil.copytree(source_theme, theme)
         css = theme / 'gtk-4.0/gtk.css'
         # Unused marker proves discovery of this disposable copy. It changes
@@ -131,7 +136,7 @@ def main():
         settings = scratch / 'config/gtk-4.0'
         settings.mkdir()
         (settings / 'settings.ini').write_text(
-            '[Settings]\ngtk-theme-name=Vapor\ngtk-font-name=DejaVu Sans 10\n')
+            '[Settings]\ngtk-theme-name='+family['name']+'\ngtk-font-name=DejaVu Sans 10\n')
         if args.user_css:
             subprocess.run([sys.executable, '-I', str(ROOT/'tools/vapor-libadwaita'), 'enable',
                             '--config-home', str(scratch/'config'), '--profile', str(args.user_css.resolve()),
@@ -167,6 +172,9 @@ def main():
             launch = ['dbus-run-session', '--config-file=' + str(bus_config), '--', 'env',
                       f'LD_PRELOAD={library}', f'VAPOR_FACTORY_PAGE={page}',
                       f'VAPOR_FACTORY_STATE={state}', f'VAPOR_FACTORY_DARK={1 if dark else 0}',
+                      'VAPOR_FACTORY_THEME='+family['name'],
+                      'VAPOR_FACTORY_SELECTION_BG=#'+''.join(f'{v:02x}' for v in family['selection']),
+                      'VAPOR_FACTORY_SELECTION_FG=#'+''.join(f'{v:02x}' for v in family['selection_foreground']),
                       f'VAPOR_FACTORY_OUTPUT={output}', binary]
             with private_display(scratch, env):
                 returncode, stdout, stderr = run_application(launch, env, output, case)
@@ -180,6 +188,7 @@ def main():
             record = json.loads(records[0])
             assert (record['page'], record['state'], record['dark']) == (page, state, dark)
             assert record['theme_marker'] and record['mapped_widgets'] >= 20
+            assert record['theme']==family['name']
             image_path = output / record['file']
             with Image.open(image_path) as image:
                 image = image.convert('RGBA')
@@ -187,6 +196,9 @@ def main():
                 assert image.width >= 200 and image.height >= 200
                 assert len(image.getcolors(image.width * image.height) or []) > 20, 'Blank page'
                 assert image.getchannel('A').getextrema() == (255, 255), 'Missing content background'
+                if family['classic']:
+                    count=sum(n for n,pixel in image.getcolors(image.width*image.height) if pixel[:3]==family['window'])
+                    assert count>image.width*image.height*.02,'GTK4-SURFACE: missing olive page background'
                 record['pixel_sha256'] = hashlib.sha256(image.tobytes()).hexdigest()
             record['known_broadway_warnings'] = known_warnings
             results.append(record)
@@ -196,6 +208,7 @@ def main():
         assert len({record['pixel_sha256'] for record in results[:3]}) == 3, 'Pages look identical'
         report = {
             'application': binary,
+            'family':args.family,'theme_name':family['name'],
             'binary_sha256': hashlib.sha256(Path(binary).read_bytes()).hexdigest(),
             'theme_css_sha256': hashlib.sha256(source_css.read_bytes()).hexdigest(),
             'user_css_sha256': hashlib.sha256(args.user_css.read_bytes()).hexdigest() if args.user_css else None,

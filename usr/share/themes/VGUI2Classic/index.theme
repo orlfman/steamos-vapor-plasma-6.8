@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=X-GNOME-Metatheme
 Name=VGUI2 Classic
-Comment=Classic olive and gold controls for GTK 3.24
+Comment=Classic olive and gold controls for GTK 3.24 and GTK 4
 
 [X-GNOME-Metatheme]
 GtkTheme=VGUI2Classic

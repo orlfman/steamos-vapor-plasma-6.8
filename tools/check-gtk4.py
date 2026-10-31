@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Parse and render the initial Vapor GTK 4 port without touching the desktop.
+"""Parse and render Vapor and VGUI2 Classic GTK 4 without touching the desktop.
 
 Requires gtk4 >= 4.24 (gtk4-broadwayd and development/pkg-config files),
 gtk4-demos, pkgconf, a C compiler, dbus-run-session, python-gobject,
@@ -9,11 +9,11 @@ Creates a private Unix-socket display and temporary HOME/XDG settings. Captures
 can be retained with --output DIR. Tested on GTK 4.24.1 with the Cairo renderer.
 """
 import argparse
-import configparser
 import json
 import os
 from pathlib import Path
 import re
+import runpy
 import shutil
 import subprocess
 import sys
@@ -21,9 +21,11 @@ import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parent.parent
+FAMILY_TOOLS = runpy.run_path(str(ROOT/'tools/theme-families.py'))
 
 
 def worker(args):
+    family=FAMILY_TOOLS['get_family'](args.family)
     import gi
     gi.require_version('Gtk', '4.0')
     gi.require_version('Gsk', '4.0')
@@ -48,20 +50,18 @@ def worker(args):
     settings.set_property('gtk-interface-color-scheme', Gtk.InterfaceColorScheme.DARK if args.dark else Gtk.InterfaceColorScheme.LIGHT)
     settings.set_property('gtk-enable-animations', False)
     settings.set_property('gtk-cursor-blink', False)
-    assert settings.get_property('gtk-theme-name') == 'Vapor'
-    scheme = configparser.ConfigParser()
-    scheme.read(ROOT/'usr/share/color-schemes/Vapor.colors')
-    selection_fg = tuple(int(n) for n in scheme['Colors:Selection']['ForegroundNormal'].split(','))
-    selection_bg = tuple(int(n) for n in scheme['Colors:Selection']['BackgroundNormal'].split(','))
+    assert settings.get_property('gtk-theme-name') == family['name']
+    selection_fg = family['selection_foreground']
+    selection_bg = family['selection']
 
     def rgb(widget):
         color = widget.get_color()
         return tuple(round(v*255) for v in (color.red, color.green, color.blue))
 
-    window = Gtk.Window(title='Vapor GTK 4 port test')
+    window = Gtk.Window(title=family['name']+' GTK 4 port test')
     window.set_default_size(820, 620)
     header = Gtk.HeaderBar()
-    header.set_title_widget(Gtk.Label(label='Vapor GTK 4 — development preview'))
+    header.set_title_widget(Gtk.Label(label=family['name']+' GTK 4 — development preview'))
     window.set_titlebar(header)
     grid = Gtk.Grid(row_spacing=12, column_spacing=12,
                     margin_start=20, margin_end=20, margin_top=20, margin_bottom=20)
@@ -198,7 +198,7 @@ def worker(args):
         try:
             assert window.get_scale_factor() == 1, 'This fixture only claims normal-scale window coverage'
             if mode == 'normal':
-                assert rgb(marker) == (17, 23, 29), 'Widgets did not load the staged Vapor theme'
+                assert rgb(marker) == (17, 23, 29), 'Widgets did not load the staged '+family['name']+' theme'
             assert checks[0].get_first_child().get_css_name() == 'check'
             assert radio2.get_first_child().get_css_name() == 'radio'
             assert spin.get_first_child().get_css_name() == 'text'
@@ -216,12 +216,12 @@ def worker(args):
                 (Path(args.output)/'node-diagnostic.json').write_text(json.dumps({'list':path_for(list_label),'table':path_for(table_label)},indent=2))
                 assert rgb(list_label) == selection_fg, (mode, 'list', rgb(list_label))
                 assert rgb(table_label) == selection_fg, (mode, 'table', rgb(table_label))
-                assert rgb(normal) == (239, 240, 241), (mode, rgb(normal))
+                assert rgb(normal) == family['foreground'], (mode, rgb(normal))
             suffix = 'dark' if args.dark else 'normal'
             image = snapshot(grid, f'{mode}-{suffix}.png')
             if mode == 'normal':
                 assert image.width > 400 and image.height > 300
-                assert any(p[:3] == selection_bg for p in image.get_flattened_data()), 'No exact Vapor selection background'
+                assert any(p[:3] == selection_bg for p in image.get_flattened_data()), 'GTK4-PALETTE: no exact selection background'
             loop.quit()
         except BaseException as error:
             failure.append(error)
@@ -236,6 +236,7 @@ def worker(args):
     if failure:
         raise failure[0]
     print(json.dumps({'gtk':f'{Gtk.get_major_version()}.{Gtk.get_minor_version()}.{Gtk.get_micro_version()}',
+                      'family':args.family,'theme_name':family['name'],
                       'variant':'dark' if args.dark else 'normal', 'state':args.state, 'parse_errors':len(errors),
                       'captures':captures, 'selection':selection_bg, 'foreground':selection_fg,
                       'display_scale':1}))
@@ -244,13 +245,19 @@ def worker(args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path)
-    parser.add_argument('--theme', type=Path, default=ROOT/'usr/share/themes/Vapor')
+    parser.add_argument('--family',choices=tuple(FAMILY_TOOLS['FAMILIES']))
+    parser.add_argument('--theme', type=Path)
     parser.add_argument('--libadwaita-profile', type=Path, default=ROOT/'libadwaita/vapor.css')
     parser.add_argument('--overlay', type=Path, help=argparse.SUPPRESS)
     parser.add_argument('--worker', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('--state', default='normal', choices=('normal','hover','backdrop','rtl','disabled'), help=argparse.SUPPRESS)
     parser.add_argument('--dark', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
+    supplied_theme=args.theme is not None
+    both=args.family is None and args.theme is None and not args.worker and not args.overlay
+    args.family=args.family or 'vapor'
+    family=FAMILY_TOOLS['get_family'](args.family)
+    args.theme=args.theme or ROOT/'usr/share/themes'/family['name']
     if args.worker:
         worker(args)
         return
@@ -269,12 +276,12 @@ def main():
             env[variable] = str(path)
         config = scratch/'config/gtk-4.0'
         config.mkdir()
-        (config/'settings.ini').write_text('[Settings]\ngtk-theme-name=Vapor\ngtk-font-name=DejaVu Sans 10\n')
+        (config/'settings.ini').write_text('[Settings]\ngtk-theme-name='+family['name']+'\ngtk-font-name=DejaVu Sans 10\n')
         if args.overlay:
             subprocess.run([sys.executable,'-I',str(ROOT/'tools/vapor-libadwaita'),'enable',
                             '--config-home',str(scratch/'config'),'--profile',str(args.overlay.resolve()),'--json'],
                            capture_output=True,text=True,check=True)
-        staged = scratch/'data/themes/Vapor'
+        staged = scratch/'data/themes'/family['name']
         shutil.copytree(theme, staged)
         css = staged/'gtk-4.0/gtk.css'
         css.write_text(css.read_text()+'\n.vapor-gtk4-test-marker {color: #11171d;}\n.vapor-gtk4-test-surface {background-color: @theme_bg_color;}\n')
@@ -299,28 +306,31 @@ def main():
                 raise RuntimeError('Private GTK 4 display did not start')
             output = args.output.resolve() if args.output else scratch/'captures'
             output.mkdir(parents=True,exist_ok=True)
+            reports=[]
             for dark in (False, True):
                 for state in ('normal', 'hover', 'backdrop', 'rtl', 'disabled'):
                     command = [sys.executable,'-I',str(Path(__file__).resolve()),'--worker',
-                               '--theme',str(staged),'--output',str(output),'--state',state]
+                               '--family',args.family,'--theme',str(staged),'--output',str(output),'--state',state]
                     if dark:
                         command.append('--dark')
                     result = subprocess.run(command,env=env,capture_output=True,text=True,timeout=15)
                     if result.returncode or result.stderr:
                         raise RuntimeError(result.stdout+result.stderr)
                     print(result.stdout.strip(),flush=True)
+                    reports.append(json.loads(result.stdout))
+            (output/'results.json').write_text(json.dumps(reports,indent=2)+'\n')
         finally:
             server.terminate()
             server.communicate(timeout=5)
     command = [sys.executable, '-I', str(ROOT/'tools/check-gtk-regressions.py'),
-               '--gtk', '4.0', '--theme', str(theme)]
+               '--gtk', '4.0', '--theme', str(theme),'--family',args.family]
     if args.output:
         command += ['--output', str(args.output.resolve()/'behavior')]
     if args.overlay:
         command += ['--user-css', str(args.overlay.resolve())]
     subprocess.run(command, check=True)
     command = [sys.executable, '-I', str(ROOT/'tools/check-widget-factory.py'),
-               '--theme', str(theme)]
+               '--theme', str(theme),'--family',args.family]
     if args.output:
         command += ['--output', str(args.output.resolve()/'widget-factory')]
     if args.overlay:
@@ -329,7 +339,15 @@ def main():
     if args.overlay:
         print('Plain GTK 4 widgets, behavior and Widget Factory with libadwaita overlay: PASS',flush=True)
         return
-    command=[sys.executable,'-I',str(Path(__file__).resolve()),'--theme',str(theme),
+    if family['classic']:
+        command=[sys.executable,'-I',str(ROOT/'tools/check-vgui2-gtk4.py'),'--theme',str(theme)]
+        if args.output:command += ['--output',str(args.output.resolve()/'classic')]
+        subprocess.run(command,check=True)
+        if not supplied_theme:
+            subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-vgui2-gtk4.py')],check=True)
+        print('GTK 4 VGUI2 Classic native, behavior, Widget Factory and state checks: PASS',flush=True)
+        return
+    command=[sys.executable,'-I',str(Path(__file__).resolve()),'--family',args.family,'--theme',str(theme),
              '--overlay',str(args.libadwaita_profile.resolve())]
     if args.output:command += ['--output',str(args.output.resolve()/'coexistence')]
     subprocess.run(command,check=True)
@@ -341,6 +359,10 @@ def main():
     subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-libadwaita-regressions.py')],check=True)
     subprocess.run([sys.executable,'-I',str(ROOT/'tools/test-package-staging.py')],check=True)
     print('GTK 4 native/Widget Factory, libadwaita, coexistence, activation and negative controls: PASS',flush=True)
+    if both:
+        command=[sys.executable,'-I',str(Path(__file__).resolve()),'--family','vgui2']
+        if args.output:command += ['--output',str(args.output.resolve()/'vgui2')]
+        subprocess.run(command,check=True)
 
 
 if __name__ == '__main__':
