@@ -1,0 +1,453 @@
+{
+  "date": "2026-10-30",
+  "timezone": "America/Phoenix",
+  "baseline_commit": "32937d6d5a10c50794ae07b0baffd92587443246",
+  "status": "Investigation only; no Firefox themes created or loaded.",
+  "browser": {
+    "package": "firefox 159.0-1.1",
+    "version": "159.0",
+    "build_id": "20261027211755",
+    "source_repository": "https://hg.mozilla.org/releases/mozilla-release",
+    "source_stamp": "5add844c26613d7e4d84c799d6e23cf987b1240d",
+    "package_repository": "cachyos-extra-v3",
+    "toolkit_dependency": "gtk3"
+  },
+  "methods": {
+    "installed_code": "Read Mozilla optimized ZIP central indexes and validate extracted entry sizes and CRC32; no application archive modified.",
+    "ordinary_reader_results": "Python zipfile rejected the optimized directory; bsdtar returned zero names; unzip listed with compensating directory warnings.",
+    "palette_contrast": "WCAG sRGB relative luminance, opaque proposed colors; no rendered Firefox measurements",
+    "runtime_browser_testing": "Not performed. No browser was launched or profile read.",
+    "signing_or_publishing_themes": "Not performed."
+  },
+  "application_archives": {
+    "toolkit": {
+      "archive": "/usr/lib/firefox/omni.ja",
+      "archive_sha256": "4a2e04c5d0c2583024becda0a92a468625c9fa1615bb8a6c17f78937df45fadc",
+      "entries": 2664,
+      "extracted": [
+        {
+          "path": "modules/LightweightThemeManager.sys.mjs",
+          "sha256": "cabacb58f3f9d41662b7821d7946e1fc4e121c2e93bc62c9c96d982e24c56769"
+        },
+        {
+          "path": "chrome/toolkit/content/extensions/parent/ext-theme.js",
+          "sha256": "09b908583d6def935bdc134562b122bebc4c82ffd466a4f3a314cd576b64292d"
+        },
+        {
+          "path": "modules/LightweightThemeConsumer.sys.mjs",
+          "sha256": "22e98a2a1f272b3d5d85f6c2252be30f43561749e0489be70886a21ae61699c0"
+        },
+        {
+          "path": "chrome/toolkit/content/extensions/schemas/manifest.json",
+          "sha256": "446d1da0922e5b3bca1201e1f0f54176c99f65f9eaec010320efc2587ed02e67"
+        },
+        {
+          "path": "chrome/toolkit/content/extensions/schemas/theme.json",
+          "sha256": "06664efa75a981a4d8c070b9ee738d9c812170444f3ee7f8e4cf70a0e9c59a3a"
+        },
+        {
+          "path": "chrome/toolkit/content/mozapps/extensions/default-theme/manifest.json",
+          "sha256": "d36ad4e2fb60514485a1c824039c6b091e53507af23ea136f7ade5ab296a05b6"
+        }
+      ],
+      "missing_requested": []
+    },
+    "browser": {
+      "archive": "/usr/lib/firefox/browser/omni.ja",
+      "archive_sha256": "63a7e3fd470f9793427918f0ba2f2da6427d2951c8e74630f397cddb4e14fb21",
+      "entries": 5325,
+      "extracted": [
+        {
+          "path": "chrome/browser/skin/classic/browser/browser.css",
+          "sha256": "9c6d8a4de7878d1b9bc5adb5c6009a35d1a872ba8fa3f226ec3b02fd1adce719"
+        },
+        {
+          "path": "chrome/browser/skin/classic/browser/browser-colors.css",
+          "sha256": "e349ec55945729405d553abd2c6fd58aa25c6d465b54e9ca70fcd5740b3ce2e7"
+        },
+        {
+          "path": "chrome/browser/skin/classic/browser/sidebar.css",
+          "sha256": "6c5dafa1145da3c510d1789b0f8f4ebac7e70bfdd49df534589cb1f412afdd00"
+        },
+        {
+          "path": "modules/ThemeVariableMap.sys.mjs",
+          "sha256": "09e4e3a2d2f2eaa1a3286302f52f3cf48e7761252ab693ff79fe1b188d28a38c"
+        },
+        {
+          "path": "chrome/browser/builtin-addons/formautofill/manifest.json",
+          "sha256": "29052208552bbfc97816afa009d795382d7a91cebc93d10d9f454056b65ccf82"
+        },
+        {
+          "path": "chrome/browser/builtin-addons/ipp-activator/manifest.json",
+          "sha256": "a916b6bfe2a13fbde85ad50cd97fec8997ae86e3f0d8f0805230c3a92147cb75"
+        },
+        {
+          "path": "chrome/browser/builtin-addons/newtab/manifest.json",
+          "sha256": "3861acaf056bea53604dd1be3e860e5ae7c2e01641e74b65f93b5c9216f518c9"
+        },
+        {
+          "path": "chrome/browser/builtin-addons/pictureinpicture/manifest.json",
+          "sha256": "7419aadeb159b1040ac6a6fa6ade10a91b069160c658e7c78b86a76a07846b6e"
+        },
+        {
+          "path": "chrome/browser/builtin-addons/search-detection/manifest.json",
+          "sha256": "cf19a3aebd538439c197d87c4636a86f2054fd741a2dbfbcc06b6484400b6f79"
+        },
+        {
+          "path": "chrome/browser/builtin-addons/webcompat/manifest.json",
+          "sha256": "5200b75f946ab8d40c286b19f2789c18203bc6bebab772fb6b675bfea9600582"
+        },
+        {
+          "path": "chrome/browser/content/browser/sidebar/sidebar.css",
+          "sha256": "b7b4e84aa228f3ee452f60186c59565136b3c00ab5a419a5861e06600f168d81"
+        },
+        {
+          "path": "chrome/browser/content/builtin-themes/aiwindow/manifest.json",
+          "sha256": "a8f8905e51808542aaf4e4621157bc3aa0df828f39a79e435f5ca488d65e1831"
+        },
+        {
+          "path": "chrome/browser/content/builtin-themes/aiwindow-nova/manifest.json",
+          "sha256": "5dbf0e161ec80c2be3574633e4d09d2e8172659e1641a25fab9e5c50a2c54a06"
+        },
+        {
+          "path": "chrome/browser/content/builtin-themes/alpenglow/manifest.json",
+          "sha256": "23fa2773b805112dbce68fca9628fffda472892b336a2dd541efa18b0a7a94ec"
+        },
+        {
+          "path": "chrome/browser/content/builtin-themes/dark/manifest.json",
+          "sha256": "3cd828d7bf3602be2a2b890f637d75712508a5d930b6e50eb2bf77e47574d305"
+        },
+        {
+          "path": "chrome/browser/content/builtin-themes/light/manifest.json",
+          "sha256": "f37d5a3ed5ac25f4cf9ca416c21939a03a263e0ff944ccbc4d3f4f03ba1c374f"
+        },
+        {
+          "path": "chrome/browser/content/builtin-themes/privatewindow/manifest.json",
+          "sha256": "36365a6bcc535a86ceb44b7842a0b98a013f8d2c44271fd0d91f33d983b226b3"
+        }
+      ],
+      "missing_requested": []
+    }
+  },
+  "project_sources": {
+    "usr/share/color-schemes/Vapor.colors": "19c1c4d88907c2f08bc322659fdedf7c820d05d85f744b099f0ce7e6dcbc737e",
+    "usr/share/color-schemes/VGUI.colors": "4cda3fcc26179363a02b05824d9b6f390b0943b022c473eb4b0d9ebc452f3731",
+    "usr/share/color-schemes/VGUIUnion.colors": "b17e93e4246b68ac1d22643689c25df979d52bc5bb4abd4e0b949e1e2ebce3aa",
+    "usr/share/themes/Vapor/gtk-3.24/gtk.css": "0b97f0b963a4be33dfbd02e8f09c96ee576ccb27718dda306b0583a2a931073e",
+    "usr/share/themes/VGUI2Classic/gtk-3.24/gtk.css": "f43e6df7b541f31a4391d95dc6c25c0c683252b3680037d547fe254ec63fe2eb",
+    "libadwaita/vapor.css": "2df224de82e58d767cfa2f69f13db75df8dac9db6436ddd543d00378ecc9fd70",
+    "libadwaita/vgui2.css": "f4b482d56ef9f91384821c839eed836af42ea9af42387cf9b1a5f867ce064608"
+  },
+  "installed_schema": {
+    "colors": [
+      "tab_selected",
+      "accentcolor",
+      "frame",
+      "frame_inactive",
+      "textcolor",
+      "tab_background_text",
+      "tab_background_separator",
+      "tab_loading",
+      "tab_text",
+      "tab_line",
+      "toolbar",
+      "toolbar_text",
+      "bookmark_text",
+      "toolbar_field",
+      "toolbar_field_text",
+      "toolbar_field_border",
+      "toolbar_field_separator",
+      "toolbar_top_separator",
+      "toolbar_bottom_separator",
+      "toolbar_vertical_separator",
+      "icons",
+      "icons_attention",
+      "button_background_hover",
+      "button_background_active",
+      "popup",
+      "popup_text",
+      "popup_border",
+      "toolbar_field_focus",
+      "toolbar_field_text_focus",
+      "toolbar_field_border_focus",
+      "popup_highlight",
+      "popup_highlight_text",
+      "ntp_background",
+      "ntp_card_background",
+      "ntp_text",
+      "sidebar",
+      "sidebar_border",
+      "sidebar_text",
+      "sidebar_highlight",
+      "sidebar_highlight_text",
+      "toolbar_field_highlight",
+      "toolbar_field_highlight_text"
+    ],
+    "deprecated_colors": {
+      "accentcolor": "Unsupported colors property, use 'theme.colors.frame', this alias is ignored in Firefox >= 70.",
+      "textcolor": "Unsupported color property, use 'theme.colors.tab_background_text', this alias is ignored in Firefox >= 70.",
+      "toolbar_field_separator": "This color property is ignored in Firefox >= 89."
+    },
+    "properties": {
+      "backgrounds_area": {
+        "type": "string",
+        "enum": [
+          "auto",
+          "window",
+          "top_toolbars"
+        ]
+      },
+      "additional_backgrounds_alignment": {
+        "type": "array"
+      },
+      "additional_backgrounds_tiling": {
+        "type": "array"
+      },
+      "additional_backgrounds_size": {
+        "type": "array"
+      },
+      "color_scheme": {
+        "type": "string",
+        "enum": [
+          "auto",
+          "light",
+          "dark",
+          "system"
+        ]
+      },
+      "content_color_scheme": {
+        "type": "string",
+        "enum": [
+          "auto",
+          "light",
+          "dark",
+          "system"
+        ]
+      }
+    },
+    "caveat": "Accepted fields are not proof of actual rendered coverage, particularly with Nova."
+  },
+  "contrast_pairs": [
+    {
+      "name": "Vapor ordinary text/window",
+      "foreground": "#eff0f1",
+      "background": "#24272c",
+      "ratio": 13.1310447913457,
+      "role": "text",
+      "target": 4.5,
+      "passes": true
+    },
+    {
+      "name": "Vapor ordinary text/view",
+      "foreground": "#eff0f1",
+      "background": "#151c23",
+      "ratio": 15.057676184896131,
+      "role": "text",
+      "target": 4.5,
+      "passes": true
+    },
+    {
+      "name": "Vapor selected text/blue",
+      "foreground": "#1f1f26",
+      "background": "#569fcc",
+      "ratio": 5.636110061337476,
+      "role": "text",
+      "target": 4.5,
+      "passes": true
+    },
+    {
+      "name": "Vapor old focus/window",
+      "foreground": "#346c92",
+      "background": "#24272c",
+      "ratio": 2.6442109033024024,
+      "role": "indicator",
+      "target": 3.0,
+      "passes": false
+    },
+    {
+      "name": "Vapor blue focus/window",
+      "foreground": "#569fcc",
+      "background": "#24272c",
+      "ratio": 5.1561890004232716,
+      "role": "indicator",
+      "target": 3.0,
+      "passes": true
+    },
+    {
+      "name": "Vapor blue focus/card",
+      "foreground": "#569fcc",
+      "background": "#2d3136",
+      "ratio": 4.5050481364355,
+      "role": "indicator",
+      "target": 3.0,
+      "passes": true
+    },
+    {
+      "name": "VGUI2 ordinary text/window",
+      "foreground": "#fcfcfc",
+      "background": "#4d5845",
+      "ratio": 7.31717097893065,
+      "role": "text",
+      "target": 4.5,
+      "passes": true
+    },
+    {
+      "name": "VGUI2 ordinary text/view",
+      "foreground": "#fcfcfc",
+      "background": "#3f4638",
+      "ratio": 9.544746460711222,
+      "role": "text",
+      "target": 4.5,
+      "passes": true
+    },
+    {
+      "name": "VGUI2 original selected light/gold",
+      "foreground": "#fcfcfc",
+      "background": "#958831",
+      "ratio": 3.5025948470285417,
+      "role": "text",
+      "target": 4.5,
+      "passes": false
+    },
+    {
+      "name": "VGUI2 readable selected dark/gold",
+      "foreground": "#181810",
+      "background": "#958831",
+      "ratio": 4.965213910022314,
+      "role": "text",
+      "target": 4.5,
+      "passes": true
+    },
+    {
+      "name": "VGUI2 gold focus/window",
+      "foreground": "#958831",
+      "background": "#4d5845",
+      "ratio": 2.0890714737213294,
+      "role": "indicator",
+      "target": 3.0,
+      "passes": false
+    },
+    {
+      "name": "VGUI2 pale focus/window",
+      "foreground": "#ffffe0",
+      "background": "#4d5845",
+      "ratio": 7.37560347152757,
+      "role": "indicator",
+      "target": 3.0,
+      "passes": true
+    },
+    {
+      "name": "VGUI2 pale focus/view",
+      "foreground": "#ffffe0",
+      "background": "#3f4638",
+      "ratio": 9.620967629864015,
+      "role": "indicator",
+      "target": 3.0,
+      "passes": true
+    },
+    {
+      "name": "VGUI2 pale focus/card",
+      "foreground": "#ffffe0",
+      "background": "#56604e",
+      "ratio": 6.490518343831126,
+      "role": "indicator",
+      "target": 3.0,
+      "passes": true
+    },
+    {
+      "name": "VGUI2 gold selected tab/window",
+      "foreground": "#958831",
+      "background": "#4d5845",
+      "ratio": 2.0890714737213294,
+      "role": "indicator",
+      "target": 3.0,
+      "passes": false
+    }
+  ],
+  "findings": [
+    {
+      "id": "FFX-01",
+      "finding": "Static color themes are the recommended first implementation; browser selection is separate from KDE/GTK selection.",
+      "basis": "Installed ThemeManifest/schema/loader plus Mozilla static/dynamic documentation."
+    },
+    {
+      "id": "FFX-02",
+      "finding": "Normal themes cannot reproduce arbitrary VGUI2 geometry; custom CSS is a separate maintenance project.",
+      "basis": "Installed color mappings; Mozilla advanced-customization and experiment-channel documentation."
+    },
+    {
+      "id": "FFX-03",
+      "finding": "Nova changes visible property use and accent behavior. Official static-theme and MDN docs disagree about redesigned sidebar highlight support.",
+      "basis": "Current primary documentation and installed loader/CSS. Rendered behavior remains untested."
+    },
+    {
+      "id": "FFX-04",
+      "finding": "Original VGUI2 light-on-gold text and original Vapor/VGUI focus colors are weak; retain maintained selection text and trial stronger supported focus roles.",
+      "basis": "Opaque-color contrast calculations; no rendered Firefox pass claimed."
+    },
+    {
+      "id": "FFX-05",
+      "finding": "Toolbar-button state background changes have no equivalent per-state icon foreground in the normal theme fields.",
+      "basis": "Installed schema and theme loader. Require actual icon state tests."
+    },
+    {
+      "id": "FFX-06",
+      "finding": "Firefox themes need Mozilla signing for normal release installation; temporary developer loading is not persistent.",
+      "basis": "Mozilla signing/static-theme documentation."
+    },
+    {
+      "id": "FFX-07",
+      "finding": "Avoid automatic profile/policy changes from AUR; prefer public signed listings and user choice.",
+      "basis": "Project architecture recommendation and novice-user installation requirement."
+    },
+    {
+      "id": "FFX-08",
+      "finding": "Browser UI automation requires dedicated tools and isolated profiles; none of the checked browser development tools are installed.",
+      "basis": "Local PATH/import checks and official web-ext/Marionette/geckodriver documentation."
+    }
+  ],
+  "tool_availability": {
+    "firefox": "/usr/bin/firefox",
+    "web-ext": false,
+    "node": false,
+    "nodejs": false,
+    "npm": false,
+    "geckodriver": false,
+    "Xvfb": false,
+    "xvfb-run": false,
+    "zip_cli": false,
+    "python_selenium": false,
+    "python_playwright": false,
+    "python_marionette_driver": false,
+    "python_stdlib_zip_builder_available": true
+  },
+  "sources": [
+    "https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/theme",
+    "https://extensionworkshop.com/documentation/themes/static-themes/",
+    "https://extensionworkshop.com/documentation/themes/dynamic-themes/",
+    "https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/theme",
+    "https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging",
+    "https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/theme_experiment",
+    "https://support.mozilla.org/en-US/kb/firefox-advanced-customization-and-configuration",
+    "https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/",
+    "https://extensionworkshop.com/documentation/publish/self-distribution/",
+    "https://support.mozilla.org/en-US/kb/use-themes-change-look-of-firefox",
+    "https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/",
+    "https://firefox-source-docs.mozilla.org/remote/marionette/Intro.html",
+    "https://firefox-source-docs.mozilla.org/testing/geckodriver/Flags.html"
+  ],
+  "scratch_evidence": "/tmp/vapor-firefox-audit-7btdy0jw",
+  "not_validated": [
+    "Rendered browser colors/states",
+    "Native Wayland/GPU or fractional scaling",
+    "High contrast/keyboard/screen-reader behavior",
+    "Startup/idle/memory performance",
+    "Signed install/restart/update flow",
+    "Older Firefox/ESR",
+    "Firefox derivatives",
+    "Flatpak"
+  ],
+  "live_profile_changes": false,
+  "theme_implementation": false,
+  "release_or_aur_change": false
+}

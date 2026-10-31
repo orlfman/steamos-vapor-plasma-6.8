@@ -1,3 +1,13 @@
+Unreleased — 2026-10-30: investigate matching Firefox themes
+
+- Add firefox-audit.md and firefox-plan.md for Vapor and VGUI2 Classic.
+- Inspect Firefox 159's installed theme schema/loader and current Mozilla
+  documentation; record palette readability risks and Firefox/Nova limits.
+- Recommend two signed static browser themes first, with custom VGUI2 shapes
+  and automatic desktop switching left as separate later work.
+- Research/documentation only: no Firefox theme implementation, browser-profile
+  changes, release version bump or AUR update.
+
 1.1.0-3 (AUR packaging) — 2026-10-30: explain setup for new users
 
 - Replace the installation/upgrade notice with numbered steps through KDE's

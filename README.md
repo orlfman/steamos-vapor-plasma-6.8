@@ -129,6 +129,13 @@ redefines kitty's default hint shortcuts (Ctrl+Shift+E and Ctrl+Shift+P
 keys) to draw Vapor-colored labels. Your own maps for those keys go after the
 include. Set `background_opacity 0.9` yourself to match Konsole.
 
+## Firefox themes (planned)
+
+Matching Vapor and VGUI2 Classic Firefox themes are being investigated. The
+[findings](firefox-audit.md) and [implementation plan](firefox-plan.md) explain
+what can match, Firefox's styling limits and how installation should work.
+No installable Firefox theme is included yet.
+
 ## GTK 3.24 compatibility
 
 The working tree targets GTK **3.24** explicitly. Its maintained stylesheet lives
