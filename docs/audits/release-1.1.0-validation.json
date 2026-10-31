@@ -88,6 +88,11 @@
   "publication": {
     "github": "https://github.com/orlfman/steamos-vapor-plasma-6.8/releases/tag/v1.1.0",
     "aur": "https://aur.archlinux.org/packages/plasma6-themes-steamos-vapor-fixed",
-    "aur_version": "1.1.0-1"
+    "aur_version": "1.1.0-1",
+    "github_published": true,
+    "github_latest": true,
+    "aur_git_commit": "d4729f8126a8b8237b12654a4c37a8a324b72d20",
+    "aur_public_page_verified_version": "1.1.0-1",
+    "aur_rpc_cache_at_verification": "older 1.0.4-1 response; public package page and Git show 1.1.0-1"
   }
 }

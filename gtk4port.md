@@ -1696,3 +1696,10 @@ AUR metadata and generated .SRCINFO follow the immutable tag on main. An initial
 archive comparison used the aur subdirectory as its root and stopped before
 metadata changes; rerun from the repository root verifies every tagged path.
 The correct 1.1.0 package is rebuilt and verified independently afterward.
+
+Publication completed: GitHub v1.1.0 is public, non-prerelease and Latest.
+AUR master commit d4729f8 is accepted; the public package heading verifies
+1.1.0-1 and public committed .SRCINFO has the matching version/checksum. The RPC
+cache still returns the preceding version immediately after publication; record
+that cache delay rather than treating an accepted push as unpublished. No live
+package installation or GTK choice change was performed for this release.
