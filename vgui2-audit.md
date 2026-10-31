@@ -9,6 +9,9 @@ recorded in [gtk4port.md](gtk4port.md), section 23.
 See [VGUI2-GTK3.md](VGUI2-GTK3.md) and [the status table](vgui2-plan.md).
 Initial plain GTK 4 is now implemented and tested; [VGUI2-GTK4.md](VGUI2-GTK4.md)
 records the separate stylesheet, actual application checks and limitations.
+Its follow-up audit fixes GTK 4 frame/field/separator/expander paths and proves
+actual dark-entry loading; see the latest [audit.md](audit.md) entry and work-log
+section 25.
 The findings below preserve the pre-port investigation. VGUI2 Adw and shared
 profile switching remain future work.
 

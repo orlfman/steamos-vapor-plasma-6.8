@@ -1,6 +1,6 @@
 # VGUI2 Classic for plain GTK 4
 
-Status: **initial implementation, unreleased**, 2026-10-30. Tested with
+Status: **initial implementation audited and corrected, unreleased**, 2026-10-30. Tested with
 GTK **4.24.1** on Plasma **6.8.2**. The published AUR **1.0.4** package does
 not include this family. The matching native libadwaita profile and shared
 activation remain later stages in [vgui2-plan.md](vgui2-plan.md).
@@ -27,6 +27,8 @@ adaptations include:
   buttons retain their own foregrounds while selected plain labels stay dark.
 - Popover `contents` surfaces and observed `modelbutton.flat` menu nodes.
 - GTK 4 calendar grid labels, header controls, window controls and icon filters.
+- GTK 4 frame/scrolled-frame borders, inset vertical spin fields, requested
+  column/row separators and direction-aware collapsed/expanded expander arrows.
 - Two-pixel dotted focus, pale on olive/red and dark on gold. The GTK 3 thin
   outline rendered at only 2.73:1 on an ordinary GTK 4 button; the wider outline
   passes the same 3:1 gate without changing allocations.
@@ -48,7 +50,7 @@ python3 -I tools/check-gtk4.py --output /tmp/steamos-gtk4
 The default command validates **both families**. Vapor retains its native,
 Widget Factory, overlay coexistence, libadwaita, activation/recovery and mutation
 stages. VGUI2 adds its own native, shared behavior, Widget Factory, real-widget
-state matrix and **19** deliberate regression controls. A missing application,
+state matrix and **32** deliberate regression controls. A missing application,
 parser error or failed assertion fails the suite.
 
 To target VGUI2 alone:
@@ -63,6 +65,11 @@ temporary helper loaded only into that private test process. Its ten cases
 cover all three pages with normal/dark requests and backdrop, plus page-one RTL.
 It opens no user files or device-changing actions.
 
+The audit found that setting the interface color preference did not select the
+legacy dark entry on this GTK build. Tests now request the named normal/dark
+variant explicitly in each private process and verify a marker present only in
+the dark entry. A broken dark file is rejected. No desktop setting is changed.
+
 ![Installed GTK Widget Factory with VGUI2](docs/screenshots/vgui2-gtk4-widget-factory.png)
 
 The additional fixture runs normal, dark, synthetic backdrop, RTL and actual
@@ -72,10 +79,19 @@ and a native file chooser. Five cases total 100 label checks, 45 focus checks,
 70 indicator renders and 40 arrow comparisons. Disabled text is checked for
 dimming rather than held to the enabled-text contrast gate.
 
+The follow-up audit adds **60** control checks across those cases: frame and
+optional scroll-frame borders, horizontal/vertical/disabled fields, separator
+and padding behavior, expander glyphs and paired native title-focus captures.
+It also checks **15** actual text selections, selecting label, entry and text
+view separately so primary-selection ownership cannot clear another fixture.
+
 Label contrast uses actual adjacent painted backgrounds. Enabled samples pass
 4.5:1; opaque gold text is 4.965:1, ordinary text 7.317:1 and error/warning
 messages 9.056/11.661:1. Focus uses changed outline pixels and a 3:1 gate;
-the lowest measured focus case is **4.485:1**.
+the original nine focus cases remain above 3:1. Transparent snapshots are
+composited over the sampled real parent fill before measuring the outline.
+Expander title focus uses paired native widgets with synthetic state; full
+keyboard interaction remains outside this fixture.
 Arrow glyphs are compared against independent symbolic-icon renders using
 glyph support, allowing antialiasing differences at 1x/2x. A wrong-direction
 mutation must fail that gate. Check/radio tests compare glyphs with explicit
@@ -94,13 +110,23 @@ and counts only those exact messages; `--strict` on the state checker rejects
 them too. CSS diagnostics and other warnings always fail. Widget Factory's
 existing timing-warning policy is unchanged.
 
-The full existing Vapor GTK 4/libadwaita suite passes after family-aware harness
-changes; all **172** baseline PNGs are byte-identical. Both GTK 3 families and
-their 23 VGUI mutations also pass. The existing Vapor libadwaita overlay leaves
+The full existing Vapor GTK 4/libadwaita suite passes. Of 172 captures from the
+earlier session, 171 remain byte-identical; one application's image region in
+Widget Factory differs. A fresh frozen original runner produces all ten factory
+images identically to the current runner, including that region. Production
+Vapor and GTK 3 files remain hash-identical. The existing Vapor libadwaita overlay leaves
 plain VGUI2 GTK 4 captures unchanged in a separate coexistence run.
 
+![Audited frames, vertical fields and expander in Widget Factory](docs/screenshots/vgui2-gtk4-widget-factory-details.png)
+
+Audit fixes and before/after evidence are recorded in [audit.md](audit.md) and
+[gtk4port.md](gtk4port.md), section 25. The earlier port measurements in section
+24 are historical. Tests retain worker logs even if transport teardown fails;
+this audit's display client also paces acknowledgements to avoid a busy frame
+clock. Other test clients and production theme behavior are unchanged.
+
 Portable results: [vgui2-gtk4-validation.json](docs/audits/vgui2-gtk4-validation.json).
-The work record is [gtk4port.md](gtk4port.md), section 24; current findings are
+The work record is [gtk4port.md](gtk4port.md), sections 24–25; current findings are
 in [audit.md](audit.md).
 
 ## Preview scope and remaining work

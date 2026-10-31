@@ -73,6 +73,8 @@ static gboolean capture(gpointer unused) {
       fabs(marker.red - 17.0/255.0) > .001 || fabs(marker.green - 23.0/255.0) > .001 ||
       fabs(marker.blue - 29.0/255.0) > .001)
     fail("staged theme was not loaded");
+  if (gtk_style_context_lookup_color(context, "vapor_factory_dark_marker", &marker) != dark)
+    fail("wrong normal/dark theme entry");
   GdkRGBA expected_background, expected_foreground;
   const char *theme_name = g_getenv("VAPOR_FACTORY_THEME");
   const char *bg = g_getenv("VAPOR_FACTORY_SELECTION_BG");

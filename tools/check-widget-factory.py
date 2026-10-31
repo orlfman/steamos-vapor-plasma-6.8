@@ -133,6 +133,8 @@ def main():
         # Unused marker proves discovery of this disposable copy. It changes
         # no widget selector or existing color.
         css.write_text(css.read_text() + '\n@define-color vapor_factory_test_marker #11171d;\n')
+        dark_css=css.with_name('gtk-dark.css')
+        dark_css.write_text(dark_css.read_text()+'\n@define-color vapor_factory_dark_marker #1d1711;\n')
         settings = scratch / 'config/gtk-4.0'
         settings.mkdir()
         (settings / 'settings.ini').write_text(
@@ -167,6 +169,7 @@ def main():
             cases += [('page1', 'rtl', False)]
         results = []
         for page, state, dark in cases:
+            env['GTK_THEME']=family['name']+(':dark' if dark else '')
             case = f'{page}-{state}-' + ('dark' if dark else 'normal')
             # Only the final application child loads the helper.
             launch = ['dbus-run-session', '--config-file=' + str(bus_config), '--', 'env',

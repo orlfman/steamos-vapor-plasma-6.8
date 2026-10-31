@@ -42,6 +42,7 @@ def main():
                   'docs/screenshots/vgui2-gtk3-states.png','docs/screenshots/vgui2-gtk3-notebooks.png',
                   'docs/screenshots/vgui2-gtk4-preview.png','docs/screenshots/vgui2-gtk4-widget-factory.png',
                   'docs/screenshots/vgui2-gtk4-states.png','docs/audits/vgui2-gtk4-validation.json',
+                  'docs/screenshots/vgui2-gtk4-widget-factory-details.png',
                   'docs/screenshots/vgui2-qt-windows-reference.png','docs/audits/vgui2-feasibility.json',
                   'docs/audits/vgui2-gtk3-validation.json'):
         install(asset,'usr/share/doc/plasma6-themes-steamos-vapor-fixed/'+asset)

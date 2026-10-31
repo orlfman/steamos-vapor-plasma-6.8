@@ -1267,3 +1267,110 @@ claimed. Live Wayland/X11 and fractional scaling, full keyboard/screen-reader
 checks, broader app workflows, Flatpak, VGUI2 Adw and shared activation remain
 later work. The current release/AUR metadata, runtime helper/profile and user's
 active theme remain unchanged. This milestone is committed/pushed as source work.
+
+## 25. Audit and correct the VGUI2 GTK 4 port — 2026-10-30
+
+User request: audit the GTK 4 port and fix findings. Started from clean
+`1767843808fac5d19ed9d108bcaca8358381ad0d`. Evidence root:
+`/tmp/vgui2-gtk4-audit-95m6pc8u`. Recorded all tracked-file hashes and exported
+the original commit before changes for independent reproductions.
+
+### Confirmed stylesheet findings
+
+- Real GtkFrame and has-frame scrolled-window fixtures had zero border widths
+  and transparent edges. GTK 4 paints these on the main nodes rather than the
+  GTK 3 frame/border gadget. Corrected selectors and checked both framed and
+  intentionally unframed windows. Cairo's one-pixel outside edge is antialiased
+  (alpha 250 here), so verify its actual color/coverage as well as border widths.
+- Vertical spin text inherited the olive window surface while the horizontal
+  field painted the darker content color. Added the vertical inset field, kept
+  its foreground inherited and verified disabled alpha 0.4. An initial explicit
+  enabled foreground in the fix prevented dimming; the new disabled fixture
+  caught that, and inheritance was restored before committing.
+- Column-view cell padding/separator rules targeted a column node that does not
+  exist. Actual requested column borders stayed zero. Moved rules to listview /
+  row / cell, used left borders in RTL, and verified requested row separators.
+  Restoring cell padding exposed a minimum-width warning because generic row
+  padding adds space outside the negotiated columns. Set column-view row
+  padding to zero and retain spacing on cells; minimum-size fixtures then pass.
+- Application preview inspection showed a blank expander indicator. GTK 4's
+  root is expander-widget, followed by box/title/expander. Actual collapsed and
+  expanded glyph widgets allocated 16px but rendered nothing under the old
+  selector. Corrected both glyph paths, collapsed RTL direction, title focus
+  and title spacing so the inset ring has room around text.
+
+### Dark-entry false positive and corrected coverage
+
+- The frozen original checker accepted a gtk-dark.css with a deliberately wrong
+  theme background, even with --dark. gtk-interface-color-scheme communicates
+  an interface preference; it had not selected this legacy variant file.
+- Add a dark-only unused marker to disposable copies and explicitly request
+  normal/dark named variants with GTK_THEME in each private test process. Native,
+  state and C Widget Factory probes verify the actual entry. Normal discovery
+  and palette markers remain. The same bad dark entry now fails the palette gate.
+- Tried the deprecated application-prefer-dark property while diagnosing; it
+  selected the file but emitted a GTK warning. Replaced it with the documented
+  per-process debugging mechanism, without adding any warning allowance. One
+  compatibility color lookup in the native checker suppresses only Python API
+  deprecation notices locally; GTK parser/runtime diagnostics remain strict.
+- Move renderer realization after marker/palette preflight checks so an early
+  failed assertion cannot leave a realized renderer to abort during disposal.
+
+### New real-widget checks and harness corrections
+
+- Add gtk4-audit-checks.py with 12 checks per main case: three frame variants,
+  three spin fields (including disabled), two table/separator configurations,
+  two expander glyphs and two paired native title-focus captures. Across five
+  states/scales that adds 60 controls, plus 15 sequential text-selection tests.
+- Testing several selections simultaneously cleared another widget's primary
+  selection. Give label, entry and text view separate settled capture phases.
+  Verify actual painted selection fills and solid ink in multiple columns so
+  a lone caret cannot satisfy the test. Correct opaque and dimmed selections
+  pass; deliberately wrong foregrounds fail.
+- A transparent expander focus snapshot was initially judged using only fully
+  opaque changed pixels, omitting its real outline. Composite over the sampled
+  parent fill for native focus comparisons. Contrast thresholds remain 3:1
+  for focus and 4.5:1 for enabled text.
+- Repeatedly forcing focus on the expander container exposed a Broadway native
+  render-node failure. A saved StyleContext probe also did not reproduce the
+  actual title state. Use real focused title widgets with matched unfocused
+  references, setting their synthetic state once before capture. This checks
+  native drawing without claiming full keyboard navigation coverage.
+  Padding the title enlarges the indicator widget's allocation to 16x24; compare
+  its centered 16px glyph against the reference rather than requiring the hit
+  area's allocation to equal the glyph's size. Keep the same overlap threshold.
+- Keep worker stdout/stderr before transport teardown, so native failures retain
+  their original evidence. Pace this audit's frame acknowledgements at display
+  cadence rather than spinning the frame clock. Shared production code and
+  other transport clients are unchanged; no retry or automatic skip is added.
+- Expand VGUI2 GTK 4 mutations from 19 to 32: frame/scroll borders, vertical
+  background/dimming, column separators/RTL/padding, actual dark entry, opaque/
+  dimmed text selections and missing/RTL/unfocused expander controls. Every
+  mutation must fail its intended assertion; all 32 do.
+
+### Verification and preserved scope
+
+- Full VGUI2 GTK 4 native, shared behavior, ten actual Widget Factory cases and
+  five deeper matrix cases pass. Recheck coexistence with the unchanged Vapor
+  Adw overlay against the exact final CSS. Existing Vapor GTK 4/Adw suite passes
+  with the corrected shared variant markers and C probe.
+- Of the earlier session's 172 Vapor PNGs, 171 are identical. One factory RTL
+  capture differs only inside its application-owned image region at
+  (273,110)–(378,165). A fresh frozen original runner and the updated runner
+  produce all ten factory PNGs identically, including that region. Record this
+  rather than asserting universal byte identity against a historical capture.
+- Hash-preserve all 182 existing production payload/helper/AUR files outside
+  VGUI2's GTK 4 CSS. This includes GTK 3, all six SVGs, Vapor, the Adw profile
+  and manager. Update portable measurements, screenshots, guide, README, audit,
+  plan and changelog; stage the new details screenshot and verify doc links.
+- The active Vapor helper remains enabled. No live theme activation, release,
+  version/checksum change or AUR push is included. VGUI2 Adw/shared activation,
+  full keyboard/accessibility, live fractional scaling, broader app workflows
+  and comparative performance benchmarks remain open. No additional production
+  performance defect was demonstrated in the stylesheet review.
+
+The new audit entry links GTK's frame, spin, column, expander and theme-variant
+documentation. Before/after control data, the dark false-positive reproduction,
+frozen-runner comparison and current measurements are retained in the portable
+validation JSON. Commit and push this completed source audit per the standing
+instruction; no package publication is part of this milestone.

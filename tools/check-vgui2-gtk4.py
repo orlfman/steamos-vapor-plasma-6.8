@@ -14,10 +14,23 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 
 ROOT=Path(__file__).resolve().parent.parent
 FAMILY=runpy.run_path(str(ROOT/'tools/theme-families.py'))['get_family']('vgui2')
-FrameClient=runpy.run_path(str(ROOT/'tools/broadway-test-client.py'))['FrameClient']
+TransportClient=runpy.run_path(str(ROOT/'tools/broadway-test-client.py'))['FrameClient']
+
+
+class FrameClient(TransportClient):
+    """Acknowledge frames at display cadence instead of spinning the GTK clock."""
+    def event(self,operation,*arguments):
+        if operation==14:
+            delay=getattr(self,'next_frame',0)-time.monotonic()
+            if delay>0:time.sleep(delay)
+            self.next_frame=time.monotonic()+1/60
+        super().event(operation,*arguments)
+
+
 private_display=runpy.run_path(str(ROOT/'tools/check-widget-factory.py'))['private_display']
 # Both messages reproduced with stock GTK, no project CSS, in timing-control.py
 # (see gtk4port.md). Retain/count only these transport warnings; never CSS errors.
@@ -57,18 +70,20 @@ def worker(args):
         provider.connect('parsing-error',lambda _p,_s,error:errors.append(error.message))
         provider.load_from_path(str(css))
     assert not errors,'GTK4-CSS: '+str(errors)
-    renderer=Gsk.CairoRenderer.new();renderer.realize(None)
     window=Gtk.Window(title='VGUI2 Classic GTK 4 state audit')
     context=window.get_style_context()
     assert context.lookup_color('vgui4_fixture_marker')[0],'GTK4-DISCOVERY: staged copy not loaded'
+    assert context.lookup_color('vgui4_dark_fixture_marker')[0]==args.dark,'GTK4-VARIANT: wrong normal/dark entry'
     for role,expected in (('theme_bg_color',FAMILY['window']),('theme_selected_bg_color',FAMILY['selection']),
                           ('theme_selected_fg_color',FAMILY['selection_foreground'])):
         found,value=context.lookup_color(role)
         assert found and tuple(round(v*255) for v in (value.red,value.green,value.blue))==expected,'GTK4-PALETTE: '+role
+    renderer=Gsk.CairoRenderer.new();renderer.realize(None)
     body=Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=8,margin_start=14,margin_end=14,margin_top=14,margin_bottom=14)
     window.set_child(body)
     grid=Gtk.Grid(column_spacing=12,row_spacing=8);body.append(grid)
     samples=[];focus=[];indicators=[];notebooks=[];arrow_checks=[]
+    painted_window=None
     report={'gtk':f'{Gtk.get_major_version()}.{Gtk.get_minor_version()}.{Gtk.get_micro_version()}',
             'state':args.state,'dark':args.dark,'display_scale':args.scale,'labels':[],'focus':[],'indicators':[],'notebooks':[],'popups':[]}
     failures=[];loop=GLib.MainLoop()
@@ -93,6 +108,28 @@ def worker(args):
     def color(widget):
         value=widget.get_color()
         return [value.red,value.green,value.blue,value.alpha]
+
+    def symbolic_image(widget,icon,name,size=16):
+        paintable=Gtk.IconTheme.get_for_display(Gdk.Display.get_default()).lookup_icon(
+            icon,None,size,args.scale,widget.get_direction(),Gtk.IconLookupFlags.FORCE_SYMBOLIC)
+        snap=Gtk.Snapshot();snap.scale(args.scale,args.scale)
+        white=Gdk.RGBA();white.parse('white')
+        paintable.snapshot_symbolic(snap,size,size,[white])
+        node=snap.to_node();assert node is not None
+        rect=Graphene.Rect();rect.init(0,0,size*args.scale,size*args.scale)
+        target=args.output/('reference-'+name+'.png')
+        renderer.render_texture(node,rect).save_to_png(str(target))
+        with Image.open(target) as source:return source.convert('RGBA')
+
+    def style_focus(widget,reference,name):
+        actual=snapshot(widget,name+'-focus')
+        base=snapshot(reference,name+'-base')
+        assert actual.size==base.size,'GTK4-CONTROLS: focus changed title allocation'
+        under=Image.new('RGBA',actual.size,(*FAMILY['window'],255))
+        actual=Image.alpha_composite(under,actual);base=Image.alpha_composite(under,base)
+        changed=[contrast([v/255 for v in a[:3]],[v/255 for v in b[:3]])
+                 for a,b in zip(actual.get_flattened_data(),base.get_flattened_data()) if a!=b]
+        return max(changed,default=1)
 
     def append_sample(name,label,disabled=False):samples.append((name,label,disabled))
 
@@ -173,6 +210,8 @@ def worker(args):
     menu_button=Gtk.MenuButton(label='Popup menu',popover=popover)
     dropdown=Gtk.DropDown.new_from_strings(['First item','Second item'])
     body.append(menu_button);body.append(dropdown)
+    audit_tools=runpy.run_path(str(ROOT/'tools/gtk4-audit-checks.py'))
+    verify_controls,selection_steps,apply_controls=audit_tools['build'](Gtk,body)
     window.present()
 
     def guard(function):
@@ -193,14 +232,18 @@ def worker(args):
                 for button in pair:
                     button.set_state_flags(Gtk.StateFlags.PRELIGHT,False)
                     button.get_first_child().set_state_flags(Gtk.StateFlags.PRELIGHT,False)
+        apply_controls()
         GLib.timeout_add(150,guard(verify));return False
 
     def verify():
+        nonlocal painted_window
         assert window.get_scale_factor()==args.scale
         image=snapshot(window,'states')
+        painted_window=image
         # The top-left pixel belongs to the automatically supplied titlebar.
         # Sample the empty client-area padding at the bottom instead.
         assert image.getpixel((5*args.scale,image.height-5*args.scale))[:3]==FAMILY['window'],'GTK4-SURFACE: actual window background'
+        report['audit_controls']=verify_controls(window,image,snapshot,symbolic_image,style_focus,args.scale,args.output)
         problems=[]
         paths={}
         for name,label,disabled in samples:
@@ -245,17 +288,7 @@ def worker(args):
                 # Render an independent themed symbolic icon, bypassing widget
                 # CSS entirely. Compare normalized alpha masks so disabled
                 # opacity cannot hide a rotated/replaced/missing glyph.
-                size=height=16
-                paintable=Gtk.IconTheme.get_for_display(Gdk.Display.get_default()).lookup_icon(
-                    icon,None,size,args.scale,child.get_direction(),Gtk.IconLookupFlags.FORCE_SYMBOLIC)
-                snap=Gtk.Snapshot();snap.scale(args.scale,args.scale)
-                white=Gdk.RGBA();white.parse('white')
-                paintable.snapshot_symbolic(snap,size,height,[white])
-                node=snap.to_node();assert node is not None
-                rect=Graphene.Rect();rect.init(0,0,size*args.scale,height*args.scale)
-                target=args.output/('reference-'+position+'-'+icon+'.png')
-                renderer.render_texture(node,rect).save_to_png(str(target))
-                with Image.open(target) as source:reference=source.convert('RGBA')
+                reference=symbolic_image(child,icon,position+'-'+icon)
                 record={'position':position,'icon':icon}
                 report['notebooks'].append(record)
                 arrow_checks.append((arrow,actual,reference,record))
@@ -285,9 +318,23 @@ def worker(args):
             assert overlap>=.85,'GTK4-NOTEBOOK: '+record['position']+' '+record['icon']+' '+str(overlap)
             record.update({'glyph_support_iou':round(overlap,5),'passed':True})
             arrow.remove_css_class('vgui-empty-arrow')
-        GLib.timeout_add(100,guard(focus_base));return False
+        GLib.timeout_add(100,guard(selection_next));return False
 
-    focus_index=0;baseline=None
+    selection_index=0
+    report['text_selections']=[]
+    def selection_next():
+        if selection_index==len(selection_steps):
+            GLib.timeout_add(100,guard(focus_base));return False
+        _name,apply,_check=selection_steps[selection_index]
+        apply();GLib.timeout_add(100,guard(selection_verify));return False
+
+    def selection_verify():
+        nonlocal selection_index
+        name,_apply,check=selection_steps[selection_index]
+        report['text_selections'].append(check(window,snapshot(window,'selection-'+name),args.scale))
+        selection_index+=1;GLib.timeout_add(50,guard(selection_next));return False
+
+    focus_index=0;baseline=None;focus_background=None
     def focus_base():
         nonlocal baseline
         if focus_index==len(focus):
@@ -298,8 +345,12 @@ def worker(args):
         GLib.timeout_add(80,guard(focus_start));return False
 
     def focus_start():
-        nonlocal baseline
+        nonlocal baseline,focus_background
         name,widget=focus[focus_index];baseline=snapshot(widget,'focus-'+name+'-base')
+        ok,bounds=widget.compute_bounds(window);assert ok
+        point=(max(0,round(bounds.get_x()-1)*args.scale),round(bounds.get_y()+bounds.get_height()/2)*args.scale)
+        focus_background=painted_window.getpixel(point)
+        assert focus_background[3]==255,'GTK4-FOCUS: transparent parent sample'
         widget.grab_focus()
         widget.set_state_flags(Gtk.StateFlags.FOCUS_VISIBLE|Gtk.StateFlags.FOCUSED,False)
         GLib.timeout_add(80,guard(focus_verify));return False
@@ -308,12 +359,17 @@ def worker(args):
         nonlocal focus_index
         name,widget=focus[focus_index];image=snapshot(widget,'focus-'+name)
         assert image.size==baseline.size,'GTK4-FOCUS: focus changed allocation'
+        # Transparent containers paint their outline over their parent's fill.
+        # Include those pixels after compositing onto the sampled real backdrop.
+        under=Image.new('RGBA',image.size,focus_background)
+        image=Image.alpha_composite(under,image)
+        base=Image.alpha_composite(under,baseline)
         # Sample the outline's interior band. Exclude caret/text focus changes.
         pixels=[];width,height=image.size;s=args.scale
         for y in range(2*s,height-2*s):
             for x in range(2*s,width-2*s):
                 if min(x,y,width-1-x,height-1-y)>5*s:continue
-                a=image.getpixel((x,y));b=baseline.getpixel((x,y))
+                a=image.getpixel((x,y));b=base.getpixel((x,y))
                 if a!=b and a[3]==255 and b[3]==255:
                     pixels.append(contrast([v/255 for v in a[:3]],[v/255 for v in b[:3]]))
         ratio=max(pixels,default=1)
@@ -394,6 +450,8 @@ def main():
         shutil.copytree(theme,scratch/'data/themes'/FAMILY['name'])
         staged_css=scratch/'data/themes'/FAMILY['name']/'gtk-4.0/gtk.css'
         staged_css.write_text(staged_css.read_text()+'\n@define-color vgui4_fixture_marker #11171d;\n')
+        dark_css=staged_css.with_name('gtk-dark.css')
+        dark_css.write_text(dark_css.read_text()+'\n@define-color vgui4_dark_fixture_marker #1d1711;\n')
         settings=scratch/'config/gtk-4.0';settings.mkdir()
         (settings/'settings.ini').write_text('[Settings]\ngtk-theme-name='+FAMILY['name']+'\ngtk-font-name=DejaVu Sans 10\n')
         env.update({'XDG_CONFIG_DIRS':str(scratch/'config'),'XDG_DATA_DIRS':'/usr/share',
@@ -412,6 +470,7 @@ def main():
         for state,dark,scale in cases:
             case=state+('-dark' if dark else '-normal')+'-'+str(scale)+'x'
             target=output/case;target.mkdir(parents=True,exist_ok=True);env['GDK_SCALE']=str(scale)
+            env['GTK_THEME']=FAMILY['name']+(':dark' if dark else '')
             command=['dbus-run-session','--config-file='+str(bus),'--',sys.executable,'-I',str(Path(__file__).resolve()),
                      '--worker','--theme',str(theme),'--output',str(target),'--state',state,'--scale',str(scale)]
             if dark:command.append('--dark')
@@ -419,7 +478,8 @@ def main():
             # across disconnected applications and fail in its reuse cache.
             with private_display(scratch,env), FrameClient(scratch/'http.socket',scale) as client:
                 result=subprocess.run(command,env=env,capture_output=True,text=True,timeout=25)
-            (target/'stdout').write_text(result.stdout);(target/'stderr').write_text(result.stderr)
+                # Preserve worker diagnostics even if transport teardown fails.
+                (target/'stdout').write_text(result.stdout);(target/'stderr').write_text(result.stderr)
             lines=[line for line in result.stderr.splitlines() if line.strip()]
             known=[line for line in lines if TIMING_WARNING.fullmatch(line)]
             unexpected=[line for line in lines if not TIMING_WARNING.fullmatch(line)]

@@ -9,16 +9,16 @@ Baseline: Vapor 1.0.4 / repository `e626869` on Plasma 6.8.2.
 | Stage | Current status |
 | --- | --- |
 | 1: identity/palette/reference | VGUI2Classic identity, audited palette and fresh Qt Windows reference implemented |
-| 2: harness | Family-aware GTK 3/4 and Widget Factory checks; 23 GTK 3/19 GTK 4 VGUI mutations; Adw family support pending |
+| 2: harness | Family-aware GTK 3/4 and Widget Factory checks; 23 GTK 3/32 GTK 4 VGUI mutations; actual variant markers and audit controls; Adw family support pending |
 | 3: GTK 3.24 | Independent stylesheet, six SVG glyphs, normal/dark entries; follow-up message/selection/focus/arrow fixes verified; standard checks and Meld 3.24.1 pass |
-| 4: plain GTK 4 | Independent GTK 4 entries/style; native, Widget Factory, state/focus/arrow/glyph/popup and scale-2 tests pass |
+| 4: plain GTK 4 | Independent GTK 4 entries/style audited; frame/field/separator/expander fixes, actual variants, selection, native/Widget Factory and scale-2 tests pass |
 | 5–6: Adw / activation | Planned; current Vapor helper unchanged |
 | 7: real apps/displays/performance | Private Meld/GTK Widget Factory pass; integer GTK 4 scale 2 covered; live fractional scaling/keyboard/accessibility/performance pending |
 | 8: packaging/release | Working stager includes GTK 3/4 assets/docs; no new published release or AUR update |
 
 Implementation details/results: [VGUI2-GTK3.md](VGUI2-GTK3.md), [VGUI2-GTK4.md](VGUI2-GTK4.md),
 [portable evidence](docs/audits/vgui2-gtk3-validation.json), and
-[gtk4port.md](gtk4port.md), sections 22–24. The roadmap below retains the full scope.
+[gtk4port.md](gtk4port.md), sections 22–25. The roadmap below retains the full scope.
 
 ## Intended result
 

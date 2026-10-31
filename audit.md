@@ -1,3 +1,63 @@
+# VGUI2 Classic GTK 4 follow-up audit and fixes — 2026-10-30
+
+Audited clean base: `1767843808fac5d19ed9d108bcaca8358381ad0d`. Target:
+GTK **4.24.1** on Plasma **6.8.2**. All confirmed findings below are fixed;
+the implementation and measurements farther down are historical.
+
+| Finding | Reproduction | Resolution |
+| --- | --- | --- |
+| VGUI4-R1, P2: missing frame borders | Actual GtkFrame and has-frame scrolled windows have zero border widths and transparent edge pixels; the GTK 3 border gadget selector never matches | Style the GTK 4 frame node and scrolledwindow.frame directly. Verify border widths and painted pixels, while has-frame=false remains borderless |
+| VGUI4-R2, P2: vertical spin field lacks its inset surface | Horizontal field paints `#3f4638`; vertical text field instead paints window `#4d5845` | Paint the vertical text field with the content color and inset edges; inherit text color so disabled foreground alpha remains 0.4 |
+| VGUI4-R3, P2: column separators and cell spacing do not work | A two-column/two-row view requests separators but all four cell borders stay zero; selectors target nonexistent column nodes | Target listview/row/cell, place the separator on the correct RTL side and leave column rows unpadded so minimum-width layout can negotiate cells correctly. Requested row separators are checked too |
+| VGUI4-R4, P2: expander arrows and focus missing | Real collapsed/expanded arrow widgets allocate 16px but produce empty snapshots; the outer node is expander-widget, with box/title children | Use the actual path, correct collapsed RTL direction and expanded-down glyph, and render focus on the title. Add title spacing so the inset ring does not cross the text |
+| VGUI4-R5, P2: dark-entry test false positive | A frozen original checker accepts a deliberately wrong gtk-dark.css even with --dark | Request the named variant explicitly in private test processes and verify a dark-only fixture marker in native, state and actual Widget Factory checks. The same broken file now fails |
+
+The audit adds 60 control checks across the five state/scale cases, including
+paired native expander-title focus and independent glyph references. Fifteen
+actual label/entry/text-view selections verify painted fills and solid ink.
+Primary selections are tested sequentially because taking ownership can clear
+another widget's highlight. Disabled and optional-border behavior has explicit
+checks. The standard suite rejects **32** deliberately broken VGUI2 GTK 4 copies.
+
+The existing 3:1 focus and 4.5:1 enabled-text gates remain intact. Transparent
+focus snapshots are composited over the sampled real parent fill. Synthetic
+expander focus is applied once to real title widgets with an unfocused paired
+reference; it is not a certification of keyboard navigation. Repeatedly forcing
+container focus exposed a private-display render-node failure, and saved
+StyleContext states did not reproduce the real title node. Those failed probes
+were corrected and documented, without accepting a failing gate or retrying it.
+
+The complete VGUI2 suite passes, including ten native and ten installed Widget
+Factory cases, shared behavior, five deeper matrix cases, 32 mutations and
+overlay coexistence. Vapor's complete existing GTK 4/Adw suite passes after
+the shared variant-verification change. **171/172** images from the earlier
+session remain byte-identical; the sole difference is an application's image
+region in a factory RTL capture. A fresh frozen original runner produces all
+ten factory images identically to the updated runner, including that region.
+All existing production payload files outside the VGUI2 GTK 4 CSS are unchanged.
+
+The audit's test client now acknowledges frames at display cadence instead of
+driving a busy frame clock. Worker diagnostics are retained before transport
+teardown. Existing strict timing-warning/other-diagnostic policies remain.
+No additional demonstrated production performance defect was found; there is
+no comparative theme benchmark. GTK 3, Vapor, libadwaita profile/helper, live
+selection, release and AUR metadata are unchanged. VGUI2 Adw/shared activation,
+live fractional scaling and full keyboard/accessibility validation remain open.
+
+Sources: GTK's [frame node](https://docs.gtk.org/gtk4/class.Frame.html#css-nodes),
+[spin text children](https://docs.gtk.org/gtk4/class.SpinButton.html#css-nodes),
+[column structure](https://docs.gtk.org/gtk4/class.ColumnView.html#css-nodes),
+[expander nodes](https://docs.gtk.org/gtk4/class.Expander.html#css-nodes),
+[interface preference semantics](https://docs.gtk.org/gtk4/property.Settings.gtk-interface-color-scheme.html)
+and [debug theme variants](https://docs.gtk.org/gtk4/running.html#gtk-theme).
+
+Before/after evidence and current measurements:
+[vgui2-gtk4-validation.json](docs/audits/vgui2-gtk4-validation.json).
+Screenshots and commands: [VGUI2-GTK4.md](VGUI2-GTK4.md).
+Work record: [gtk4port.md](gtk4port.md), section 25.
+
+---
+
 # VGUI2 Classic initial plain GTK 4 port — 2026-10-30
 
 The independent GTK 4 family is implemented from audited base `7ccdf92`, tested

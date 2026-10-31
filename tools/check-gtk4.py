@@ -19,6 +19,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import warnings
 
 ROOT = Path(__file__).resolve().parent.parent
 FAMILY_TOOLS = runpy.run_path(str(ROOT/'tools/theme-families.py'))
@@ -44,15 +45,18 @@ def worker(args):
         providers.append(provider)
     assert not errors, '\n'.join(errors)
     Gtk.init()
-    renderer = Gsk.CairoRenderer.new()
-    renderer.realize(None)
     settings = Gtk.Settings.get_default()
     settings.set_property('gtk-interface-color-scheme', Gtk.InterfaceColorScheme.DARK if args.dark else Gtk.InterfaceColorScheme.LIGHT)
     settings.set_property('gtk-enable-animations', False)
     settings.set_property('gtk-cursor-blink', False)
     assert settings.get_property('gtk-theme-name') == family['name']
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore',DeprecationWarning)
+        assert Gtk.Label().get_style_context().lookup_color('vapor_gtk4_dark_fixture_marker')[0]==args.dark, 'GTK4-VARIANT: wrong normal/dark entry'
     selection_fg = family['selection_foreground']
     selection_bg = family['selection']
+    renderer = Gsk.CairoRenderer.new()
+    renderer.realize(None)
 
     def rgb(widget):
         color = widget.get_color()
@@ -285,6 +289,8 @@ def main():
         shutil.copytree(theme, staged)
         css = staged/'gtk-4.0/gtk.css'
         css.write_text(css.read_text()+'\n.vapor-gtk4-test-marker {color: #11171d;}\n.vapor-gtk4-test-surface {background-color: @theme_bg_color;}\n')
+        dark_css=css.with_name('gtk-dark.css')
+        dark_css.write_text(dark_css.read_text()+'\n@define-color vapor_gtk4_dark_fixture_marker #1d1711;\n')
         env.update({'XDG_CONFIG_DIRS':str(scratch/'config'),'XDG_DATA_DIRS':'/usr/share',
                     'GDK_BACKEND':'broadway','BROADWAY_DISPLAY':':1','GSK_RENDERER':'cairo',
                     'GTK_A11Y':'none','GTK_MODULES':'','GSETTINGS_BACKEND':'memory',
@@ -308,6 +314,7 @@ def main():
             output.mkdir(parents=True,exist_ok=True)
             reports=[]
             for dark in (False, True):
+                env['GTK_THEME']=family['name']+(':dark' if dark else '')
                 for state in ('normal', 'hover', 'backdrop', 'rtl', 'disabled'):
                     command = [sys.executable,'-I',str(Path(__file__).resolve()),'--worker',
                                '--family',args.family,'--theme',str(staged),'--output',str(output),'--state',state]

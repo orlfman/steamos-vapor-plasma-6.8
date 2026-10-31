@@ -33,6 +33,19 @@ def main():
         ('missing-dark-entry',None,None,'GTK4-ENTRY:',()),
         ('horizontal-spin',None,'\nspinbutton:not(.vertical) button:backdrop:disabled { background-image: linear-gradient(to bottom,#000000,#ffffff); }\n','R2:',('behavior',)),
         ('vertical-spin',None,'\nspinbutton.vertical button:backdrop:disabled { background-image: linear-gradient(to bottom,#000000,#ffffff); }\n','R2:',('behavior',)),
+        ('missing-frame',None,'\nframe { border: none; }\n','GTK4-CONTROLS:',()),
+        ('missing-scroll-frame',None,'\nscrolledwindow.frame { border: none; }\n','GTK4-CONTROLS:',()),
+        ('vertical-field',None,'\nspinbutton.vertical > text { background-color: @theme_bg_color; }\n','GTK4-CONTROLS:',()),
+        ('disabled-vertical-text',None,'\nspinbutton.vertical:disabled > text { color: @theme_text_color; }\n','GTK4-CONTROLS:',()),
+        ('missing-columns',None,'\ncolumnview.column-separators > listview > row > cell:not(:last-child) { border: none; }\n','GTK4-CONTROLS:',()),
+        ('rtl-column-side',None,'\ncolumnview.column-separators > listview > row > cell:not(:last-child):dir(rtl) { border-left: none; border-right: 1px solid @borders; }\n','GTK4-CONTROLS:',('--state','rtl')),
+        ('column-row-padding',None,'\ncolumnview > listview > row { padding: 3px; }\n','GTK4-CONTROLS:',()),
+        ('wrong-dark-entry',None,None,'GTK4-PALETTE:',('--dark',)),
+        ('dimmed-selection-ink',None,'\ntext selection:backdrop { color: @theme_selected_fg_color; }\n','GTK4-TEXT-SELECTION:',('--state','backdrop')),
+        ('opaque-selection-ink',None,'\ntext selection { color: @theme_fg_color; }\n','GTK4-TEXT-SELECTION:',()),
+        ('missing-expander',None,'\nexpander-widget > box > title > expander { -gtk-icon-source: none; }\n','GTK4-CONTROLS:',()),
+        ('rtl-expander',None,'\nexpander-widget > box > title > expander:dir(rtl):not(:checked) { -gtk-icon-source: -gtk-icontheme("pan-end-symbolic"); }\n','GTK4-CONTROLS:',('--state','rtl')),
+        ('missing-expander-focus',None,'\nexpander-widget > box > title:focus-visible, expander-widget > box > title:focus-within, expander-widget:focus > box > title { outline-style: none; }\n','GTK4-CONTROLS:',()),
     ]
     with tempfile.TemporaryDirectory(prefix='vgui2-gtk4-mutations-') as name:
         root=Path(name);reports=[]
@@ -41,6 +54,9 @@ def main():
             css=theme/'gtk-4.0/gtk.css';text=css.read_text()
             if name=='missing-asset':(theme/'assets/check.svg').unlink()
             elif name=='missing-dark-entry':(theme/'gtk-4.0/gtk-dark.css').unlink()
+            elif name=='wrong-dark-entry':
+                dark=theme/'gtk-4.0/gtk-dark.css'
+                dark.write_text(dark.read_text()+'\n@define-color theme_bg_color #123456;\n')
             elif old is not None:
                 assert text.count(old)==1,(name,'mutation missing');text=text.replace(old,new)
             else:text+=new

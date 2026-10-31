@@ -1,8 +1,8 @@
 {
   "date": "2026-10-30",
   "timezone": "America/Phoenix",
-  "base_commit": "7ccdf926ac05feff6379917b534059cc5c5d84f1",
-  "status": "Initial plain GTK 4 implementation; unreleased; VGUI2 Adw/shared activation remain future work.",
+  "base_commit": "1767843808fac5d19ed9d108bcaca8358381ad0d",
+  "status": "Initial plain GTK 4 implementation audited and corrected; unreleased. VGUI2 Adw/shared activation remain future work.",
   "environment": {
     "plasma": "6.8.2",
     "gtk": "4.24.1",
@@ -236,7 +236,7 @@
     "family": "vgui2",
     "theme_name": "VGUI2Classic",
     "binary_sha256": "23237503834cac170640b1037ab537f981286edecb3e2d3ee34cdedb579d09eb",
-    "theme_css_sha256": "e03fbc252d82c8b0f1a75c9de3860443da73aaf630b62011b31adb09c6362517",
+    "theme_css_sha256": "3e8c9518b5effca938e9f5222e29b1ad48b32d2d97f6f668b8fbb21aa6c65633",
     "user_css_sha256": null,
     "renderer": "Cairo",
     "display_scale": 1,
@@ -246,146 +246,146 @@
         "page": "page1",
         "state": "normal",
         "dark": false,
-        "width": 1181,
+        "width": 1183,
         "height": 706,
         "mapped_widgets": 320,
         "file": "page1-normal-normal.png",
         "gtk": "4.24.1",
         "theme": "VGUI2Classic",
         "theme_marker": true,
-        "pixel_sha256": "98a37b8edd86854d372ffdfd6cad8a0a917528489c9fc68482ad18894a824695",
+        "pixel_sha256": "fdbd157f21d7efa95234780ff5a64a9395ac6ca287b70ed6399175c4eb78db9a",
         "known_broadway_warnings": []
       },
       {
         "page": "page2",
         "state": "normal",
         "dark": false,
-        "width": 1181,
+        "width": 1183,
         "height": 706,
-        "mapped_widgets": 223,
+        "mapped_widgets": 227,
         "file": "page2-normal-normal.png",
         "gtk": "4.24.1",
         "theme": "VGUI2Classic",
         "theme_marker": true,
-        "pixel_sha256": "bd049b4c9be1f557e85f378f2e844f96aef92332d94e956d33d38bf09b07733e",
+        "pixel_sha256": "3b9688bb688f2b5e047d73a27e22a191c8a6ee126807ab4316e4bab1312279ad",
         "known_broadway_warnings": []
       },
       {
         "page": "page3",
         "state": "normal",
         "dark": false,
-        "width": 1181,
+        "width": 1183,
         "height": 706,
         "mapped_widgets": 431,
         "file": "page3-normal-normal.png",
         "gtk": "4.24.1",
         "theme": "VGUI2Classic",
         "theme_marker": true,
-        "pixel_sha256": "c09ab5fae6b0a92de78d1bf45bbffb2ed7c94ad284509db6f187ced2a2eb5d56",
+        "pixel_sha256": "7c78794e5b991caed3f4ec8805ebdab7aaabb2bb42bb3f63b15faba758f46617",
         "known_broadway_warnings": [
-          "(gtk4-widget-factory:478159): Gdk-WARNING **: 19:00:29.977: gdk_frame_timings_submitted() called on submitted frame."
+          "(gtk4-widget-factory:542745): Gdk-WARNING **: 19:30:13.076: gdk_frame_timings_submitted() called on submitted frame."
         ]
       },
       {
         "page": "page1",
         "state": "normal",
         "dark": true,
-        "width": 1181,
+        "width": 1183,
         "height": 706,
         "mapped_widgets": 320,
         "file": "page1-normal-dark.png",
         "gtk": "4.24.1",
         "theme": "VGUI2Classic",
         "theme_marker": true,
-        "pixel_sha256": "98a37b8edd86854d372ffdfd6cad8a0a917528489c9fc68482ad18894a824695",
+        "pixel_sha256": "fdbd157f21d7efa95234780ff5a64a9395ac6ca287b70ed6399175c4eb78db9a",
         "known_broadway_warnings": []
       },
       {
         "page": "page2",
         "state": "normal",
         "dark": true,
-        "width": 1181,
+        "width": 1183,
         "height": 706,
-        "mapped_widgets": 223,
+        "mapped_widgets": 227,
         "file": "page2-normal-dark.png",
         "gtk": "4.24.1",
         "theme": "VGUI2Classic",
         "theme_marker": true,
-        "pixel_sha256": "bd049b4c9be1f557e85f378f2e844f96aef92332d94e956d33d38bf09b07733e",
+        "pixel_sha256": "3b9688bb688f2b5e047d73a27e22a191c8a6ee126807ab4316e4bab1312279ad",
         "known_broadway_warnings": []
       },
       {
         "page": "page3",
         "state": "normal",
         "dark": true,
-        "width": 1181,
+        "width": 1183,
         "height": 706,
         "mapped_widgets": 431,
         "file": "page3-normal-dark.png",
         "gtk": "4.24.1",
         "theme": "VGUI2Classic",
         "theme_marker": true,
-        "pixel_sha256": "c09ab5fae6b0a92de78d1bf45bbffb2ed7c94ad284509db6f187ced2a2eb5d56",
+        "pixel_sha256": "7c78794e5b991caed3f4ec8805ebdab7aaabb2bb42bb3f63b15faba758f46617",
         "known_broadway_warnings": [
-          "(gtk4-widget-factory:478577): Gdk-WARNING **: 19:00:31.847: gdk_frame_timings_submitted() called on submitted frame."
+          "(gtk4-widget-factory:543162): Gdk-WARNING **: 19:30:14.945: gdk_frame_timings_submitted() called on submitted frame."
         ]
       },
       {
         "page": "page1",
         "state": "backdrop",
         "dark": false,
-        "width": 1181,
+        "width": 1183,
         "height": 706,
         "mapped_widgets": 320,
         "file": "page1-backdrop-normal.png",
         "gtk": "4.24.1",
         "theme": "VGUI2Classic",
         "theme_marker": true,
-        "pixel_sha256": "074ce183db69e7fc1bfd856d6d3f2a21ec0972504810ff52049b6a10202b5602",
+        "pixel_sha256": "66fc7453e397aa07986abe9946701fbc7d9c3cd55fafa4d695906e6f592644ce",
         "known_broadway_warnings": []
       },
       {
         "page": "page2",
         "state": "backdrop",
         "dark": false,
-        "width": 1181,
+        "width": 1183,
         "height": 706,
-        "mapped_widgets": 223,
+        "mapped_widgets": 227,
         "file": "page2-backdrop-normal.png",
         "gtk": "4.24.1",
         "theme": "VGUI2Classic",
         "theme_marker": true,
-        "pixel_sha256": "9d4df31f04c8a76c6b213bbabac3c9d8b1aec89524ea4250bd6436c70fe1beee",
+        "pixel_sha256": "8487ca607633c0c1bdd7a1889eaa407460910ea71638b356d6fc5d8c35638867",
         "known_broadway_warnings": []
       },
       {
         "page": "page3",
         "state": "backdrop",
         "dark": false,
-        "width": 1181,
+        "width": 1183,
         "height": 706,
         "mapped_widgets": 431,
         "file": "page3-backdrop-normal.png",
         "gtk": "4.24.1",
         "theme": "VGUI2Classic",
         "theme_marker": true,
-        "pixel_sha256": "c09ab5fae6b0a92de78d1bf45bbffb2ed7c94ad284509db6f187ced2a2eb5d56",
+        "pixel_sha256": "7c78794e5b991caed3f4ec8805ebdab7aaabb2bb42bb3f63b15faba758f46617",
         "known_broadway_warnings": [
-          "(gtk4-widget-factory:478987): Gdk-WARNING **: 19:00:33.725: gdk_frame_timings_submitted() called on submitted frame."
+          "(gtk4-widget-factory:543580): Gdk-WARNING **: 19:30:16.844: gdk_frame_timings_submitted() called on submitted frame."
         ]
       },
       {
         "page": "page1",
         "state": "rtl",
         "dark": false,
-        "width": 1181,
+        "width": 1183,
         "height": 706,
         "mapped_widgets": 320,
         "file": "page1-rtl-normal.png",
         "gtk": "4.24.1",
         "theme": "VGUI2Classic",
         "theme_marker": true,
-        "pixel_sha256": "3bdd30e90d7b4a2af6e1009f02536234302c0606c75a746101ad4d6729736462",
+        "pixel_sha256": "6155e8fcc842db7e09192f4f6f4b8c74f0e944aeaa7982ff8d91e159e8c28efe",
         "known_broadway_warnings": []
       }
     ]
@@ -988,10 +988,272 @@
         "dropdown",
         "filechooser"
       ],
-      "acknowledged_frames": 52835,
+      "text_selections": [
+        {
+          "name": "label-selection",
+          "backdrop": false,
+          "expected_fill": [
+            149,
+            136,
+            49
+          ],
+          "fill_pixels": 808,
+          "expected_ink": [
+            24,
+            24,
+            16
+          ],
+          "ink_columns": 8,
+          "passed": true
+        },
+        {
+          "name": "entry-selection",
+          "backdrop": false,
+          "expected_fill": [
+            149,
+            136,
+            49
+          ],
+          "fill_pixels": 808,
+          "expected_ink": [
+            24,
+            24,
+            16
+          ],
+          "ink_columns": 8,
+          "passed": true
+        },
+        {
+          "name": "textview-selection",
+          "backdrop": false,
+          "expected_fill": [
+            149,
+            136,
+            49
+          ],
+          "fill_pixels": 808,
+          "expected_ink": [
+            24,
+            24,
+            16
+          ],
+          "ink_columns": 8,
+          "passed": true
+        }
+      ],
+      "audit_controls": [
+        {
+          "name": "frame",
+          "borders": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "top_pixel": [
+            122,
+            135,
+            108,
+            250
+          ],
+          "passed": true
+        },
+        {
+          "name": "scrolled-frame",
+          "borders": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "top_pixel": [
+            122,
+            135,
+            108,
+            250
+          ],
+          "passed": true
+        },
+        {
+          "name": "scrolled-plain",
+          "borders": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "top_pixel": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "horizontal-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 1.0,
+          "passed": true
+        },
+        {
+          "name": "vertical-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 1.0,
+          "passed": true
+        },
+        {
+          "name": "vertical-disabled-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 0.4,
+          "passed": true
+        },
+        {
+          "name": "column-separators-False",
+          "cell_borders": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_padding": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_bottom_borders": [
+            0,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "column-separators-True",
+          "cell_borders": [
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_padding": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_bottom_borders": [
+            1,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "expander-False",
+          "arrow_size": [
+            16,
+            24
+          ],
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "name": "expander-focus-False",
+          "contrast": 7.376,
+          "method": "Paired native title widgets with synthetic focus state",
+          "passed": true
+        },
+        {
+          "name": "expander-True",
+          "arrow_size": [
+            16,
+            24
+          ],
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "name": "expander-focus-True",
+          "contrast": 7.376,
+          "method": "Paired native title widgets with synthetic focus state",
+          "passed": true
+        }
+      ],
+      "acknowledged_frames": 91,
       "known_broadway_warnings": [
-        "(process:479314): Gdk-WARNING **: 19:00:35.014: Duplicate call to gdk_frame_timings_submitted() with different values.",
-        "(process:479314): Gdk-WARNING **: 19:00:37.504: gdk_frame_timings_submitted() called on submitted frame."
+        "(process:543910): Gdk-WARNING **: 19:30:18.154: Duplicate call to gdk_frame_timings_submitted() with different values.",
+        "(process:543910): Gdk-WARNING **: 19:30:21.322: gdk_frame_timings_submitted() called on submitted frame."
       ]
     },
     {
@@ -1591,10 +1853,272 @@
         "dropdown",
         "filechooser"
       ],
-      "acknowledged_frames": 51619,
+      "text_selections": [
+        {
+          "name": "label-selection",
+          "backdrop": false,
+          "expected_fill": [
+            149,
+            136,
+            49
+          ],
+          "fill_pixels": 808,
+          "expected_ink": [
+            24,
+            24,
+            16
+          ],
+          "ink_columns": 8,
+          "passed": true
+        },
+        {
+          "name": "entry-selection",
+          "backdrop": false,
+          "expected_fill": [
+            149,
+            136,
+            49
+          ],
+          "fill_pixels": 808,
+          "expected_ink": [
+            24,
+            24,
+            16
+          ],
+          "ink_columns": 8,
+          "passed": true
+        },
+        {
+          "name": "textview-selection",
+          "backdrop": false,
+          "expected_fill": [
+            149,
+            136,
+            49
+          ],
+          "fill_pixels": 808,
+          "expected_ink": [
+            24,
+            24,
+            16
+          ],
+          "ink_columns": 8,
+          "passed": true
+        }
+      ],
+      "audit_controls": [
+        {
+          "name": "frame",
+          "borders": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "top_pixel": [
+            122,
+            135,
+            108,
+            250
+          ],
+          "passed": true
+        },
+        {
+          "name": "scrolled-frame",
+          "borders": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "top_pixel": [
+            122,
+            135,
+            108,
+            250
+          ],
+          "passed": true
+        },
+        {
+          "name": "scrolled-plain",
+          "borders": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "top_pixel": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "horizontal-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 1.0,
+          "passed": true
+        },
+        {
+          "name": "vertical-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 1.0,
+          "passed": true
+        },
+        {
+          "name": "vertical-disabled-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 0.4,
+          "passed": true
+        },
+        {
+          "name": "column-separators-False",
+          "cell_borders": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_padding": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_bottom_borders": [
+            0,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "column-separators-True",
+          "cell_borders": [
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_padding": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_bottom_borders": [
+            1,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "expander-False",
+          "arrow_size": [
+            16,
+            24
+          ],
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "name": "expander-focus-False",
+          "contrast": 7.376,
+          "method": "Paired native title widgets with synthetic focus state",
+          "passed": true
+        },
+        {
+          "name": "expander-True",
+          "arrow_size": [
+            16,
+            24
+          ],
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "name": "expander-focus-True",
+          "contrast": 7.376,
+          "method": "Paired native title widgets with synthetic focus state",
+          "passed": true
+        }
+      ],
+      "acknowledged_frames": 91,
       "known_broadway_warnings": [
-        "(process:479519): Gdk-WARNING **: 19:00:38.500: Duplicate call to gdk_frame_timings_submitted() with different values.",
-        "(process:479519): Gdk-WARNING **: 19:00:40.987: gdk_frame_timings_submitted() called on submitted frame."
+        "(process:544148): Gdk-WARNING **: 19:30:22.295: Duplicate call to gdk_frame_timings_submitted() with different values.",
+        "(process:544148): Gdk-WARNING **: 19:30:25.476: gdk_frame_timings_submitted() called on submitted frame."
       ]
     },
     {
@@ -2194,10 +2718,272 @@
         "dropdown",
         "filechooser"
       ],
-      "acknowledged_frames": 52037,
+      "text_selections": [
+        {
+          "name": "label-selection",
+          "backdrop": true,
+          "expected_fill": [
+            113,
+            112,
+            59
+          ],
+          "fill_pixels": 808,
+          "expected_ink": [
+            252,
+            252,
+            252
+          ],
+          "ink_columns": 8,
+          "passed": true
+        },
+        {
+          "name": "entry-selection",
+          "backdrop": true,
+          "expected_fill": [
+            106,
+            103,
+            52
+          ],
+          "fill_pixels": 808,
+          "expected_ink": [
+            252,
+            252,
+            252
+          ],
+          "ink_columns": 8,
+          "passed": true
+        },
+        {
+          "name": "textview-selection",
+          "backdrop": true,
+          "expected_fill": [
+            106,
+            103,
+            52
+          ],
+          "fill_pixels": 808,
+          "expected_ink": [
+            252,
+            252,
+            252
+          ],
+          "ink_columns": 8,
+          "passed": true
+        }
+      ],
+      "audit_controls": [
+        {
+          "name": "frame",
+          "borders": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "top_pixel": [
+            122,
+            135,
+            108,
+            250
+          ],
+          "passed": true
+        },
+        {
+          "name": "scrolled-frame",
+          "borders": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "top_pixel": [
+            122,
+            135,
+            108,
+            250
+          ],
+          "passed": true
+        },
+        {
+          "name": "scrolled-plain",
+          "borders": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "top_pixel": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "horizontal-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 1.0,
+          "passed": true
+        },
+        {
+          "name": "vertical-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 1.0,
+          "passed": true
+        },
+        {
+          "name": "vertical-disabled-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 0.4,
+          "passed": true
+        },
+        {
+          "name": "column-separators-False",
+          "cell_borders": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_padding": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_bottom_borders": [
+            0,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "column-separators-True",
+          "cell_borders": [
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_padding": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_bottom_borders": [
+            1,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "expander-False",
+          "arrow_size": [
+            16,
+            24
+          ],
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "name": "expander-focus-False",
+          "contrast": 7.376,
+          "method": "Paired native title widgets with synthetic focus state",
+          "passed": true
+        },
+        {
+          "name": "expander-True",
+          "arrow_size": [
+            16,
+            24
+          ],
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "name": "expander-focus-True",
+          "contrast": 7.376,
+          "method": "Paired native title widgets with synthetic focus state",
+          "passed": true
+        }
+      ],
+      "acknowledged_frames": 91,
       "known_broadway_warnings": [
-        "(process:479721): Gdk-WARNING **: 19:00:41.984: Duplicate call to gdk_frame_timings_submitted() with different values.",
-        "(process:479721): Gdk-WARNING **: 19:00:44.485: gdk_frame_timings_submitted() called on submitted frame."
+        "(process:544369): Gdk-WARNING **: 19:30:26.456: Duplicate call to gdk_frame_timings_submitted() with different values.",
+        "(process:544369): Gdk-WARNING **: 19:30:29.623: gdk_frame_timings_submitted() called on submitted frame."
       ]
     },
     {
@@ -2797,10 +3583,272 @@
         "dropdown",
         "filechooser"
       ],
-      "acknowledged_frames": 53174,
+      "text_selections": [
+        {
+          "name": "label-selection",
+          "backdrop": false,
+          "expected_fill": [
+            149,
+            136,
+            49
+          ],
+          "fill_pixels": 808,
+          "expected_ink": [
+            24,
+            24,
+            16
+          ],
+          "ink_columns": 8,
+          "passed": true
+        },
+        {
+          "name": "entry-selection",
+          "backdrop": false,
+          "expected_fill": [
+            149,
+            136,
+            49
+          ],
+          "fill_pixels": 808,
+          "expected_ink": [
+            24,
+            24,
+            16
+          ],
+          "ink_columns": 8,
+          "passed": true
+        },
+        {
+          "name": "textview-selection",
+          "backdrop": false,
+          "expected_fill": [
+            149,
+            136,
+            49
+          ],
+          "fill_pixels": 808,
+          "expected_ink": [
+            24,
+            24,
+            16
+          ],
+          "ink_columns": 8,
+          "passed": true
+        }
+      ],
+      "audit_controls": [
+        {
+          "name": "frame",
+          "borders": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "top_pixel": [
+            122,
+            135,
+            108,
+            250
+          ],
+          "passed": true
+        },
+        {
+          "name": "scrolled-frame",
+          "borders": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "top_pixel": [
+            122,
+            135,
+            108,
+            250
+          ],
+          "passed": true
+        },
+        {
+          "name": "scrolled-plain",
+          "borders": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "top_pixel": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "horizontal-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 1.0,
+          "passed": true
+        },
+        {
+          "name": "vertical-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 1.0,
+          "passed": true
+        },
+        {
+          "name": "vertical-disabled-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 0.4,
+          "passed": true
+        },
+        {
+          "name": "column-separators-False",
+          "cell_borders": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_padding": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_bottom_borders": [
+            0,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "column-separators-True",
+          "cell_borders": [
+            [
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_padding": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_bottom_borders": [
+            1,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "expander-False",
+          "arrow_size": [
+            16,
+            24
+          ],
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "name": "expander-focus-False",
+          "contrast": 7.376,
+          "method": "Paired native title widgets with synthetic focus state",
+          "passed": true
+        },
+        {
+          "name": "expander-True",
+          "arrow_size": [
+            16,
+            24
+          ],
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "name": "expander-focus-True",
+          "contrast": 7.376,
+          "method": "Paired native title widgets with synthetic focus state",
+          "passed": true
+        }
+      ],
+      "acknowledged_frames": 91,
       "known_broadway_warnings": [
-        "(process:479924): Gdk-WARNING **: 19:00:45.476: Duplicate call to gdk_frame_timings_submitted() with different values.",
-        "(process:479924): Gdk-WARNING **: 19:00:47.968: gdk_frame_timings_submitted() called on submitted frame."
+        "(process:544586): Gdk-WARNING **: 19:30:30.613: Duplicate call to gdk_frame_timings_submitted() with different values.",
+        "(process:544586): Gdk-WARNING **: 19:30:33.760: gdk_frame_timings_submitted() called on submitted frame."
       ]
     },
     {
@@ -3400,10 +4448,272 @@
         "dropdown",
         "filechooser"
       ],
-      "acknowledged_frames": 52447,
+      "text_selections": [
+        {
+          "name": "label-selection",
+          "backdrop": false,
+          "expected_fill": [
+            149,
+            136,
+            49
+          ],
+          "fill_pixels": 3824,
+          "expected_ink": [
+            24,
+            24,
+            16
+          ],
+          "ink_columns": 136,
+          "passed": true
+        },
+        {
+          "name": "entry-selection",
+          "backdrop": false,
+          "expected_fill": [
+            149,
+            136,
+            49
+          ],
+          "fill_pixels": 3824,
+          "expected_ink": [
+            24,
+            24,
+            16
+          ],
+          "ink_columns": 136,
+          "passed": true
+        },
+        {
+          "name": "textview-selection",
+          "backdrop": false,
+          "expected_fill": [
+            149,
+            136,
+            49
+          ],
+          "fill_pixels": 3824,
+          "expected_ink": [
+            24,
+            24,
+            16
+          ],
+          "ink_columns": 136,
+          "passed": true
+        }
+      ],
+      "audit_controls": [
+        {
+          "name": "frame",
+          "borders": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "top_pixel": [
+            122,
+            135,
+            108,
+            255
+          ],
+          "passed": true
+        },
+        {
+          "name": "scrolled-frame",
+          "borders": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "top_pixel": [
+            122,
+            135,
+            108,
+            255
+          ],
+          "passed": true
+        },
+        {
+          "name": "scrolled-plain",
+          "borders": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "top_pixel": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "horizontal-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 1.0,
+          "passed": true
+        },
+        {
+          "name": "vertical-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 1.0,
+          "passed": true
+        },
+        {
+          "name": "vertical-disabled-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "foreground_alpha": 0.4,
+          "passed": true
+        },
+        {
+          "name": "column-separators-False",
+          "cell_borders": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_padding": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_bottom_borders": [
+            0,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "column-separators-True",
+          "cell_borders": [
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_padding": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "row_bottom_borders": [
+            1,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "expander-False",
+          "arrow_size": [
+            16,
+            24
+          ],
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "name": "expander-focus-False",
+          "contrast": 7.376,
+          "method": "Paired native title widgets with synthetic focus state",
+          "passed": true
+        },
+        {
+          "name": "expander-True",
+          "arrow_size": [
+            16,
+            24
+          ],
+          "glyph_support_iou": 1.0,
+          "passed": true
+        },
+        {
+          "name": "expander-focus-True",
+          "contrast": 7.376,
+          "method": "Paired native title widgets with synthetic focus state",
+          "passed": true
+        }
+      ],
+      "acknowledged_frames": 94,
       "known_broadway_warnings": [
-        "(process:480125): Gdk-WARNING **: 19:00:48.968: Duplicate call to gdk_frame_timings_submitted() with different values.",
-        "(process:480125): Gdk-WARNING **: 19:00:51.570: gdk_frame_timings_submitted() called on submitted frame."
+        "(process:544799): Gdk-WARNING **: 19:30:34.745: Duplicate call to gdk_frame_timings_submitted() with different values.",
+        "(process:544799): Gdk-WARNING **: 19:30:38.244: gdk_frame_timings_submitted() called on submitted frame."
       ]
     }
   ],
@@ -3416,9 +4726,12 @@
     "indicator_renders": 70,
     "notebook_glyphs": 40,
     "popup_chooser_captures": 15,
-    "gtk4_mutations_rejected": 19,
-    "gtk3_mutations_rejected": 23,
-    "staging_tests": 8
+    "gtk4_mutations_rejected": 32,
+    "staging_tests": 8,
+    "audit_control_checks": 60,
+    "text_selection_checks": 15,
+    "paired_expander_focus_checks": 10,
+    "gtk3_prior_mutations_rejected": 23
   },
   "gates": {
     "enabled_text_contrast": 4.5,
@@ -3429,202 +4742,42 @@
   "measured": {
     "minimum_enabled_text_contrast": 4.965,
     "minimum_focus_contrast": 4.485,
-    "minimum_notebook_glyph_iou": 1.0
+    "minimum_notebook_glyph_iou": 1.0,
+    "minimum_expander_focus_contrast": 7.376,
+    "minimum_expander_glyph_iou": 1.0
   },
   "preservation": {
-    "vapor_pngs_byte_identical": 172,
-    "png_paths": [
-      "disabled-dark.png",
-      "rtl-dark.png",
-      "backdrop-dark.png",
-      "hover-dark.png",
-      "normal-dark.png",
-      "disabled-normal.png",
-      "rtl-normal.png",
-      "backdrop-normal.png",
-      "hover-normal.png",
-      "normal-normal.png",
-      "coexistence/disabled-dark.png",
-      "coexistence/rtl-dark.png",
-      "coexistence/backdrop-dark.png",
-      "coexistence/hover-dark.png",
-      "coexistence/normal-dark.png",
-      "coexistence/disabled-normal.png",
-      "coexistence/rtl-normal.png",
-      "coexistence/backdrop-normal.png",
-      "coexistence/hover-normal.png",
-      "coexistence/normal-normal.png",
-      "widget-factory/page1-rtl-normal.png",
-      "widget-factory/page3-backdrop-normal.png",
-      "widget-factory/page2-backdrop-normal.png",
-      "widget-factory/page1-backdrop-normal.png",
-      "widget-factory/page3-normal-dark.png",
-      "widget-factory/page2-normal-dark.png",
-      "widget-factory/page1-normal-dark.png",
-      "widget-factory/page3-normal-normal.png",
-      "widget-factory/page2-normal-normal.png",
-      "widget-factory/page1-normal-normal.png",
-      "behavior/backdrop.png",
-      "behavior/normal.png",
-      "coexistence/widget-factory/page1-rtl-normal.png",
-      "coexistence/widget-factory/page3-backdrop-normal.png",
-      "coexistence/widget-factory/page2-backdrop-normal.png",
-      "coexistence/widget-factory/page1-backdrop-normal.png",
-      "coexistence/widget-factory/page3-normal-dark.png",
-      "coexistence/widget-factory/page2-normal-dark.png",
-      "coexistence/widget-factory/page1-normal-dark.png",
-      "coexistence/widget-factory/page3-normal-normal.png",
-      "coexistence/widget-factory/page2-normal-normal.png",
-      "coexistence/widget-factory/page1-normal-normal.png",
-      "coexistence/behavior/backdrop.png",
-      "coexistence/behavior/normal.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/2-transition.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/2-surface-view.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/2-surface-card.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/2-surface-headerbar.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/2-surface-window.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/1-transition.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/1-surface-view.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/1-surface-card.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/1-surface-headerbar.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/1-surface-window.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/0-transition.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/0-surface-view.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/0-surface-card.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/0-surface-headerbar.png",
-      "libadwaita/21-transition-normal-dark-s1-vapor/0-surface-window.png",
-      "libadwaita/20-main-normal-dark-s2-vapor/0-main.png",
-      "libadwaita/20-main-normal-dark-s2-vapor/0-surface-view.png",
-      "libadwaita/20-main-normal-dark-s2-vapor/0-surface-card.png",
-      "libadwaita/20-main-normal-dark-s2-vapor/0-surface-headerbar.png",
-      "libadwaita/20-main-normal-dark-s2-vapor/0-surface-window.png",
-      "libadwaita/19-main-normal-dark-s2-base/0-main.png",
-      "libadwaita/19-main-normal-dark-s2-base/0-surface-view.png",
-      "libadwaita/19-main-normal-dark-s2-base/0-surface-card.png",
-      "libadwaita/19-main-normal-dark-s2-base/0-surface-headerbar.png",
-      "libadwaita/19-main-normal-dark-s2-base/0-surface-window.png",
-      "libadwaita/18-main-focus-dark-s1-vapor/0-main.png",
-      "libadwaita/18-main-focus-dark-s1-vapor/0-surface-view.png",
-      "libadwaita/18-main-focus-dark-s1-vapor/0-surface-card.png",
-      "libadwaita/18-main-focus-dark-s1-vapor/0-surface-headerbar.png",
-      "libadwaita/18-main-focus-dark-s1-vapor/0-surface-window.png",
-      "libadwaita/17-main-rtl-dark-s1-vapor/0-main.png",
-      "libadwaita/17-main-rtl-dark-s1-vapor/0-surface-view.png",
-      "libadwaita/17-main-rtl-dark-s1-vapor/0-surface-card.png",
-      "libadwaita/17-main-rtl-dark-s1-vapor/0-surface-headerbar.png",
-      "libadwaita/17-main-rtl-dark-s1-vapor/0-surface-window.png",
-      "libadwaita/16-main-backdrop-dark-s1-vapor/0-main.png",
-      "libadwaita/16-main-backdrop-dark-s1-vapor/0-surface-view.png",
-      "libadwaita/16-main-backdrop-dark-s1-vapor/0-surface-card.png",
-      "libadwaita/16-main-backdrop-dark-s1-vapor/0-surface-headerbar.png",
-      "libadwaita/16-main-backdrop-dark-s1-vapor/0-surface-window.png",
-      "libadwaita/15-menu-normal-dark-s1-vapor/0-menu.png",
-      "libadwaita/15-menu-normal-dark-s1-vapor/0-surface-popover.png",
-      "libadwaita/15-menu-normal-dark-s1-vapor/0-surface-view.png",
-      "libadwaita/15-menu-normal-dark-s1-vapor/0-surface-card.png",
-      "libadwaita/15-menu-normal-dark-s1-vapor/0-surface-headerbar.png",
-      "libadwaita/15-menu-normal-dark-s1-vapor/0-surface-window.png",
-      "libadwaita/14-menu-normal-dark-s1-base/0-menu.png",
-      "libadwaita/14-menu-normal-dark-s1-base/0-surface-popover.png",
-      "libadwaita/14-menu-normal-dark-s1-base/0-surface-view.png",
-      "libadwaita/14-menu-normal-dark-s1-base/0-surface-card.png",
-      "libadwaita/14-menu-normal-dark-s1-base/0-surface-headerbar.png",
-      "libadwaita/14-menu-normal-dark-s1-base/0-surface-window.png",
-      "libadwaita/13-popover-normal-dark-s1-vapor/0-popover.png",
-      "libadwaita/13-popover-normal-dark-s1-vapor/0-surface-popover.png",
-      "libadwaita/13-popover-normal-dark-s1-vapor/0-surface-view.png",
-      "libadwaita/13-popover-normal-dark-s1-vapor/0-surface-card.png",
-      "libadwaita/13-popover-normal-dark-s1-vapor/0-surface-headerbar.png",
-      "libadwaita/13-popover-normal-dark-s1-vapor/0-surface-window.png",
-      "libadwaita/12-popover-normal-dark-s1-base/0-popover.png",
-      "libadwaita/12-popover-normal-dark-s1-base/0-surface-popover.png",
-      "libadwaita/12-popover-normal-dark-s1-base/0-surface-view.png",
-      "libadwaita/12-popover-normal-dark-s1-base/0-surface-card.png",
-      "libadwaita/12-popover-normal-dark-s1-base/0-surface-headerbar.png",
-      "libadwaita/12-popover-normal-dark-s1-base/0-surface-window.png",
-      "libadwaita/11-dialog-normal-dark-s1-vapor/0-dialog.png",
-      "libadwaita/11-dialog-normal-dark-s1-vapor/0-surface-dialog.png",
-      "libadwaita/11-dialog-normal-dark-s1-vapor/0-surface-view.png",
-      "libadwaita/11-dialog-normal-dark-s1-vapor/0-surface-card.png",
-      "libadwaita/11-dialog-normal-dark-s1-vapor/0-surface-headerbar.png",
-      "libadwaita/11-dialog-normal-dark-s1-vapor/0-surface-window.png",
-      "libadwaita/10-dialog-normal-dark-s1-base/0-dialog.png",
-      "libadwaita/10-dialog-normal-dark-s1-base/0-surface-dialog.png",
-      "libadwaita/10-dialog-normal-dark-s1-base/0-surface-view.png",
-      "libadwaita/10-dialog-normal-dark-s1-base/0-surface-card.png",
-      "libadwaita/10-dialog-normal-dark-s1-base/0-surface-headerbar.png",
-      "libadwaita/10-dialog-normal-dark-s1-base/0-surface-window.png",
-      "libadwaita/09-sidebar-normal-dark-s1-vapor/0-sidebar.png",
-      "libadwaita/09-sidebar-normal-dark-s1-vapor/0-surface-sidebar.png",
-      "libadwaita/09-sidebar-normal-dark-s1-vapor/0-surface-view.png",
-      "libadwaita/09-sidebar-normal-dark-s1-vapor/0-surface-card.png",
-      "libadwaita/09-sidebar-normal-dark-s1-vapor/0-surface-headerbar.png",
-      "libadwaita/09-sidebar-normal-dark-s1-vapor/0-surface-window.png",
-      "libadwaita/08-sidebar-normal-dark-s1-base/0-sidebar.png",
-      "libadwaita/08-sidebar-normal-dark-s1-base/0-surface-sidebar.png",
-      "libadwaita/08-sidebar-normal-dark-s1-base/0-surface-view.png",
-      "libadwaita/08-sidebar-normal-dark-s1-base/0-surface-card.png",
-      "libadwaita/08-sidebar-normal-dark-s1-base/0-surface-headerbar.png",
-      "libadwaita/08-sidebar-normal-dark-s1-base/0-surface-window.png",
-      "libadwaita/07-main-normal-light-hc-s1-vapor/0-main.png",
-      "libadwaita/07-main-normal-light-hc-s1-vapor/0-surface-view.png",
-      "libadwaita/07-main-normal-light-hc-s1-vapor/0-surface-card.png",
-      "libadwaita/07-main-normal-light-hc-s1-vapor/0-surface-headerbar.png",
-      "libadwaita/07-main-normal-light-hc-s1-vapor/0-surface-window.png",
-      "libadwaita/06-main-normal-light-hc-s1-base/0-main.png",
-      "libadwaita/06-main-normal-light-hc-s1-base/0-surface-view.png",
-      "libadwaita/06-main-normal-light-hc-s1-base/0-surface-card.png",
-      "libadwaita/06-main-normal-light-hc-s1-base/0-surface-headerbar.png",
-      "libadwaita/06-main-normal-light-hc-s1-base/0-surface-window.png",
-      "libadwaita/05-main-normal-dark-hc-s1-vapor/0-main.png",
-      "libadwaita/05-main-normal-dark-hc-s1-vapor/0-surface-view.png",
-      "libadwaita/05-main-normal-dark-hc-s1-vapor/0-surface-card.png",
-      "libadwaita/05-main-normal-dark-hc-s1-vapor/0-surface-headerbar.png",
-      "libadwaita/05-main-normal-dark-hc-s1-vapor/0-surface-window.png",
-      "libadwaita/04-main-normal-dark-hc-s1-base/0-main.png",
-      "libadwaita/04-main-normal-dark-hc-s1-base/0-surface-view.png",
-      "libadwaita/04-main-normal-dark-hc-s1-base/0-surface-card.png",
-      "libadwaita/04-main-normal-dark-hc-s1-base/0-surface-headerbar.png",
-      "libadwaita/04-main-normal-dark-hc-s1-base/0-surface-window.png",
-      "libadwaita/03-main-normal-light-s1-vapor/0-main.png",
-      "libadwaita/03-main-normal-light-s1-vapor/0-surface-view.png",
-      "libadwaita/03-main-normal-light-s1-vapor/0-surface-card.png",
-      "libadwaita/03-main-normal-light-s1-vapor/0-surface-headerbar.png",
-      "libadwaita/03-main-normal-light-s1-vapor/0-surface-window.png",
-      "libadwaita/02-main-normal-light-s1-base/0-main.png",
-      "libadwaita/02-main-normal-light-s1-base/0-surface-view.png",
-      "libadwaita/02-main-normal-light-s1-base/0-surface-card.png",
-      "libadwaita/02-main-normal-light-s1-base/0-surface-headerbar.png",
-      "libadwaita/02-main-normal-light-s1-base/0-surface-window.png",
-      "libadwaita/01-main-normal-dark-s1-vapor/0-main.png",
-      "libadwaita/01-main-normal-dark-s1-vapor/0-surface-view.png",
-      "libadwaita/01-main-normal-dark-s1-vapor/0-surface-card.png",
-      "libadwaita/01-main-normal-dark-s1-vapor/0-surface-headerbar.png",
-      "libadwaita/01-main-normal-dark-s1-vapor/0-surface-window.png",
-      "libadwaita/00-main-normal-dark-s1-base/0-main.png",
-      "libadwaita/00-main-normal-dark-s1-base/0-surface-view.png",
-      "libadwaita/00-main-normal-dark-s1-base/0-surface-card.png",
-      "libadwaita/00-main-normal-dark-s1-base/0-surface-headerbar.png",
-      "libadwaita/00-main-normal-dark-s1-base/0-surface-window.png"
+    "protected_existing_payload_files": 182,
+    "prior_vapor_images_byte_identical": 171,
+    "prior_images_total": 172,
+    "changed_prior_capture": [
+      "widget-factory/page1-rtl-normal.png"
     ],
-    "existing_payload_files_unchanged": 180
+    "frozen_original_runner_matches_current_capture": true,
+    "difference_region": [
+      273,
+      110,
+      378,
+      165
+    ],
+    "interpretation": "Application image region varies from the earlier session; frozen original and current runners produce identical captures now. All other pixels/captures match."
   },
   "coexistence": {
     "overlay": "libadwaita/vapor.css",
     "byte_identical_pngs": 22,
     "paths": [
-      "normal-normal.png",
-      "hover-normal.png",
-      "backdrop-normal.png",
-      "rtl-normal.png",
-      "disabled-normal.png",
-      "normal-dark.png",
-      "hover-dark.png",
-      "backdrop-dark.png",
-      "rtl-dark.png",
       "disabled-dark.png",
-      "behavior/normal.png",
+      "rtl-dark.png",
+      "backdrop-dark.png",
+      "hover-dark.png",
+      "normal-dark.png",
+      "disabled-normal.png",
+      "rtl-normal.png",
+      "backdrop-normal.png",
+      "hover-normal.png",
+      "normal-normal.png",
       "behavior/backdrop.png",
+      "behavior/normal.png",
       "widget-factory/page1-rtl-normal.png",
       "widget-factory/page3-backdrop-normal.png",
       "widget-factory/page2-backdrop-normal.png",
@@ -3640,7 +4793,7 @@
   },
   "existing_suites": {
     "vapor_gtk4_adw": "PASS; native, Widget Factory, coexistence, 22 Adw cases, 28 activation/recovery tests, 15 bad profiles, eight staging tests.",
-    "gtk3": "PASS; both families, seven mapped VGUI scenes and 23 VGUI regressions."
+    "gtk3": "Historical initial-port result: both families and 23 VGUI regressions passed. This GTK 4 audit verified GTK 3 production files/tools unchanged; no full GTK 3 rerun."
   },
   "diagnostics": {
     "css_errors": 0,
@@ -3649,13 +4802,164 @@
     "strict_mode": "State checker --strict rejects the reproduced timing warnings too."
   },
   "preview_sha256": {
-    "docs/screenshots/vgui2-gtk4-preview.png": "c88333c913300a4517343045629242ea735b5cc377b9e93b5b9fc5713ef22a54",
-    "docs/screenshots/vgui2-gtk4-states.png": "2e30be5056ce12bd73ec3d09ea3cf022cfe4e3421221f42a9f32d1d0f611d4aa",
-    "docs/screenshots/vgui2-gtk4-widget-factory.png": "7215e05631570b9f88db2962e304de061b2b21aa9259bccd7597c1456efda6a5"
+    "docs/screenshots/vgui2-gtk4-preview.png": "bb17f60d8d138c2bc67e5a0140b0dd3b51d991befe55f17b2de4ff0ee7047ca5",
+    "docs/screenshots/vgui2-gtk4-states.png": "a675467396380beeec5f722b92b290e1803aea61503382bdb57ae3151c140aa9",
+    "docs/screenshots/vgui2-gtk4-widget-factory-details.png": "2d5207acd146ae3c7b2d11858eb33820b864a5390baaecca6ebdc7274fb16e96",
+    "docs/screenshots/vgui2-gtk4-widget-factory.png": "ec8b2b7cf1ebd2acd573510e8c4b24f15421d85bdfffd5effbc1e83420998815"
   },
   "limits": [
     "No VGUI2 libadwaita profile or shared activation implementation.",
     "No release/AUR update or live activation.",
     "Actual integer scale-2 windows are covered; live fractional scaling, full keyboard/accessibility, broader app workflows, Flatpak and performance benchmarks remain open."
-  ]
+  ],
+  "initial_port_base_commit": "7ccdf926ac05feff6379917b534059cc5c5d84f1",
+  "audit": {
+    "findings_fixed": [
+      "VGUI4-R1 missing frame/scroll-frame borders",
+      "VGUI4-R2 vertical inset fields",
+      "VGUI4-R3 column/cell separators and minimum-width padding",
+      "VGUI4-R4 expander glyphs, RTL and title focus",
+      "VGUI4-R5 dark-entry verification false positive"
+    ],
+    "before": {
+      "frame_and_spin_samples": [
+        {
+          "name": "frame",
+          "borders": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "top_pixel": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "passed": false
+        },
+        {
+          "name": "scrolled-frame",
+          "borders": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "top_pixel": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "passed": false
+        },
+        {
+          "name": "scrolled-plain",
+          "borders": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "top_pixel": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "passed": true
+        },
+        {
+          "name": "horizontal-spin-field",
+          "painted_background": [
+            63,
+            70,
+            56,
+            255
+          ],
+          "passed": true
+        },
+        {
+          "name": "vertical-spin-field",
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "passed": false
+        }
+      ],
+      "missing_column_separators": [
+        {
+          "name": "column-separators-True",
+          "cell_borders": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "passed": false
+        }
+      ],
+      "missing_expanders": [
+        {
+          "name": "expander-False",
+          "arrow_size": [
+            16,
+            16
+          ],
+          "glyph_support_iou": 0.0,
+          "passed": false
+        },
+        {
+          "name": "expander-True",
+          "arrow_size": [
+            16,
+            16
+          ],
+          "glyph_support_iou": 0.0,
+          "passed": false
+        }
+      ],
+      "frozen_original_checker_accepted_wrong_dark_entry": true,
+      "wrong_dark_entry_mutation": "Append @define-color theme_bg_color #123456; to gtk-dark.css; run --quick --dark.",
+      "original_checker_commit": "1767843808fac5d19ed9d108bcaca8358381ad0d"
+    },
+    "verification": {
+      "actual_dark_entry_marker": "Required in dark runs and absent in normal runs; verified in all three test paths.",
+      "selection_method": "Separate actual selections with painted fill and multi-column solid ink checks; avoids primary-selection interference.",
+      "expander_focus_method": "Paired actual title widgets with one synthetic focused state; native GTK snapshots composited onto the real parent fill; not full keyboard navigation.",
+      "frame_edge_method": "CSS border widths plus actual painted color and >=245 alpha on the antialiased outside edge.",
+      "frame_transport": "Audit client acknowledgements paced to 60 per second; other clients unchanged.",
+      "staged_package_tests": 8
+    },
+    "limits": [
+      "No production performance benchmark.",
+      "No VGUI2 Adw profile/shared activation, package publication or live activation.",
+      "Full keyboard/accessibility and live fractional scaling remain open."
+    ]
+  }
 }

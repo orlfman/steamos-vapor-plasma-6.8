@@ -63,7 +63,8 @@ separator {
   min-height: 1px;
   background-color: @vgui_shadow;
 }
-frame > border, scrolledwindow > junction {
+/* GTK 4 paints the frame on the widget itself, without a border gadget. */
+frame, scrolledwindow.frame, scrolledwindow > junction {
   border: 1px solid @borders;
 }
 scrolledwindow > overshoot, scrolledwindow > undershoot {
@@ -167,7 +168,7 @@ button.destructive-action:not(:disabled) label,
 button.destructive-action:not(:disabled) label:backdrop { color: inherit; }
 button:focus, entry:focus, spinbutton:focus, scale:focus, switch:focus,
 checkbutton:focus, treeview.view:focus, row:focus,
-modelbutton.flat:focus, .menuitem.button:focus, flowboxchild:focus, iconview:focus, expander:focus, calendar:focus,
+modelbutton.flat:focus, .menuitem.button:focus, flowboxchild:focus, iconview:focus, calendar:focus,
 notebook > header > tabs > tab:focus {
   outline-style: dotted;
   outline-width: 2px;
@@ -244,6 +245,11 @@ spinbutton.vertical > text {
   min-width: 26px;
   min-height: 26px;
   padding: 0;
+  color: inherit;
+  background-color: @theme_base_color;
+  border: 1px solid;
+  border-color: @vgui_shadow @vgui_light @vgui_light @vgui_shadow;
+  box-shadow: inset 1px 1px alpha(@vgui_shadow, 0.4);
 }
 spinbutton.vertical button {
   min-height: 26px;
@@ -422,13 +428,16 @@ treeview.view.expander:checked { -gtk-icon-source: -gtk-icontheme("pan-down-symb
 treeview.view header button { padding: 2px 6px; }
 treeview.view.separator { color: @borders; }
 treeview.view:selected:disabled { color: @insensitive_fg_color; }
-expander > title > expander {
+/* Leave room for the title's inset focus ring around its text and indicator. */
+expander-widget > box > title { min-height: 24px; padding: 3px 6px; }
+expander-widget > box > title > expander {
   min-width: 16px;
   min-height: 16px;
   -gtk-icon-source: -gtk-icontheme("pan-end-symbolic");
 }
-expander > title > expander:checked { -gtk-icon-source: -gtk-icontheme("pan-down-symbolic"); }
-expander title:hover { color: @vgui_link; }
+expander-widget > box > title > expander:dir(rtl):not(:checked) { -gtk-icon-source: -gtk-icontheme("pan-start-symbolic"); }
+expander-widget > box > title > expander:checked { -gtk-icon-source: -gtk-icontheme("pan-down-symbolic"); }
+expander-widget > box > title:hover { color: @vgui_link; }
 
 .toolbar, headerbar, .titlebar, searchbar, .inline-toolbar, actionbar {
   padding: 4px;
@@ -506,6 +515,8 @@ spinner:checked { animation: vgui-spin 1s steps(12) infinite; }
 /* GTK 4 text entry nodes and virtualized selection containers. */
 entry > text, spinbutton > text { color: inherit; }
 entry:focus-within, spinbutton:focus-within, dropdown:focus-within > button,
+expander-widget > box > title:focus-visible, expander-widget > box > title:focus-within,
+expander-widget:focus > box > title,
 calendar > grid > label:focus-visible {
   outline-style: dotted;
   outline-width: 2px;
@@ -539,9 +550,15 @@ listview > row:focus-visible, gridview > child:focus-visible {
 listview > row:selected:focus-visible, gridview > child:selected:focus-visible { outline-color: @theme_selected_fg_color; }
 columnview > header { background-color: @theme_bg_color; border-bottom: 1px solid @borders; }
 columnview > header > button { padding: 3px 8px; }
-columnview column > cell { padding: 3px; }
+/* Column widths are negotiated through cells, not generic row padding. */
+columnview > listview > row { padding: 0; }
+columnview > listview > row > cell { padding: 3px; }
 listview.separators > row:not(:last-child) { border-bottom: 1px solid @borders; }
-columnview.column-separators column:not(:last-child) { border-right: 1px solid @borders; }
+columnview.column-separators > listview > row > cell:not(:last-child) { border-right: 1px solid @borders; }
+columnview.column-separators > listview > row > cell:not(:last-child):dir(rtl) {
+  border-right: none;
+  border-left: 1px solid @borders;
+}
 dropdown > button > box { border-spacing: 8px; }
 dropdown arrow { min-width: 16px; min-height: 16px; -gtk-icon-source: -gtk-icontheme("pan-down-symbolic"); }
 dropdown popover listview { padding: 3px; }

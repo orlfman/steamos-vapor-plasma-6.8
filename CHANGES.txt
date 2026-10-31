@@ -1,3 +1,16 @@
+Unreleased — 2026-10-30, Codex (GPT-6): audit VGUI2 Classic GTK 4
+
+- Restore GTK 4 frame/optional scroll-frame borders, inset vertical spin fields
+  with dimmed disabled text, and requested column separators on the correct
+  cell paths. Keep column row padding from breaking minimum-width measurement.
+- Restore expander glyphs on the actual expander-widget/box/title nodes,
+  including RTL direction and title focus.
+- Prove actual normal/dark entry loading in native, state and Widget Factory
+  tests; the interface preference alone had left the dark file untested.
+- Add real selection/control/focus checks and increase GTK 4 negative controls
+  from 19 to 32. Record before/after evidence, updated native screenshots and
+  test-harness corrections. Production Vapor/GTK 3/helper/AUR files are unchanged.
+
 Unreleased — 2026-10-30, Codex (GPT-6): initial VGUI2 Classic GTK 4
 
 - Add independent normal/dark GTK 4 entries with classic olive/gold controls,
