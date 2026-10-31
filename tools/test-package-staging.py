@@ -26,6 +26,7 @@ class Staging(unittest.TestCase):
                      'docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png',
                      'VGUI2-GTK3.md','vgui2-audit.md','vgui2-plan.md',
                      'docs/screenshots/vgui2-gtk3-preview.png','docs/screenshots/vgui2-gtk3-meld.png',
+                     'docs/screenshots/vgui2-gtk3-states.png','docs/screenshots/vgui2-gtk3-notebooks.png',
                      'docs/screenshots/vgui2-qt-windows-reference.png','docs/audits/vgui2-feasibility.json',
                      'docs/audits/vgui2-gtk3-validation.json',
                      'README.md','CHANGES.txt','GTK3.md','gtk4port.md','LIBADWAITA.md','libadwaita-plan.md','audit.md'):

@@ -1,3 +1,17 @@
+Unreleased — 2026-10-30, Codex (GPT-6): audit and fix VGUI2 Classic GTK 3
+
+- Keep warning/error InfoBar text readable when inactive; selected-row labels
+  inherit through their immediate parents so nested button text stays readable.
+  Correct inactive FlowBox labels and retain disabled selection dimming.
+- Use dark focus on gold, preserve pale focus on dark/red surfaces and add
+  missing icon-view/compatibility-menu focus paths. Vertical notebook overflow
+  arrows now point up/down; horizontal layouts keep their existing directions.
+- Require visible and distinct checked/mixed glyphs, not just painted fields.
+  Add 24 mapped label states, 20 focus cases, eight notebook layouts and expand
+  VGUI mutation coverage from 13 to 23. Preserve the 14 Vapor baseline PNGs.
+- Record reproducible findings, measurements and native state/notebook images.
+  Existing runtime helpers, live settings, release and AUR metadata are unchanged.
+
 Unreleased — 2026-10-30, Codex (GPT-6): start VGUI2 Classic with GTK 3.24
 
 - Added independent VGUI2Classic normal/dark GTK 3 entries and standalone

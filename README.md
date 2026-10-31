@@ -44,7 +44,7 @@ The short version (details in [CHANGES.txt](CHANGES.txt)):
 ## Install
 
 Arch: AUR package `plasma6-themes-steamos-vapor-fixed`, or build it from
-[aur/PKGBUILD](aur/PKGBUILD) with `makepkg -si`.
+[aur/PKGBUILD](https://github.com/orlfman/steamos-vapor-plasma-6.8/blob/main/aur/PKGBUILD) with `makepkg -si`.
 
 Manually, for your user only: copy the folders under `usr/share` into
 `~/.local/share` (for example `usr/share/plasma/look-and-feel/*` into
@@ -222,6 +222,8 @@ good. This screenshot records the live appearance during testing.
 The working tree now includes an independent **VGUI2Classic GTK 3.24 theme**:
 olive/gold colors, classic beveled controls and vector indicators. Both theme
 families pass the default GTK 3 suite; isolated Meld startup checks pass too.
+The GTK 3 audit corrected inactive messages, selected-container labels, focus
+and vertical notebook arrows; the standard suite rejects 23 broken VGUI copies.
 See [VGUI2-GTK3.md](VGUI2-GTK3.md) for previews, tests and limits.
 
 GTK 4 and VGUI2 libadwaita support remain planned. The current AUR 1.0.4 release

@@ -91,14 +91,18 @@ row:selected, row:selected:backdrop, row.activatable:selected:backdrop,
   background-color: @theme_selected_bg_color;
 }
 row:selected label, row:selected:backdrop label,
-row.activatable:selected:backdrop label, .sidebar row:selected label {
-  color: @theme_selected_fg_color;
+row.activatable:selected:backdrop label, .sidebar row:selected label,
+flowboxchild:selected label, flowboxchild:selected:backdrop label {
+  /* Follow each immediate parent: nested buttons keep their own foreground. */
+  color: inherit;
 }
-row:selected:disabled, row:selected:disabled:backdrop {
+row:selected:disabled, row:selected:disabled:backdrop,
+flowboxchild:selected:disabled, flowboxchild:selected:disabled:backdrop {
   color: @insensitive_fg_color;
   background-color: @theme_unfocused_selected_bg_color;
 }
-row:selected:disabled label, row:selected:disabled label:backdrop {
+row:selected:disabled label, row:selected:disabled label:backdrop,
+flowboxchild:selected:disabled label, flowboxchild:selected:disabled label:backdrop {
   color: @insensitive_fg_color;
 }
 
@@ -163,13 +167,25 @@ button.destructive-action:not(:disabled) label,
 button.destructive-action:not(:disabled) label:backdrop { color: inherit; }
 button:focus, entry:focus, spinbutton:focus, scale:focus, switch:focus,
 checkbutton:focus, radiobutton:focus, treeview.view:focus, row:focus,
-modelbutton:focus, flowboxchild:focus, expander:focus, calendar:focus,
+modelbutton:focus, .menuitem.button:focus, flowboxchild:focus, iconview:focus, expander:focus, calendar:focus,
 notebook > header > tabs > tab:focus {
   outline-style: dotted;
   outline-width: 1px;
   outline-offset: -4px;
   outline-color: @vgui_focus;
 }
+/* Pale dotted edges lose contrast when antialiased onto the opaque gold fill. */
+button:focus:checked:not(:disabled), button:focus:active:not(:disabled),
+button.suggested-action:focus:not(:disabled),
+button.flat:focus:hover:not(:disabled), modelbutton.flat:focus:hover:not(:disabled),
+.menuitem.button.flat:focus:hover:not(:disabled),
+row:focus:selected:not(:disabled), flowboxchild:focus:selected:not(:disabled),
+iconview:focus:selected:not(:disabled), switch:focus:checked:not(:disabled),
+calendar:focus:selected:not(:disabled) {
+  outline-color: @theme_selected_fg_color;
+}
+/* Destructive actions keep their red surface even when pressed. */
+button.destructive-action:focus:not(:disabled) { outline-color: @vgui_focus; }
 button:backdrop:checked:not(:disabled) label,
 button:backdrop:active:not(:disabled) label {
   color: inherit;
@@ -383,6 +399,10 @@ notebook > stack { padding: 6px; border: 1px solid @borders; }
 notebook > header > tabs > arrow { padding: 0; min-width: 16px; }
 notebook > header > tabs > arrow.down { -gtk-icon-source: -gtk-icontheme("pan-start-symbolic"); }
 notebook > header > tabs > arrow.up { -gtk-icon-source: -gtk-icontheme("pan-end-symbolic"); }
+notebook > header.left > tabs > arrow.down,
+notebook > header.right > tabs > arrow.down { -gtk-icon-source: -gtk-icontheme("pan-up-symbolic"); }
+notebook > header.left > tabs > arrow.up,
+notebook > header.right > tabs > arrow.up { -gtk-icon-source: -gtk-icontheme("pan-down-symbolic"); }
 
 list, flowbox, stacksidebar.sidebar, placessidebar.sidebar { background-color: @theme_base_color; }
 row { min-height: 24px; padding: 3px; }
@@ -448,10 +468,10 @@ decoration { border: 1px solid @vgui_shadow; box-shadow: none; }
 .maximized decoration, .fullscreen decoration, .tiled decoration { border: none; }
 
 infobar { padding: 6px; }
-infobar.info { background-color: @vgui_focus; color: @theme_selected_fg_color; }
-infobar.warning { background-color: @warning_color; color: @theme_selected_fg_color; }
-infobar.error { background-color: @error_color; color: @theme_selected_fg_color; }
-infobar.question { background-color: @vgui_light; color: @theme_selected_fg_color; }
+infobar.info, infobar.info:backdrop { background-color: @vgui_focus; color: @theme_selected_fg_color; }
+infobar.warning, infobar.warning:backdrop { background-color: @warning_color; color: @theme_selected_fg_color; }
+infobar.error, infobar.error:backdrop { background-color: @error_color; color: @theme_selected_fg_color; }
+infobar.question, infobar.question:backdrop { background-color: @vgui_light; color: @theme_selected_fg_color; }
 infobar label, infobar label:backdrop { color: inherit; }
 .error, .error:backdrop { color: @error_color; }
 .warning, .warning:backdrop { color: @warning_color; }

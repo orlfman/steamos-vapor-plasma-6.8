@@ -1,6 +1,6 @@
 # VGUI2 Classic for GTK 3.24
 
-Status: **initial implementation, unreleased**, 2026-10-30. The published
+Status: **initial implementation audited and corrected, unreleased**, 2026-10-30. The published
 1.0.4 AUR package does not include this theme. GTK 4 and the VGUI2 libadwaita
 profile remain planned in [vgui2-plan.md](vgui2-plan.md).
 
@@ -21,7 +21,7 @@ spacing and uses readable dark foregrounds on opaque gold.
 | Secondary text | Readable olive-tinted `#cbd2c2` |
 | Opaque selection/suggested/checked | `#958831` with `#181810` text |
 | Dimmed text selection | Half-strength gold with light text |
-| Focus / link | `#ffffe0` / `#f0e078` |
+| Focus / link | Pale `#ffffe0` focus on dark surfaces, dark `#181810` on opaque gold; `#f0e078` links |
 | Deep trough/shadow | `#282f21` |
 
 The selection foreground follows the readable VGUI Union value; light classic
@@ -47,10 +47,17 @@ python3 -I tools/check-gtk3.py --output /tmp/steamos-gtk3
 
 The default command now runs **both Vapor and VGUI2Classic**. It includes
 parser/asset checks, actual named-theme discovery and identical dark-entry
-fallback, six widget states, eight 1x/2x indicator renders, inactive-label/spin
-behavior, mapped windows/dialogs/popovers/menus/file choosers and 13 deliberate
+fallback, six widget states, 28 1x/2x indicator renders, inactive-label/spin
+behavior, mapped windows/dialogs/popovers/menus/file choosers and 23 deliberate
 VGUI2 regressions. Target one family with `--family vapor` or `--family vgui2`;
 `--theme PATH` validates an explicit copy without recursively running mutations.
+
+VGUI2 also checks 24 actual message/selected-container label states, 20 painted
+focus cases and eight mapped notebook layouts (top/bottom/left/right in LTR/RTL).
+The notebook check confirms actual internal nodes and compares their rendered
+arrow styles against the correct symbolic icons. Indicator checks compare
+glyph painting to the empty field and distinguish mixed from checked artwork;
+a nonblank background alone cannot pass. Vapor retains its eight indicator cases.
 
 Dependencies: GTK 3.24/broadwayd, Python GI, pycairo, Pillow, SVG support
 (librsvg), dbus-run-session and fonts. A test-only GTK 3 protocol client gives
@@ -82,16 +89,30 @@ activation belongs to the later libadwaita stage.
 GTK **3.24.52** passes with no unexpected diagnostics. Sampled solid-gold text
 is **4.965:1**, ordinary/secondary/entry text **7.317 / 4.839 / 9.545:1**,
 unvisited links **5.590:1**, destructive action text **6.728:1** and progress
-fill/trough **3.848:1**. Painted synthetic focus checks pass for buttons, rows,
-tabs, modelbuttons, entries, check buttons and switches; the lowest measured
-ratio is **5.040:1**. These are fixture measurements, not a whole-app
+fill/trough **3.848:1**. Painted synthetic focus checks cover normal and selected/
+pressed/hovered controls, including icon views and compatibility menu buttons.
+The lowest measured ratio is **3.506:1**, on gold; the original seven normal
+cases remain at least **5.040:1**. These are fixture measurements, not a whole-app
 accessibility or keyboard-interaction certification.
 
-Both normal and dark entries load the actual VGUI2Classic theme. All 13 broken
+The follow-up audit fixed inactive warning/error text (previously 1:1), nested
+button labels inside selected rows (2.377:1), inactive selected FlowBox labels
+(3.503:1), weak focus on gold (2.717:1), missing focus paths and sideways vertical
+notebook arrows. Plain selected labels inherit dark text, while nested controls
+retain their own foregrounds and disabled labels remain dimmed. See the latest
+entries in [audit.md](audit.md) and [gtk4port.md](gtk4port.md), section 23.
+
+![Active/inactive messages and selected containers](docs/screenshots/vgui2-gtk3-states.png)
+
+![Notebook tab positions in LTR and RTL](docs/screenshots/vgui2-gtk3-notebooks.png)
+
+Both normal and dark entries load the actual VGUI2Classic theme. All 23 broken
 copies fail their intended palette, surface, backdrop, focus, bevel, artwork,
-label, spin, parser or entry-point gate. The six original Vapor GTK 3/4 mutation
-checks still pass. All **14** original Vapor GTK 3 images remain byte-identical
-to the previous checker, and its full GTK 4/libadwaita suite still passes.
+label, spin, parser, notebook or entry-point gate. The six original Vapor
+GTK 3/4 mutation checks still pass. All **14** original Vapor GTK 3 images remain
+byte-identical to the previous checker. The full GTK 4/libadwaita suite passed
+at the initial port; this audit rechecked its original regression controls and
+verified those production files are unchanged.
 
 The 2x checks exercise scaled indicator contexts; whole-window HiDPI,
 fractional scaling, live Wayland/X11, full keyboard navigation, accessibility

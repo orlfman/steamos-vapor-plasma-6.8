@@ -37,6 +37,7 @@ def worker(args):
     settings.set_property('gtk-cursor-blink',False)
     settings.set_property('gtk-font-name','DejaVu Sans 10')
     failures=[];reports=[];loop=GLib.MainLoop()
+    verify_states=None
 
     def capture(widget,name):
         assert widget.get_mapped(),name+' did not map'
@@ -55,6 +56,8 @@ def worker(args):
         assert settings.get_property('gtk-theme-name')==family['name']
         reports.append({'scene':name,'size':[width,height],'window_pixels':count,'mapped':True,
                         'theme':family['name'],'image':path.name})
+        if verify_states is not None:
+            reports[-1]['state_checks']=verify_states(widget,image,args.output)
 
     def finish():
         try:
@@ -109,6 +112,15 @@ def worker(args):
         body.pack_start(panes,True,True,0)
         body.pack_start(Gtk.ProgressBar(fraction=.65),False,False,0)
         anchor=Gtk.MenuButton(label='Menu / popover');header.pack_end(anchor)
+        if args.scene in ('states','notebooks'):
+            for child in body.get_children():body.remove(child)
+            if args.scene=='states':
+                state_tools=runpy.run_path(str(ROOT/'tools/gtk3-state-checks.py'))
+                apply_states,verify_states=state_tools['build'](Gtk,body)
+                GLib.timeout_add(200,apply_states)
+            else:
+                notebook_tools=runpy.run_path(str(ROOT/'tools/gtk3-notebook-checks.py'))
+                verify_states=notebook_tools['build'](Gtk,body)
         target=window;window.show_all()
         if args.scene=='dialog':
             target=Gtk.Dialog(title='Classic dialog',transient_for=window)
@@ -156,7 +168,7 @@ def main():
     parser.add_argument('--output',type=Path)
     parser.add_argument('--meld',action='store_true')
     parser.add_argument('--worker',action='store_true',help=argparse.SUPPRESS)
-    parser.add_argument('--scene',choices=('window','dialog','popover','menu','filechooser','meld'),help=argparse.SUPPRESS)
+    parser.add_argument('--scene',choices=('window','dialog','popover','menu','filechooser','states','notebooks','meld'),help=argparse.SUPPRESS)
     args=parser.parse_args()
     if args.worker:worker(args);return
     family=FAMILY_TOOLS['get_family'](args.family)
@@ -187,7 +199,7 @@ def main():
             else:raise RuntimeError('Private GTK 3 display did not start')
             output=args.output.resolve() if args.output else scratch/'evidence';output.mkdir(parents=True,exist_ok=True)
             reports=[]
-            scenes=(args.scene,) if args.scene else ('window','dialog','popover','menu','filechooser')+(('meld',) if args.meld else ())
+            scenes=(args.scene,) if args.scene else ('window','dialog','popover','menu','filechooser')+(('states','notebooks') if family['classic'] else ())+(('meld',) if args.meld else ())
             for scene in scenes:
                 command=['dbus-run-session','--config-file='+str(bus),'--',sys.executable,'-I',str(Path(__file__).resolve()),
                          '--worker','--family',args.family,'--scene',scene,'--output',str(output)]

@@ -1,7 +1,7 @@
 # VGUI2 Classic port plan: GTK 3, GTK 4 and libadwaita
 
 Date: **2026-10-30**, America/Phoenix. Agent: Codex (GPT-6).
-Status: **initial GTK 3.24 implementation complete and tested, unreleased**.
+Status: **initial GTK 3.24 implementation audited, corrected and tested, unreleased**.
 VGUI2Classic GTK 4/libadwaita profiles and shared activation remain planned.
 Findings and measured feasibility: [vgui2-audit.md](vgui2-audit.md).
 Baseline: Vapor 1.0.4 / repository `e626869` on Plasma 6.8.2.
@@ -9,15 +9,15 @@ Baseline: Vapor 1.0.4 / repository `e626869` on Plasma 6.8.2.
 | Stage | Current status |
 | --- | --- |
 | 1: identity/palette/reference | VGUI2Classic identity, audited palette and fresh Qt Windows reference implemented |
-| 2: harness | GTK 3/shared behavior family support, mapped windows and 13 VGUI mutations implemented; GTK 4/Adw parameterization pending |
-| 3: GTK 3.24 | Initial independent stylesheet, six SVG glyphs, normal/dark entries; standard checks and Meld 3.24.1 pass |
+| 2: harness | Family-aware GTK 3 checks, mapped state/notebook scenes and 23 VGUI mutations implemented; GTK 4/Adw parameterization pending |
+| 3: GTK 3.24 | Independent stylesheet, six SVG glyphs, normal/dark entries; follow-up message/selection/focus/arrow fixes verified; standard checks and Meld 3.24.1 pass |
 | 4–6: GTK 4 / Adw / activation | Planned; current Vapor helper unchanged |
 | 7: real apps/displays/performance | Private Meld startup passes; live VGUI2 scaling/keyboard/accessibility/performance checks pending |
 | 8: packaging/release | Working stager includes GTK 3 assets/docs; no new published release or AUR update |
 
 Implementation details/results: [VGUI2-GTK3.md](VGUI2-GTK3.md),
 [portable evidence](docs/audits/vgui2-gtk3-validation.json), and
-[gtk4port.md](gtk4port.md), section 22. The roadmap below retains the full scope.
+[gtk4port.md](gtk4port.md), sections 22–23. The roadmap below retains the full scope.
 
 ## Intended result
 

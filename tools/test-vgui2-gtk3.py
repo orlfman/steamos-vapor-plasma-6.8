@@ -33,6 +33,17 @@ def main():
         ('invalid-css',None,'\nbutton { vgui-invalid-property: 1; }\n','vgui-invalid-property'),
         ('missing-glyph',None,None,'Missing asset:'),
         ('missing-chooser',None,None,'Missing chooser entry'),
+        ('hidden-rendered-glyphs',None,'\ncheck:checked, check:indeterminate, radio:checked, radio:indeterminate { -gtk-icon-source: none; }\n','GTK3-GLYPH:'),
+        ('mixed-uses-checked',None,
+         '\ncheck:indeterminate, radio:indeterminate { -gtk-icon-source: url("../assets/check.svg"); }\n','GTK3-GLYPH:'),
+        ('inactive-warning',None,'\ninfobar.warning:backdrop { color: @warning_color; }\n','GTK3-STATES:'),
+        ('inactive-error',None,'\ninfobar.error:backdrop { color: @error_color; }\n','GTK3-STATES:'),
+        ('selected-nested-label',None,'\nrow:selected label, row:selected:backdrop label { color: @theme_selected_fg_color; }\n','GTK3-STATES:'),
+        ('inactive-flow-label',None,'\nflowboxchild:selected:backdrop label { color: @theme_fg_color; }\n','GTK3-STATES:'),
+        ('disabled-flow-label',None,'\nflowboxchild:selected:disabled label, flowboxchild:selected:disabled label:backdrop { color: @theme_selected_fg_color; }\n','GTK3-STATES:'),
+        ('gold-focus',None,'\nbutton:focus:checked:not(:disabled) { outline-color: @vgui_focus; }\n','GTK3-FOCUS-STATES:'),
+        ('iconview-focus',None,'\niconview:focus { outline-style: none; }\n','GTK3-FOCUS-STATES:'),
+        ('vertical-arrows',None,'\nnotebook > header.left > tabs > arrow.down, notebook > header.right > tabs > arrow.down { -gtk-icon-source: -gtk-icontheme("pan-start-symbolic"); }\n','GTK3-NOTEBOOK:'),
     ]
     with tempfile.TemporaryDirectory(prefix='vgui2-gtk3-mutations-') as directory:
         root=Path(directory)

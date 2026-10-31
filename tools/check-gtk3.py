@@ -136,6 +136,10 @@ def worker(args):
         row_label.set_path(path)
         row_label.set_state(state)
         row_label.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_THEME)
+        # Standalone paths do not model inherited values without a parent
+        # context. Real nested controls are additionally checked in mapped GTK.
+        row_context = node_context(Gtk.ListBox, ['list', 'row'], state=state)
+        row_label.set_parent(row_context)
         label_fg = row_label.get_color(state)
         ratio = contrast([label_fg.red, label_fg.green, label_fg.blue], expected_bg)
         assert ratio >= 4.5, ('activatable row label, backdrop', round(ratio, 2))
@@ -169,8 +173,16 @@ def worker(args):
     indicator_results = []
     for scale_factor in (1, 2):
         for name, draw in (('check', Gtk.render_check), ('radio', Gtk.render_option)):
-            for state_name, flags in (('checked', Gtk.StateFlags.CHECKED),
-                                      ('mixed-hover', Gtk.StateFlags.INCONSISTENT | Gtk.StateFlags.PRELIGHT)):
+            states=[('checked', Gtk.StateFlags.CHECKED),
+                    ('mixed-hover', Gtk.StateFlags.INCONSISTENT | Gtk.StateFlags.PRELIGHT)]
+            if family['classic']:
+                states += [('unchecked', Gtk.StateFlags.NORMAL),
+                           ('checked-hover', Gtk.StateFlags.CHECKED | Gtk.StateFlags.PRELIGHT),
+                           ('mixed', Gtk.StateFlags.INCONSISTENT),
+                           ('checked-disabled', Gtk.StateFlags.CHECKED | Gtk.StateFlags.INSENSITIVE),
+                           ('mixed-disabled', Gtk.StateFlags.INCONSISTENT | Gtk.StateFlags.INSENSITIVE)]
+            artwork={}
+            for state_name, flags in states:
                 context = node_context(Gtk.ModelButton, ['modelbutton', name], ('flat',), flags)
                 context.set_scale(scale_factor)
                 surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 24 * scale_factor, 24 * scale_factor)
@@ -179,11 +191,20 @@ def worker(args):
                 if family['classic']:
                     Gtk.render_background(context, cr, 2, 2, 20, 20)
                     Gtk.render_frame(context, cr, 2, 2, 20, 20)
+                surface.flush()
+                field=bytes(surface.get_data())
                 draw(context, cr, 2, 2, 20, 20)
                 surface.flush()
                 assert any(surface.get_data()), f'Blank {name} {state_name} at {scale_factor}x'
+                if family['classic']:
+                    pixels=bytes(surface.get_data())
+                    assert (pixels != field) == (state_name != 'unchecked'), f'GTK3-GLYPH: {name} {state_name} at {scale_factor}x'
+                    artwork[state_name]=pixels
                 surface.write_to_png(str(Path(args.output) / f'indicator-{name}-{state_name}-{scale_factor}x.png'))
                 indicator_results.append(f'{name}-{state_name}-{scale_factor}x')
+            if family['classic']:
+                for suffix in ('','-hover','-disabled'):
+                    assert artwork['checked'+suffix] != artwork['mixed'+suffix], f'GTK3-GLYPH: indistinguishable {name} mixed{suffix} at {scale_factor}x'
 
     classic_checks = {}
     if family['classic']:
@@ -280,6 +301,30 @@ def worker(args):
                                [v/255 for v in base.getpixel(p)[:3]]) for p in changed)
             assert ratio>=3,f'GTK3-FOCUS: weak {name} ring {ratio}'
             classic_checks['focus-'+name]=round(ratio,3)
+        focus_states={}
+        for name,kind,nodes,flags,classes,parent_color in (
+                ('checked',Gtk.Button,['button'],Gtk.StateFlags.CHECKED,(),family['window']),
+                ('pressed',Gtk.Button,['button'],Gtk.StateFlags.ACTIVE,(),family['window']),
+                ('suggested',Gtk.Button,['button'],Gtk.StateFlags.NORMAL,('suggested-action',),family['window']),
+                ('selected-row',Gtk.ListBox,['list','row'],Gtk.StateFlags.SELECTED,(),family['view']),
+                ('selected-flow',Gtk.FlowBox,['flowbox','flowboxchild'],Gtk.StateFlags.SELECTED,(),family['view']),
+                ('checked-switch',Gtk.Switch,['switch'],Gtk.StateFlags.CHECKED,(),family['window']),
+                ('iconview',Gtk.IconView,['iconview'],Gtk.StateFlags.NORMAL,(),family['view']),
+                ('selected-iconview',Gtk.IconView,['iconview'],Gtk.StateFlags.SELECTED,(),family['view']),
+                ('selected-calendar',Gtk.Calendar,['calendar'],Gtk.StateFlags.SELECTED,(),family['view']),
+                ('hovered-flat-button',Gtk.Button,['button'],Gtk.StateFlags.PRELIGHT,('flat',),family['window']),
+                ('hovered-modelbutton',Gtk.ModelButton,['modelbutton'],Gtk.StateFlags.PRELIGHT,('flat',),family['window']),
+                ('hovered-menu-button',Gtk.Widget,['widget'],Gtk.StateFlags.PRELIGHT,('menuitem','button','flat'),family['window']),
+                ('pressed-destructive',Gtk.Button,['button'],Gtk.StateFlags.ACTIVE,('destructive-action',),family['window'])):
+            _,base=painted(name+'-base',kind,nodes,flags,classes,backdrop=parent_color)
+            _,image=painted(name+'-focus',kind,nodes,flags|Gtk.StateFlags.FOCUSED,classes,True,parent_color)
+            changed=[(x,y) for y in range(38) for x in range(100) if image.getpixel((x,y))!=base.getpixel((x,y))]
+            ratio=max((contrast([v/255 for v in image.getpixel(p)[:3]],
+                                [v/255 for v in base.getpixel(p)[:3]]) for p in changed),default=1)
+            focus_states[name]={'changed_pixels':len(changed),'contrast':round(ratio,3),'passed':ratio>=3}
+        (Path(args.output)/'focus-states.json').write_text(json.dumps(focus_states,indent=2)+'\n')
+        assert all(v['passed'] for v in focus_states.values()), 'GTK3-FOCUS-STATES: '+json.dumps(focus_states)
+        classic_checks['focus_states']=focus_states
         _,trough=painted('progress-trough',Gtk.ProgressBar,['progressbar','trough'])
         _,fill=painted('progress-fill',Gtk.ProgressBar,['progressbar','trough','progress'])
         ratio=contrast([v/255 for v in fill.getpixel((50,19))[:3]],

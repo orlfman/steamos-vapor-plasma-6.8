@@ -1,3 +1,52 @@
+# VGUI2 Classic GTK 3 follow-up audit and fixes — 2026-10-30
+
+Audited base: `4edece99be07a7a8dce67c4f1f56e39746407f05` (clean).
+Target: GTK 3.24.52 on Plasma 6.8.2. All confirmed findings below are fixed.
+The original implementation/results farther down are historical.
+
+| Finding | Reproduction and impact | Fix and verification |
+| --- | --- | --- |
+| VGUI3-R1, P2: inactive InfoBar text disappears | Actual warning/error labels inherit their own fill color after backdrop selectors win: **1:1** contrast | Explicit message-type backdrop rules retain dark text. Warning/error labels measure **11.661 / 9.056:1** in both states; 24 real label-state samples pass |
+| VGUI3-R2, P2: selected-container inheritance | Broad selected-row label rules force dark text into olive nested buttons: **2.377:1**. Inactive FlowBox labels instead become white on gold: **3.503:1** | Selected labels inherit from their immediate parent. Ordinary nested buttons retain light text, plain selected text stays dark, and disabled row/FlowBox labels stay dimmed. Enabled mapped cases are at least **4.965:1** |
+| VGUI3-R3, P2: weak/missing focus | Antialiased pale dots on gold measure **2.717:1**; icon views and compatibility menu-button paths have no outline | Dark dots on gold measure **3.506:1**. Add missing focus paths; preserve pale outlines on dark and destructive surfaces. All 20 painted focus cases pass the 3:1 gate |
+| VGUI3-R4, P2: vertical notebook arrows | Left/right notebook tab headers reuse horizontal start/end icons | Use up/down icons for vertical headers. Eight mapped LTR/RTL layouts pass; 16 arrow-style renders match independently selected directional icons |
+| VGUI3-R5, P2: indicator test false positive | A frozen copy of the original checker passes even with every check/radio glyph hidden; its CSS-painted field satisfies the nonblank assertion | Compare rendering before/after the glyph, require unchecked fields to remain empty and checked/mixed artwork to differ. All 28 1x/2x cases pass; hidden/replaced glyph mutations fail the rendering gate |
+
+VGUI3-R1/R2 were reproduced with actual mapped GTK labels, their computed text
+colors and adjacent Cairo-painted background pixels. VGUI3-R3 uses GTK-painted
+focus paths and unrounded contrast gates. VGUI3-R4 confirms live notebook node
+layouts, then renders their paths because GTK's public API does not expose
+internal arrow contexts. Native screenshots were also inspected. These checks
+do not establish complete keyboard or screen-reader behavior.
+
+The [GTK notebook node documentation](https://docs.gtk.org/gtk3/class.Notebook.html#css-nodes)
+defines header position classes and optional overflow nodes. The
+[InfoBar documentation](https://docs.gtk.org/gtk3/class.InfoBar.html#css-nodes)
+describes its message-type classes. The fixes target those GTK 3 nodes directly.
+
+The standard GTK 3 command passes for Vapor and VGUI2Classic, including parser,
+loader, artwork, six widget states, shared behavior and seven mapped scenes.
+All **23** deliberately broken VGUI copies fail their intended gate. Installed
+Meld **3.24.1** startup passes with isolated settings; all six original Vapor
+GTK 3/4 regression controls and eight package-staging tests pass. The previous
+Vapor checker’s **14** PNGs are byte-identical. Hash checks preserve all **170**
+existing payload/helper/AUR files outside the new VGUI2 family. The GTK 4/Adw
+production code and its shared checks are unchanged; its full-suite result
+from the initial port remains historical rather than a new run in this audit.
+
+No additional demonstrated performance defect was found in the stylesheet
+review: effects remain static except the native spinner, with no new timers or
+services. There is no comparative performance benchmark. Live VGUI2 scaling,
+full keyboard/accessibility checks, broader app workflows and GTK 4/Adw support
+remain open. Live settings, release and AUR metadata are unchanged.
+
+Portable measurements, before/after failures and screenshot hashes are in
+[vgui2-gtk3-validation.json](docs/audits/vgui2-gtk3-validation.json).
+[VGUI2-GTK3.md](VGUI2-GTK3.md) includes the fixed native screenshots. The full
+work record is [gtk4port.md](gtk4port.md), section 23.
+
+---
+
 # VGUI2 Classic GTK 3 implementation — 2026-10-30
 
 The initial GTK 3.24 family is implemented with standalone olive/gold CSS,

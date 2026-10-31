@@ -1077,3 +1077,83 @@ Evidence includes standard-gtk3/, standard-gtk4/, final-vgui2/, meld-final-curre
 the failed/corrected window runs, mutation logs, old Vapor checker/renderings and
 temporary Qt reference source. This is initial GTK 3 support, not completion of
 the GTK 4/libadwaita port or live HiDPI/accessibility/performance validation.
+
+## 23. Audit and correct the VGUI2 GTK 3 port — 2026-10-30
+
+User request: audit the GTK 3 port and fix confirmed issues. Started from clean
+`4edece99be07a7a8dce67c4f1f56e39746407f05`. Private evidence root:
+`/tmp/vgui2-gtk3-audit-etqg0cc2`. Captured SHA-256 hashes before changes and
+froze the original checker/theme from Git for an independent reproduction.
+
+### Reproduce before fixing
+
+- The frozen original checker passes a copy with every check/radio glyph
+  suppressed by CSS, because its nonblank check sees the painted field/frame.
+  Assets remain present and referenced, so this is a demonstrated rendering-test
+  blind spot rather than a missing-file test. See legacy-missing-glyph.log.
+- Added a mapped state scene with actual InfoBars, selected ListBox/FlowBox
+  children, nested ordinary buttons and disabled selections, in active/backdrop
+  subtrees. Sample computed label colors against adjacent native painted pixels.
+  Before fixes, inactive warning/error text is 1:1, selected-row nested buttons
+  2.377:1 and inactive FlowBox text 3.503:1. states-before retains all samples.
+- Expanded painted focus coverage to selected/checked/pressed/suggested states.
+  Pale antialiased dots measure 2.717:1 on gold; icon views have no painted
+  outline. Additional compatibility menu-button coverage also found no outline.
+- Added eight mapped notebook layouts for four tab positions and both text
+  directions. Confirmed actual overflow/header nodes, then rendered their style
+  paths against independently chosen symbolic arrows. Vertical tab headers
+  incorrectly render horizontal icons. GTK does not publicly expose internal
+  arrow contexts, so this gate combines mapped node evidence, synthetic GTK
+  rendering and native screenshot inspection rather than claiming direct access.
+
+### Corrections
+
+- Give each InfoBar type an explicit backdrop rule so generic semantic classes
+  cannot turn the inherited text into the fill color. Preserve semantic labels
+  elsewhere. Warning/error contrast is now 11.661/9.056:1 in both states.
+- Let selected descendant labels inherit from their immediate parent: plain
+  labels follow the selected container, nested button labels follow the button.
+  Add selected FlowBox label coverage and consistent disabled selection dimming.
+- Use dark dotted focus on opaque gold and pale dotted focus on dark surfaces.
+  Preserve pale focus for destructive buttons, including pressed states. Add
+  icon-view and compatibility menu-button focus paths. All 20 painted cases
+  pass; gold focus is 3.506:1 and normal cases retain their previous results.
+- Use up/down overflow icons for left/right notebook headers. Keep horizontal
+  top/bottom icons; native LTR/RTL screenshots show the expected orientations.
+- Compare each check/radio render with its field before glyph painting, test
+  unchecked/checked/mixed/hover/disabled states at 1x/2x and require checked and
+  mixed artwork to differ. There are 28 classic indicator cases, with Vapor's
+  existing eight unchanged.
+
+### Harness corrections and final verification
+
+- A standalone row-label StyleContext path does not inherit from an implied
+  parent. Set an explicit row context as parent in the old synthetic assertion;
+  retain the new real-widget checks as the integration proof.
+- StyleContext's public debug output here lists native nodes without image
+  properties. An initial notebook probe expecting those properties failed even
+  for correct horizontal layouts; use named-provider GTK rendering instead.
+- An initial mixed-as-checked mutation removed the last mixed.svg reference,
+  so it failed the unused-asset gate before reaching the intended glyph gate.
+  Append an overriding rule instead. Both assets remain referenced and the
+  rendering gate independently rejects the incorrect glyph. No gate is relaxed.
+- Standard GTK 3 checks pass for both themes, including seven mapped VGUI scenes.
+  All 23 VGUI mutations fail at their intended gates. Six existing Vapor GTK
+  3/4 mutation controls, isolated Meld 3.24.1 startup and eight staging checks pass.
+- All 14 original Vapor GTK 3 PNGs remain byte-identical. Hashes preserve 170
+  existing production payload/helper/AUR files outside the VGUI2 family. GTK 4/
+  Adw production code and shared checks are untouched; their full-suite pass in
+  section 22 is historical, with the original mutation gates rerun here.
+- Save native state/notebook screenshots and portable before/after evidence;
+  update the guide, audit, plan, README and changelog. Stage the linked images
+  with the documentation, verify package contents and documentation links.
+  This exposed an older README link to aur/PKGBUILD that only worked in a
+  checkout. Point it at the repository so installed documentation resolves too;
+  the recipe itself remains unchanged.
+
+No demonstrated performance defect emerged from the stylesheet review; effects
+remain static except the native spinner and no services/timers were added.
+No comparative benchmark is claimed. Live VGUI2 scaling, full keyboard/
+accessibility, broader app workflows, GTK 4/Adw and shared activation remain
+later work. The user's active theme, runtime helper, AUR metadata and published
+release are unchanged. The changes are committed/pushed as source work only.

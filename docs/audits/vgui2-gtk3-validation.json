@@ -1,14 +1,14 @@
 {
   "date": "2026-10-30",
   "timezone": "America/Phoenix",
-  "base_commit": "7e63667ed6562ddc9be0fafb15bb73e279ac86e4",
-  "status": "Initial GTK 3.24 implementation; GTK 4/libadwaita VGUI profiles and live user selection remain future work.",
+  "base_commit": "4edece99be07a7a8dce67c4f1f56e39746407f05",
+  "status": "Initial GTK 3.24 implementation audited and corrected; unreleased. GTK 4/libadwaita VGUI profiles and live selection remain future work.",
   "gtk3": {
     "gtk": "3.24.52",
     "family": "vgui2",
     "theme_name": "VGUI2Classic",
     "display_scale": 1,
-    "scaled_indicators": 8,
+    "scaled_indicators": 28,
     "parsed": 4,
     "backdrop_selection": [
       0.58431,
@@ -35,6 +35,73 @@
       "focus-entry": 6.289,
       "focus-checkbutton": 5.04,
       "focus-switch": 8.417,
+      "focus_states": {
+        "checked": {
+          "changed_pixels": 124,
+          "contrast": 3.506,
+          "passed": true
+        },
+        "pressed": {
+          "changed_pixels": 124,
+          "contrast": 3.506,
+          "passed": true
+        },
+        "suggested": {
+          "changed_pixels": 124,
+          "contrast": 3.506,
+          "passed": true
+        },
+        "selected-row": {
+          "changed_pixels": 124,
+          "contrast": 3.506,
+          "passed": true
+        },
+        "selected-flow": {
+          "changed_pixels": 124,
+          "contrast": 3.506,
+          "passed": true
+        },
+        "checked-switch": {
+          "changed_pixels": 124,
+          "contrast": 3.506,
+          "passed": true
+        },
+        "iconview": {
+          "changed_pixels": 124,
+          "contrast": 6.289,
+          "passed": true
+        },
+        "selected-iconview": {
+          "changed_pixels": 124,
+          "contrast": 3.506,
+          "passed": true
+        },
+        "selected-calendar": {
+          "changed_pixels": 124,
+          "contrast": 3.506,
+          "passed": true
+        },
+        "hovered-flat-button": {
+          "changed_pixels": 124,
+          "contrast": 3.506,
+          "passed": true
+        },
+        "hovered-modelbutton": {
+          "changed_pixels": 124,
+          "contrast": 3.506,
+          "passed": true
+        },
+        "hovered-menu-button": {
+          "changed_pixels": 124,
+          "contrast": 3.506,
+          "passed": true
+        },
+        "pressed-destructive": {
+          "changed_pixels": 124,
+          "contrast": 4.612,
+          "passed": true
+        }
+      },
       "progress": 3.848
     },
     "captures": [
@@ -106,6 +173,642 @@
       "theme": "VGUI2Classic",
       "image": "filechooser.png",
       "display_buffers": 4
+    },
+    {
+      "scene": "states",
+      "size": [
+        804,
+        556
+      ],
+      "window_pixels": 155801,
+      "mapped": true,
+      "theme": "VGUI2Classic",
+      "image": "states.png",
+      "state_checks": [
+        {
+          "kind": "info",
+          "backdrop": false,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            255,
+            224,
+            255
+          ],
+          "contrast": 17.53,
+          "passed": true
+        },
+        {
+          "kind": "warning",
+          "backdrop": false,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            246,
+            204,
+            96,
+            255
+          ],
+          "contrast": 11.661,
+          "passed": true
+        },
+        {
+          "kind": "error",
+          "backdrop": false,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            160,
+            140,
+            255
+          ],
+          "contrast": 9.056,
+          "passed": true
+        },
+        {
+          "kind": "question",
+          "backdrop": false,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            150,
+            164,
+            134,
+            255
+          ],
+          "contrast": 6.756,
+          "passed": true
+        },
+        {
+          "kind": "list",
+          "backdrop": false,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "passed": true
+        },
+        {
+          "kind": "list-button",
+          "backdrop": false,
+          "disabled": false,
+          "foreground": [
+            0.98824,
+            0.98824,
+            0.98824,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "passed": true
+        },
+        {
+          "kind": "flow",
+          "backdrop": false,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "passed": true
+        },
+        {
+          "kind": "flow-button",
+          "backdrop": false,
+          "disabled": false,
+          "foreground": [
+            0.98824,
+            0.98824,
+            0.98824,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "passed": true
+        },
+        {
+          "kind": "disabled-list",
+          "backdrop": false,
+          "disabled": true,
+          "foreground": [
+            0.98824,
+            0.98824,
+            0.98824,
+            0.4
+          ],
+          "painted_background": [
+            105,
+            103,
+            52,
+            255
+          ],
+          "contrast": 2.261,
+          "passed": true
+        },
+        {
+          "kind": "disabled-list-button",
+          "backdrop": false,
+          "disabled": true,
+          "foreground": [
+            0.98824,
+            0.98824,
+            0.98824,
+            0.4
+          ],
+          "painted_background": [
+            71,
+            81,
+            63,
+            255
+          ],
+          "contrast": 2.73,
+          "passed": true
+        },
+        {
+          "kind": "disabled-flow",
+          "backdrop": false,
+          "disabled": true,
+          "foreground": [
+            0.98824,
+            0.98824,
+            0.98824,
+            0.4
+          ],
+          "painted_background": [
+            105,
+            103,
+            52,
+            255
+          ],
+          "contrast": 2.261,
+          "passed": true
+        },
+        {
+          "kind": "disabled-flow-button",
+          "backdrop": false,
+          "disabled": true,
+          "foreground": [
+            0.98824,
+            0.98824,
+            0.98824,
+            0.4
+          ],
+          "painted_background": [
+            71,
+            81,
+            63,
+            255
+          ],
+          "contrast": 2.73,
+          "passed": true
+        },
+        {
+          "kind": "info",
+          "backdrop": true,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            255,
+            224,
+            255
+          ],
+          "contrast": 17.53,
+          "passed": true
+        },
+        {
+          "kind": "warning",
+          "backdrop": true,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            246,
+            204,
+            96,
+            255
+          ],
+          "contrast": 11.661,
+          "passed": true
+        },
+        {
+          "kind": "error",
+          "backdrop": true,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            160,
+            140,
+            255
+          ],
+          "contrast": 9.056,
+          "passed": true
+        },
+        {
+          "kind": "question",
+          "backdrop": true,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            150,
+            164,
+            134,
+            255
+          ],
+          "contrast": 6.756,
+          "passed": true
+        },
+        {
+          "kind": "list",
+          "backdrop": true,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "passed": true
+        },
+        {
+          "kind": "list-button",
+          "backdrop": true,
+          "disabled": false,
+          "foreground": [
+            0.98824,
+            0.98824,
+            0.98824,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "passed": true
+        },
+        {
+          "kind": "flow",
+          "backdrop": true,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 4.965,
+          "passed": true
+        },
+        {
+          "kind": "flow-button",
+          "backdrop": true,
+          "disabled": false,
+          "foreground": [
+            0.98824,
+            0.98824,
+            0.98824,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 7.317,
+          "passed": true
+        },
+        {
+          "kind": "disabled-list",
+          "backdrop": true,
+          "disabled": true,
+          "foreground": [
+            0.98824,
+            0.98824,
+            0.98824,
+            0.4
+          ],
+          "painted_background": [
+            105,
+            103,
+            52,
+            255
+          ],
+          "contrast": 2.261,
+          "passed": true
+        },
+        {
+          "kind": "disabled-list-button",
+          "backdrop": true,
+          "disabled": true,
+          "foreground": [
+            0.98824,
+            0.98824,
+            0.98824,
+            0.4
+          ],
+          "painted_background": [
+            71,
+            81,
+            63,
+            255
+          ],
+          "contrast": 2.73,
+          "passed": true
+        },
+        {
+          "kind": "disabled-flow",
+          "backdrop": true,
+          "disabled": true,
+          "foreground": [
+            0.98824,
+            0.98824,
+            0.98824,
+            0.4
+          ],
+          "painted_background": [
+            105,
+            103,
+            52,
+            255
+          ],
+          "contrast": 2.261,
+          "passed": true
+        },
+        {
+          "kind": "disabled-flow-button",
+          "backdrop": true,
+          "disabled": true,
+          "foreground": [
+            0.98824,
+            0.98824,
+            0.98824,
+            0.4
+          ],
+          "painted_background": [
+            71,
+            81,
+            63,
+            255
+          ],
+          "contrast": 2.73,
+          "passed": true
+        }
+      ],
+      "display_buffers": 1
+    },
+    {
+      "scene": "notebooks",
+      "size": [
+        792,
+        838
+      ],
+      "window_pixels": 574379,
+      "mapped": true,
+      "theme": "VGUI2Classic",
+      "image": "notebooks.png",
+      "state_checks": [
+        {
+          "position": "top",
+          "direction": "ltr",
+          "arrows": {
+            "down": {
+              "expected_icon": "pan-start-symbolic",
+              "passed": true,
+              "actual_sha256": "3e000be2f2da764625e874e2fb31e6f053398ce124c2aa670e6b672322d64a8b",
+              "reference_sha256": "3e000be2f2da764625e874e2fb31e6f053398ce124c2aa670e6b672322d64a8b"
+            },
+            "up": {
+              "expected_icon": "pan-end-symbolic",
+              "passed": true,
+              "actual_sha256": "7d19a9ad181420f1e0f845e134e0328768ff505afb300b8aaefc3eb9a00d8856",
+              "reference_sha256": "7d19a9ad181420f1e0f845e134e0328768ff505afb300b8aaefc3eb9a00d8856"
+            }
+          },
+          "passed": true
+        },
+        {
+          "position": "top",
+          "direction": "rtl",
+          "arrows": {
+            "down": {
+              "expected_icon": "pan-start-symbolic",
+              "passed": true,
+              "actual_sha256": "36ef4cfa80c2f29251c0a4415a45affb91427c5023f2aaa03afab692dcf0a409",
+              "reference_sha256": "36ef4cfa80c2f29251c0a4415a45affb91427c5023f2aaa03afab692dcf0a409"
+            },
+            "up": {
+              "expected_icon": "pan-end-symbolic",
+              "passed": true,
+              "actual_sha256": "9df456d32e10bd79dfdd3f75208f53d530661312783b9a5b51dba99b8577fe32",
+              "reference_sha256": "9df456d32e10bd79dfdd3f75208f53d530661312783b9a5b51dba99b8577fe32"
+            }
+          },
+          "passed": true
+        },
+        {
+          "position": "bottom",
+          "direction": "ltr",
+          "arrows": {
+            "down": {
+              "expected_icon": "pan-start-symbolic",
+              "passed": true,
+              "actual_sha256": "3e000be2f2da764625e874e2fb31e6f053398ce124c2aa670e6b672322d64a8b",
+              "reference_sha256": "3e000be2f2da764625e874e2fb31e6f053398ce124c2aa670e6b672322d64a8b"
+            },
+            "up": {
+              "expected_icon": "pan-end-symbolic",
+              "passed": true,
+              "actual_sha256": "7d19a9ad181420f1e0f845e134e0328768ff505afb300b8aaefc3eb9a00d8856",
+              "reference_sha256": "7d19a9ad181420f1e0f845e134e0328768ff505afb300b8aaefc3eb9a00d8856"
+            }
+          },
+          "passed": true
+        },
+        {
+          "position": "bottom",
+          "direction": "rtl",
+          "arrows": {
+            "down": {
+              "expected_icon": "pan-start-symbolic",
+              "passed": true,
+              "actual_sha256": "36ef4cfa80c2f29251c0a4415a45affb91427c5023f2aaa03afab692dcf0a409",
+              "reference_sha256": "36ef4cfa80c2f29251c0a4415a45affb91427c5023f2aaa03afab692dcf0a409"
+            },
+            "up": {
+              "expected_icon": "pan-end-symbolic",
+              "passed": true,
+              "actual_sha256": "9df456d32e10bd79dfdd3f75208f53d530661312783b9a5b51dba99b8577fe32",
+              "reference_sha256": "9df456d32e10bd79dfdd3f75208f53d530661312783b9a5b51dba99b8577fe32"
+            }
+          },
+          "passed": true
+        },
+        {
+          "position": "left",
+          "direction": "ltr",
+          "arrows": {
+            "down": {
+              "expected_icon": "pan-up-symbolic",
+              "passed": true,
+              "actual_sha256": "54ee8cf3295f675825679ba4f9b3af5cd367604ed63709101555efa997025df5",
+              "reference_sha256": "54ee8cf3295f675825679ba4f9b3af5cd367604ed63709101555efa997025df5"
+            },
+            "up": {
+              "expected_icon": "pan-down-symbolic",
+              "passed": true,
+              "actual_sha256": "d62490b9d1e0e7edf36f883b07f3b7985beb4678b78df5be26a02e84997746b6",
+              "reference_sha256": "d62490b9d1e0e7edf36f883b07f3b7985beb4678b78df5be26a02e84997746b6"
+            }
+          },
+          "passed": true
+        },
+        {
+          "position": "left",
+          "direction": "rtl",
+          "arrows": {
+            "down": {
+              "expected_icon": "pan-up-symbolic",
+              "passed": true,
+              "actual_sha256": "d505203adb14b9a1065bd60bec83012c15bdc2493b702cd45f392ecd0639c5ae",
+              "reference_sha256": "d505203adb14b9a1065bd60bec83012c15bdc2493b702cd45f392ecd0639c5ae"
+            },
+            "up": {
+              "expected_icon": "pan-down-symbolic",
+              "passed": true,
+              "actual_sha256": "21920933843433d24ae81e12be9a51bad665f3a868f16934a3ce1f00a40b4b77",
+              "reference_sha256": "21920933843433d24ae81e12be9a51bad665f3a868f16934a3ce1f00a40b4b77"
+            }
+          },
+          "passed": true
+        },
+        {
+          "position": "right",
+          "direction": "ltr",
+          "arrows": {
+            "down": {
+              "expected_icon": "pan-up-symbolic",
+              "passed": true,
+              "actual_sha256": "54ee8cf3295f675825679ba4f9b3af5cd367604ed63709101555efa997025df5",
+              "reference_sha256": "54ee8cf3295f675825679ba4f9b3af5cd367604ed63709101555efa997025df5"
+            },
+            "up": {
+              "expected_icon": "pan-down-symbolic",
+              "passed": true,
+              "actual_sha256": "d62490b9d1e0e7edf36f883b07f3b7985beb4678b78df5be26a02e84997746b6",
+              "reference_sha256": "d62490b9d1e0e7edf36f883b07f3b7985beb4678b78df5be26a02e84997746b6"
+            }
+          },
+          "passed": true
+        },
+        {
+          "position": "right",
+          "direction": "rtl",
+          "arrows": {
+            "down": {
+              "expected_icon": "pan-up-symbolic",
+              "passed": true,
+              "actual_sha256": "d505203adb14b9a1065bd60bec83012c15bdc2493b702cd45f392ecd0639c5ae",
+              "reference_sha256": "d505203adb14b9a1065bd60bec83012c15bdc2493b702cd45f392ecd0639c5ae"
+            },
+            "up": {
+              "expected_icon": "pan-down-symbolic",
+              "passed": true,
+              "actual_sha256": "21920933843433d24ae81e12be9a51bad665f3a868f16934a3ce1f00a40b4b77",
+              "reference_sha256": "21920933843433d24ae81e12be9a51bad665f3a868f16934a3ce1f00a40b4b77"
+            }
+          },
+          "passed": true
+        }
+      ],
+      "display_buffers": 1
     }
   ],
   "meld": {
@@ -125,11 +828,11 @@
       }
     ]
   },
-  "vgui_deliberate_regressions_rejected": 13,
+  "vgui_deliberate_regressions_rejected": 23,
   "vapor_deliberate_regressions_rejected": 6,
   "vapor_gtk3_byte_identical_images": 14,
   "gtk4_coexistence_byte_identical_images": 10,
-  "existing_gtk4_suite": "PASS; 22 Adw cases, 28 activation tests, 15 libadwaita mutations, eight staging tests and existing native/Widget Factory/coexistence stages.",
+  "existing_gtk4_suite": "Historical initial-port run before this audit: PASS; 22 Adw cases, 28 activation tests, 15 libadwaita mutations, eight staging tests and existing native/Widget Factory/coexistence stages.",
   "assets": {
     "format": "SVG",
     "count": 6,
@@ -138,11 +841,221 @@
   "preview_sha256": {
     "docs/screenshots/vgui2-gtk3-preview.png": "e80a5ba06959b289637fd7628db72eec2e068c492f4f133f079798ba34a81128",
     "docs/screenshots/vgui2-gtk3-meld.png": "a4a372b0639337289a50faeaf9b74eac1d88e32ad94b339ca876069d0b1c438c",
-    "docs/screenshots/vgui2-qt-windows-reference.png": "cdc1f393f00296424ed0def8232967d98fb7fed3e4e5d196cd08e21f23d54fb5"
+    "docs/screenshots/vgui2-qt-windows-reference.png": "cdc1f393f00296424ed0def8232967d98fb7fed3e4e5d196cd08e21f23d54fb5",
+    "docs/screenshots/vgui2-gtk3-states.png": "20d63146bbe12d6a223b3d3b35c3b475ace179eb6f3529ac64d92a43440ec3b5",
+    "docs/screenshots/vgui2-gtk3-notebooks.png": "98361aa5d8dd8b4900e6c9c17a3be8578a5f7a5da0b6ed37ad108d3fed4fb00b"
   },
   "limits": [
     "No VGUI2 GTK 4 or libadwaita implementation.",
     "No live theme activation or package release.",
     "Scale-2 indicator contexts only; whole-window HiDPI/fractional scaling, full keyboard interaction, accessibility and performance remain further validation."
-  ]
+  ],
+  "initial_base_commit": "7e63667ed6562ddc9be0fafb15bb73e279ac86e4",
+  "follow_up_audit": {
+    "findings_fixed": [
+      "VGUI3-R1 inactive InfoBar foreground",
+      "VGUI3-R2 selected container label inheritance",
+      "VGUI3-R3 weak/missing focus",
+      "VGUI3-R4 vertical notebook overflow arrows",
+      "VGUI3-R5 indicator rendering false positive"
+    ],
+    "before": {
+      "original_checker_accepts_hidden_rendered_glyphs": true,
+      "original_checker_commit": "4edece99be07a7a8dce67c4f1f56e39746407f05",
+      "glyph_reproduction_css": "check:checked, check:indeterminate, radio:checked, radio:indeterminate { -gtk-icon-source: none; }",
+      "failed_label_samples": [
+        {
+          "kind": "list-button",
+          "backdrop": false,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 2.377,
+          "passed": false
+        },
+        {
+          "kind": "warning",
+          "backdrop": true,
+          "disabled": false,
+          "foreground": [
+            0.96471,
+            0.8,
+            0.37647,
+            1.0
+          ],
+          "painted_background": [
+            246,
+            204,
+            96,
+            255
+          ],
+          "contrast": 1.0,
+          "passed": false
+        },
+        {
+          "kind": "error",
+          "backdrop": true,
+          "disabled": false,
+          "foreground": [
+            1.0,
+            0.62745,
+            0.54902,
+            1.0
+          ],
+          "painted_background": [
+            255,
+            160,
+            140,
+            255
+          ],
+          "contrast": 1.0,
+          "passed": false
+        },
+        {
+          "kind": "list-button",
+          "backdrop": true,
+          "disabled": false,
+          "foreground": [
+            0.09412,
+            0.09412,
+            0.06275,
+            1.0
+          ],
+          "painted_background": [
+            77,
+            88,
+            69,
+            255
+          ],
+          "contrast": 2.377,
+          "passed": false
+        },
+        {
+          "kind": "flow",
+          "backdrop": true,
+          "disabled": false,
+          "foreground": [
+            0.98824,
+            0.98824,
+            0.98824,
+            1.0
+          ],
+          "painted_background": [
+            149,
+            136,
+            49,
+            255
+          ],
+          "contrast": 3.503,
+          "passed": false
+        }
+      ],
+      "focus_cases": {
+        "checked": {
+          "changed_pixels": 124,
+          "contrast": 2.717,
+          "passed": false
+        },
+        "pressed": {
+          "changed_pixels": 124,
+          "contrast": 2.717,
+          "passed": false
+        },
+        "suggested": {
+          "changed_pixels": 124,
+          "contrast": 2.717,
+          "passed": false
+        },
+        "selected-row": {
+          "changed_pixels": 124,
+          "contrast": 2.717,
+          "passed": false
+        },
+        "selected-flow": {
+          "changed_pixels": 124,
+          "contrast": 2.717,
+          "passed": false
+        },
+        "checked-switch": {
+          "changed_pixels": 124,
+          "contrast": 2.717,
+          "passed": false
+        },
+        "iconview": {
+          "changed_pixels": 0,
+          "contrast": 1,
+          "passed": false
+        }
+      },
+      "compatibility_menu_focus": {
+        "changed_pixels": 0,
+        "contrast": 1,
+        "passed": false
+      },
+      "failed_notebook_layouts": [
+        {
+          "position": "left",
+          "direction": "ltr",
+          "passed": false
+        },
+        {
+          "position": "left",
+          "direction": "rtl",
+          "passed": false
+        },
+        {
+          "position": "right",
+          "direction": "ltr",
+          "passed": false
+        },
+        {
+          "position": "right",
+          "direction": "rtl",
+          "passed": false
+        }
+      ]
+    },
+    "after": {
+      "mapped_label_samples": 24,
+      "painted_focus_cases": 20,
+      "mapped_notebook_layouts": 8,
+      "rendered_notebook_arrow_paths": 16,
+      "classic_indicator_cases": 28,
+      "enabled_label_min_contrast": 4.965,
+      "gold_focus_contrast": 3.506
+    },
+    "preservation": {
+      "protected_payload_files_unchanged": 170,
+      "vapor_original_pngs_byte_identical": [
+        "backdrop-1x.png",
+        "disabled-1x.png",
+        "fine-tune-1x.png",
+        "hover-1x.png",
+        "indicator-check-checked-1x.png",
+        "indicator-check-checked-2x.png",
+        "indicator-check-mixed-hover-1x.png",
+        "indicator-check-mixed-hover-2x.png",
+        "indicator-radio-checked-1x.png",
+        "indicator-radio-checked-2x.png",
+        "indicator-radio-mixed-hover-1x.png",
+        "indicator-radio-mixed-hover-2x.png",
+        "normal-1x.png",
+        "rtl-1x.png"
+      ]
+    },
+    "package_staging_tests": 8,
+    "gtk4_validation_in_this_audit": "Six original GTK 3/4 mutation controls rerun; GTK 4/Adw production code and shared behavior checks unchanged. Full historical GTK 4 suite not rerun.",
+    "arrow_test_method": "Mapped notebook node layouts, GTK-rendered documented arrow paths against independent directional icon references, and native screenshot inspection; public GTK does not expose internal arrow contexts.",
+    "performance": "No demonstrated stylesheet defect found; no comparative performance benchmark."
+  }
 }

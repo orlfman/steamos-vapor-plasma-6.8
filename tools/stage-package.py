@@ -39,6 +39,7 @@ def main():
         install(name,'usr/share/doc/plasma6-themes-steamos-vapor-fixed/'+name)
     for asset in ('docs/screenshots/vapor-libadwaita-mission-center-ffmpeg-converter-2026-10-30.png',
                   'docs/screenshots/vgui2-gtk3-preview.png','docs/screenshots/vgui2-gtk3-meld.png',
+                  'docs/screenshots/vgui2-gtk3-states.png','docs/screenshots/vgui2-gtk3-notebooks.png',
                   'docs/screenshots/vgui2-qt-windows-reference.png','docs/audits/vgui2-feasibility.json',
                   'docs/audits/vgui2-gtk3-validation.json'):
         install(asset,'usr/share/doc/plasma6-themes-steamos-vapor-fixed/'+asset)
